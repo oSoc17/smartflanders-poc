@@ -14,7 +14,7 @@
     <th>subject</th>
     </thead>
     <tbody>
-        <tr *ngFor="let parking of parkings; index as i; first as isFirst"><td>{{parking.id}}</td> <td>{{parking.name}}</td></tr>
+        <tr *ngFor="let parking of parkings; index as i; first as isFirst"><td>{{parking.id}}</td> <td>{{parking.name}}</td> <td>{{parking.currentVacantSpaces}}</td></tr>
     </tbody>
   </table>
 
