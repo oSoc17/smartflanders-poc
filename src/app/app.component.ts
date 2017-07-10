@@ -26,9 +26,14 @@ export class AppComponent implements OnInit {
     this.dataService.get_data().then(response => {
       //this.triples = response;
     });
+    this.getParkings();
+    this.getParkingData();
 
 
+  }
 
+private getParkings() {
+  
     this.dataService.getParkings().then(store => {
       let names:Array<String>;
       let ids: Array<String>;
@@ -39,8 +44,13 @@ export class AppComponent implements OnInit {
       };
     });    
   });
-    
-  }
+}
+private getParkingData(){
+  this.dataService.get_data().then(result => {
+      console.log(result);
+  })
+
+}
 
 }
 
