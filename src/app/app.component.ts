@@ -37,15 +37,14 @@ export class AppComponent implements OnInit {
     });    
   });
 }
+
 private getParkingData(){
   this.dataService.get_data().then(result => {
       result.forEach(element => {
         let _parking = find(this.parkings, function(e){ return e.uri === element.subject});
         if(_parking){
             _parking.currentVacantSpaces = this.N3Util.getLiteralValue(element.object);
-             console.log(_parking);
         };
-       
       });
   })
  }
