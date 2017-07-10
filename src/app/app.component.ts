@@ -15,18 +15,23 @@ export class AppComponent implements OnInit {
   title = 'app';
   public triples: Array<Triple> = [];
   private dataService: DataService;
+  private N3Util;
 
   constructor(dataService: DataService) {
     this.dataService = dataService;
   }
 
   ngOnInit() {
+    this.N3Util = n3.Util;
     this.dataService.get_data().then(response => {
       console.log(response);
       this.triples = response;
     });
-    this.dataService.getParkings().then(response => {
-      console.log(response.getTriples(null, 'datex:parkingNumberOfVacantSpaces'));
+    this.dataService.getParkings().then(store => {
+      console.log(store.getTriples(null, 'dct:description'));
+      store.getTriples(null, 'dct:description').forEach(parking => {
+        console.log(this.N3Util.getLiteralValue(parking.object));
+      });
     });
   }
 
