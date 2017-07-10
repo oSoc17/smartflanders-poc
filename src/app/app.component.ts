@@ -22,7 +22,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.N3Util = n3.Util;
     this.getParkings();
-    this.getParkingData();
+    setInterval(this.getParkingData(), 30000);
+    
   }
 
   private getParkings() {
