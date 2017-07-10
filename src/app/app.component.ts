@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from './services/data.service';
 import n3 from 'n3';
 import Parking from './models/parking';
+import * as $ from 'jquery';
 
 import Triple from './models/triple';
 
@@ -47,7 +48,10 @@ private getParkings() {
 }
 private getParkingData(){
   this.dataService.get_data().then(result => {
-      console.log(result);
+      result.forEach(element => {
+        let _parking = $.grep(this.parkings, function(e){ return e.id == element.subject.subString(28,3)});
+        console.log('Found it');
+      });
   })
 
 }
