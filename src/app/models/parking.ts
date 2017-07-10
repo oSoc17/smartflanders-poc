@@ -7,8 +7,12 @@ export default class Parking {
   public uri: string;
   public historicVacantSpaces: Array<number>;
 
+<<<<<<< HEAD
   constructor(name, id, uri){
     this.uri = uri;
+=======
+  constructor(name, id) {
+>>>>>>> bcab49600ac27f55dc25fd04fc4c29bd88ac836b
     this.name = name;
     this.id = id;
     this.currentVacantSpaces = 0;

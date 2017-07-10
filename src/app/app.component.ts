@@ -12,7 +12,6 @@ import Triple from './models/triple';
 })
 
 export class AppComponent implements OnInit {
-  title = 'app';
   public parkings: Array<Parking> = [];
   private dataService: DataService;
   private N3Util;
@@ -34,6 +33,7 @@ export class AppComponent implements OnInit {
         if (_parking.substring(0, 3).match(/P[0-9]*$/)) {
          this.parkings.push(new Parking( _parking.substring(0, 3), _parking.substring(4, _parking.length),parking.subject));
         };
+<<<<<<< HEAD
     });    
   });
 }
@@ -45,8 +45,19 @@ private getParkingData(){
         if(_parking){
             _parking.currentVacantSpaces = this.N3Util.getLiteralValue(element.object);
         };
+=======
       });
-  })
- }
+    });
+  }
+
+  private getParkingData(){
+    this.dataService.get_data().then(result => {
+      result.forEach(element => {
+        const _parking = $.grep(this.parkings, function(e){ return e.id == element.subject.subString(28,3)});
+        console.log('Found it');
+>>>>>>> bcab49600ac27f55dc25fd04fc4c29bd88ac836b
+      });
+    })
+  }
 }
 
