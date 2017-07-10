@@ -13,7 +13,6 @@ import Triple from './models/triple';
 })
 
 export class AppComponent implements OnInit {
-  title = 'app';
   public parkings: Array<Parking> = [];
   private dataService: DataService;
   private N3Util;
@@ -35,16 +34,17 @@ export class AppComponent implements OnInit {
         if (_parking.substring(0, 3).match(/P[0-9]*$/)) {
           this.parkings.push(new Parking( _parking.substring(0, 3), _parking.substring(4, _parking.length)));
         };
-    });    
-  });
-}
-private getParkingData(){
-  this.dataService.get_data().then(result => {
+      });
+    });
+  }
+
+  private getParkingData(){
+    this.dataService.get_data().then(result => {
       result.forEach(element => {
-        let _parking = $.grep(this.parkings, function(e){ return e.id == element.subject.subString(28,3)});
+        const _parking = $.grep(this.parkings, function(e){ return e.id == element.subject.subString(28,3)});
         console.log('Found it');
       });
-  })
- }
+    })
+  }
 }
 
