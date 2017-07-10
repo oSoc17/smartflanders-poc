@@ -9,12 +9,12 @@
   <table>
     <thead>
     <th>ID</th>
-    <th>Object</th>
+    <th>Name</th>
     <th>Predicate</th>
     <th>subject</th>
     </thead>
     <tbody>
-        <tr *ngFor="let triple of triples; index as i; first as isFirst"><td>{{i}}</td> <td>{{triple.object}}</td> <td>{{triple.predicate}</td> <td>{{triple.subject}} </td></tr>
+        <tr *ngFor="let parking of parkings; index as i; first as isFirst"><td>{{parking.id}}</td> <td>{{parking.name}}</td></tr>
     </tbody>
   </table>
 

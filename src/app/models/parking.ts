@@ -1,15 +1,15 @@
 export default class Parking {
-  name: string;
-  id: string;
-  vacantSpaces: number;
-  totalSpaces: number;
-  filledSpaces: number;
+  public name: string;
+  public id: string;
+  public vacantSpaces: number;
+  public totalSpaces: number;
+  public filledSpaces: number;
 
-  constructor(name, id, vacantSpaces, totalSpaces){
+  constructor(name, id){
     this.name = name;
     this.id = id;
-    this.vacantSpaces = vacantSpaces;
-    this.totalSpaces = totalSpaces;
-    this.filledSpaces = this.totalSpaces - this.totalSpaces;
+    this.vacantSpaces = 0;
+    this.totalSpaces = 0;
+    this.filledSpaces = 0;
   }
 }

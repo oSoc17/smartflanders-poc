@@ -30,11 +30,11 @@ export class DataService {
       responseStore.addPrefixes(response.prefixes);
       // let prevUrl = responseStore.getTriples(null,"hydra:previous")[0].object;
       // return fetchUrl(prevUrl, amount+1, max, state);
-      console.log(response);
+ 
       response.triples.forEach(triple => {
         triples.push(new Triple(triple.subject, triple.predicate, triple.object, triple.graph));
       });
-      console.log(triples);
+      
       resolve(triples);
       })
     })
@@ -56,11 +56,11 @@ export class DataService {
   }
 
   private extractData(res: any){
-    console.log('Response at this moment: \n ' + res);
+    
     let state = new n3.Store();
     state.addTriples(res.triples);
     state.addPrefixes(res.prefixes);
-    console.log('State in extractData ::data.service.ts' + state);
+    
     return state;
   }
   private handleError(error: Response | any){
