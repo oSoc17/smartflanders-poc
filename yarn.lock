@@ -2632,6 +2632,10 @@ jasminewd2@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/jasminewd2/-/jasminewd2-2.1.0.tgz#da595275d1ae631de736ac0a7c7d85c9f73ef652"
 
+jquery@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
+
 js-base64@^2.1.5, js-base64@^2.1.8, js-base64@^2.1.9:
   version "2.1.9"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.1.9.tgz#f0e80ae039a4bd654b5f281fc93f04a914a7fcce"
@@ -2861,7 +2865,7 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-ldfetch@^0.0.3:
+ldfetch@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/ldfetch/-/ldfetch-0.0.3.tgz#c138099c7c76b106a1be2cdb04104f409220a059"
   dependencies:
