@@ -12,5 +12,4 @@ export default class Parking {
     this.totalSpaces = totalSpaces;
     this.filledSpaces = this.totalSpaces - this.totalSpaces;
   }
-
 }
