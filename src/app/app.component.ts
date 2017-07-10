@@ -22,8 +22,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.N3Util = n3.Util;
     this.getParkings();
-    setInterval(this.getParkingData(), 30000);
-    
+    this.getParkingData();
+     setInterval(() => { this.getParkingData(); }, 15000);
   }
 
   private getParkings() {
@@ -39,11 +39,11 @@ export class AppComponent implements OnInit {
 
 private getParkingData(){
   this.dataService.get_data().then(result => {
-    console.log(result);
+    console.log("getParkingData called");
       result.forEach(element => {
         let _parking = find(this.parkings, function(e){ return e.uri === element.subject});
         if(_parking){
-            _parking.currentVacantSpaces = this.N3Util.getLiteralValue(element.object);
+            _parking.currentVacantSpaces = parseInt(this.N3Util.getLiteralValue(element.object));
         };
       });
     })

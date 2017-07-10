@@ -30,12 +30,7 @@ export class DataService {
         responseStore.addPrefixes(response.prefixes);
         // let prevUrl = responseStore.getTriples(null,"hydra:previous")[0].object;
         // return fetchUrl(prevUrl, amount+1, max, state);
-
-        response.triples.forEach(triple => {
-          triples.push(new Triple(triple.subject, triple.predicate, triple.object, triple.graph));
-        });
-
-        resolve(triples);
+        resolve(responseStore);
       })
     })
   }
