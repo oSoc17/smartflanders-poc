@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DataService } from './services/data.service';
+import n3 from 'n3';
+
 
 import Triple from './models/triple';
 
@@ -9,15 +11,24 @@ import Triple from './models/triple';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app';
   public triples: Array<Triple> = [];
+  private dataService: DataService;
 
-constructor(private dataService: DataService) {
-  dataService.get_data().then(response => {
+  constructor(dataService: DataService) {
+    this.dataService = dataService;
+  }
+
+  ngOnInit() {
+    this.dataService.get_data().then(response => {
       console.log(response);
       this.triples = response;
     });
+    this.dataService.getParkings().then(response => {
+      console.log(response.getTriples(null, 'datex:parkingNumberOfVacantSpaces'));
+    });
   }
+
 }
 

@@ -12,8 +12,8 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class DataService {
-  constructor() {
-}
+  constructor() {}
+
   public get_data(): Promise<any> {
     let fetch = <any> new ldfetch();
     let amount = 0;
@@ -25,7 +25,7 @@ export class DataService {
       fetch.get('http://linked.open.gent/parking/').then(response => {
       state.addTriples(response.triples);
       state.addPrefixes(response.prefixes);
-      let responseStore = new n3.Store();
+      const responseStore = new n3.Store();
       responseStore.addTriples(response.triples);
       responseStore.addPrefixes(response.prefixes);
       // let prevUrl = responseStore.getTriples(null,"hydra:previous")[0].object;
@@ -36,9 +36,24 @@ export class DataService {
       });
       console.log(triples);
       resolve(triples);
+      })
     })
-  })
-}
+  }
+
+  public getParkings(): any {
+    const state = new n3.Store();
+    const fetch = <any> new ldfetch();
+    return new Promise((resolve) => {
+      fetch.get('http://linked.open.gent/parking/').then(response => {
+      state.addTriples(response.triples);
+      state.addPrefixes(response.prefixes);
+      const responseStore = new n3.Store();
+      responseStore.addTriples(response.triples);
+      responseStore.addPrefixes(response.prefixes);
+      resolve(state);
+      })
+    })
+  }
 
   private extractData(res: any){
     console.log('Response at this moment: \n ' + res);
