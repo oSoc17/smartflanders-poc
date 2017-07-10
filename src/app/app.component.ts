@@ -12,7 +12,7 @@ export class AppComponent {
 
   constructor(private dataService: DataService) {
     dataService.get_data().then(response => {
-        console.log('Response in app.compontent.ts' + response)}); 
+        console.log(response)}); 
     };
   }
 

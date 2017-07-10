@@ -10,15 +10,11 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class DataService {
-    private fetch;
-
-
   constructor() {       
-    this.fetch = <any>new Ldfetch();
-
 }
 
   public get_data(): Promise<any>{
+      var fetch = <any>new Ldfetch();
       let amount = 0;
       let max = 1000;
       let state = new n3.Store();
@@ -32,15 +28,13 @@ export class DataService {
         let responseStore = new n3.Store();
         responseStore.addTriples(response.triples);
         responseStore.addPrefixes(response.prefixes);
-
-        let prevUrl = responseStore.getTriples(null,"hydra:previous")[0].object;
+        //let prevUrl = responseStore.getTriples(null,"hydra:previous")[0].object;
         //return fetchUrl(prevUrl, amount+1, max, state);
       } else {
         return state;
       }
     }).then(res => resolve(res));
   })
-
   }
 
   private extractData(res: any){
