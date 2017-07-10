@@ -3,7 +3,6 @@ import { DataService } from './services/data.service';
 import n3 from 'n3';
 import Parking from './models/parking';
 import find from 'lodash/find';
-import Triple from './models/triple';
 
 @Component({
   selector: 'app-root',
@@ -33,7 +32,6 @@ export class AppComponent implements OnInit {
         if (_parking.substring(0, 3).match(/P[0-9]*$/)) {
          this.parkings.push(new Parking( _parking.substring(0, 3), _parking.substring(4, _parking.length),parking.subject));
         };
-<<<<<<< HEAD
     });    
   });
 }
@@ -45,17 +43,6 @@ private getParkingData(){
         if(_parking){
             _parking.currentVacantSpaces = this.N3Util.getLiteralValue(element.object);
         };
-=======
-      });
-    });
-  }
-
-  private getParkingData(){
-    this.dataService.get_data().then(result => {
-      result.forEach(element => {
-        const _parking = $.grep(this.parkings, function(e){ return e.id == element.subject.subString(28,3)});
-        console.log('Found it');
->>>>>>> bcab49600ac27f55dc25fd04fc4c29bd88ac836b
       });
     })
   }
