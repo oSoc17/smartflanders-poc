@@ -23,34 +23,25 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.N3Util = n3.Util;
-    this.dataService.get_data().then(response => {
-      //this.triples = response;
-    });
     this.getParkings();
     this.getParkingData();
-
-
   }
 
-private getParkings() {
-  
+  private getParkings() {
     this.dataService.getParkings().then(store => {
-      let names:Array<String>;
-      let ids: Array<String>;
       store.getTriples(null, 'rdfs:label').forEach(parking => {
-      let  _parking = this.N3Util.getLiteralValue(parking.object);
-      if(_parking.substring(0,3).match(/P[0-9]*$/)){
-         this.parkings.push(new Parking( _parking.substring(0, 3), _parking.substring(4, _parking.length)));
-      };
-    });    
-  });
-}
-private getParkingData(){
-  this.dataService.get_data().then(result => {
-      console.log(result);
-  })
+        const _parking = this.N3Util.getLiteralValue(parking.object);
+        if (_parking.substring(0, 3).match(/P[0-9]*$/)) {
+          this.parkings.push(new Parking( _parking.substring(0, 3), _parking.substring(4, _parking.length)));
+        };
+      });
+    });
+  }
 
-}
-
+  private getParkingData() {
+    this.dataService.get_data().then(result => {
+        console.log(result);
+    })
+  }
 }
 
