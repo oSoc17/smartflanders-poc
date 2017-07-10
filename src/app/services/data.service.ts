@@ -15,27 +15,27 @@ export class DataService {
   constructor() {}
 
   public get_data(): Promise<any> {
-    let fetch = <any> new ldfetch();
-    let amount = 0;
-    let max = 1000;
-    let state = new n3.Store();
-    let triples: Array<Triple> = [];
+    const fetch = <any> new ldfetch();
+    const amount = 0;
+    const max = 1000;
+    const state = new n3.Store();
+    const triples: Array<Triple> = [];
 
     return new Promise((resolve) => {
       fetch.get('http://linked.open.gent/parking/').then(response => {
-      state.addTriples(response.triples);
-      state.addPrefixes(response.prefixes);
-      const responseStore = new n3.Store();
-      responseStore.addTriples(response.triples);
-      responseStore.addPrefixes(response.prefixes);
-      // let prevUrl = responseStore.getTriples(null,"hydra:previous")[0].object;
-      // return fetchUrl(prevUrl, amount+1, max, state);
- 
-      response.triples.forEach(triple => {
-        triples.push(new Triple(triple.subject, triple.predicate, triple.object, triple.graph));
-      });
-      
-      resolve(triples);
+        state.addTriples(response.triples);
+        state.addPrefixes(response.prefixes);
+        const responseStore = new n3.Store();
+        responseStore.addTriples(response.triples);
+        responseStore.addPrefixes(response.prefixes);
+        // let prevUrl = responseStore.getTriples(null,"hydra:previous")[0].object;
+        // return fetchUrl(prevUrl, amount+1, max, state);
+
+        response.triples.forEach(triple => {
+          triples.push(new Triple(triple.subject, triple.predicate, triple.object, triple.graph));
+        });
+
+        resolve(triples);
       })
     })
   }
@@ -45,24 +45,16 @@ export class DataService {
     const fetch = <any> new ldfetch();
     return new Promise((resolve) => {
       fetch.get('http://linked.open.gent/parking/').then(response => {
-      state.addTriples(response.triples);
-      state.addPrefixes(response.prefixes);
-      const responseStore = new n3.Store();
-      responseStore.addTriples(response.triples);
-      responseStore.addPrefixes(response.prefixes);
-      resolve(state);
+        state.addTriples(response.triples);
+        state.addPrefixes(response.prefixes);
+        const responseStore = new n3.Store();
+        responseStore.addTriples(response.triples);
+        responseStore.addPrefixes(response.prefixes);
+        resolve(state);
       })
     })
   }
 
-  private extractData(res: any){
-    
-    let state = new n3.Store();
-    state.addTriples(res.triples);
-    state.addPrefixes(res.prefixes);
-    
-    return state;
-  }
   private handleError(error: Response | any){
     console.log('There is an error in data.service.ts !');
 
