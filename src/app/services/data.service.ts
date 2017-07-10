@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import Triple from '../models/triple';
+import Triple from '../models/Triple';
 
 import ldfetch from 'ldfetch';
 import n3 from 'n3';
