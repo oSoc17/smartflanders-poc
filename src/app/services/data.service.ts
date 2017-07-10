@@ -19,23 +19,20 @@ export class DataService {
       let max = 1000;
       let state = new n3.Store();
       return new Promise((resolve) => {
-    fetch.get('http://linked.open.gent/parking/').then(response => {
+      fetch.get('http://linked.open.gent/parking/').then(response => {
       state.addTriples(response.triples);
       state.addPrefixes(response.prefixes);
-      return response;
-    }).then(response => {
-      if (amount < max) {
-        let responseStore = new n3.Store();
-        responseStore.addTriples(response.triples);
-        responseStore.addPrefixes(response.prefixes);
+      console.log(response);
+      
+      let responseStore = new n3.Store();
+      responseStore.addTriples(response.triples);
+      responseStore.addPrefixes(response.prefixes);
         //let prevUrl = responseStore.getTriples(null,"hydra:previous")[0].object;
         //return fetchUrl(prevUrl, amount+1, max, state);
-      } else {
-        return state;
-      }
-    }).then(res => resolve(res));
+      resolve(response);
+    })
   })
-  }
+}
 
   private extractData(res: any){
     console.log("Response at this moment: \n " + res);
