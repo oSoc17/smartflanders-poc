@@ -26,8 +26,9 @@ export class AppComponent implements OnInit {
       this.triples = response;
     });
     this.dataService.getParkings().then(response => {
-      console.log(response.getTriples(null, 'datex:parkingNumberOfVacantSpaces'));
+      console.log(response.getTriples(null, 'dct:description'));
     });
+    
   }
 
 }
