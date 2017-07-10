@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DataService } from './services/data.service';
+import Triple from './models/Triple';
 
 @Component({
   selector: 'app-root',
@@ -9,10 +10,13 @@ import { DataService } from './services/data.service';
 
 export class AppComponent {
   title = 'app';
+  public triples:Array<Triple> = [];
 
-  constructor(private dataService: DataService) {
-    dataService.get_data().then(response => {
-        console.log(response)}); 
-    };
+constructor(private dataService: DataService) {
+  dataService.get_data().then(response => {
+      console.log(response);    
+      this.triples = response;
+      }); 
+    }
   }
 

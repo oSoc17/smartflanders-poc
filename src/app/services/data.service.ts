@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 //import { Http } from '@angular/http';
 import Ldfetch from 'ldfetch';
 import n3 from 'n3';
+import Triple from '../models/triple';
 //import Turtle from '../models/turtle';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
@@ -12,24 +13,28 @@ import 'rxjs/add/operator/catch';
 export class DataService {
   constructor() {       
 }
-
   public get_data(): Promise<any>{
       var fetch = <any>new Ldfetch();
       let amount = 0;
       let max = 1000;
       let state = new n3.Store();
+      let triples:Array<Triple> = [];
+
       return new Promise((resolve) => {
       fetch.get('http://linked.open.gent/parking/').then(response => {
       state.addTriples(response.triples);
       state.addPrefixes(response.prefixes);
-      console.log(response);
-      
       let responseStore = new n3.Store();
       responseStore.addTriples(response.triples);
       responseStore.addPrefixes(response.prefixes);
         //let prevUrl = responseStore.getTriples(null,"hydra:previous")[0].object;
         //return fetchUrl(prevUrl, amount+1, max, state);
-      resolve(response);
+      console.log(response);
+      response.triples.forEach(triple => {
+        triples.push(new Triple(triple.subject, triple.predicate, triple.object, triple.graph));
+      });
+      console.log(triples);
+      resolve(triples);
     })
   })
 }
