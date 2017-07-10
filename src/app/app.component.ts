@@ -38,6 +38,7 @@ export class AppComponent implements OnInit {
 
 private getParkingData(){
   this.dataService.get_data().then(result => {
+    console.log(result);
       result.forEach(element => {
         let _parking = find(this.parkings, function(e){ return e.uri === element.subject});
         if(_parking){
