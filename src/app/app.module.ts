@@ -1,9 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http' 
+import { HttpModule } from '@angular/http'
 import { AppComponent } from './app.component';
+import { ParkingDataService} from './services/parking-data.service';
 import { AppRoutingModule } from './app.routes';
-import { DataService} from './services/data.service';
 import { HomepageComponent } from './home/homepage/homepage.component';
 import { DetailspageComponent } from './details/detailspage/detailspage.component';
 import { NavbarComponent } from './shared/nav/navbar/navbar.component';
@@ -20,7 +20,7 @@ import { NavbarComponent } from './shared/nav/navbar/navbar.component';
     HttpModule,
     AppRoutingModule
   ],
-  providers: [DataService],
+  providers: [ParkingDataService],
   bootstrap: [AppComponent]
 })
 
