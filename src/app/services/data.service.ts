@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import Triple from '../models/triple';
+import Triple from '../models/Triple';
 
 import ldfetch from 'ldfetch';
 import n3 from 'n3';
@@ -30,12 +30,7 @@ export class DataService {
         responseStore.addPrefixes(response.prefixes);
         // let prevUrl = responseStore.getTriples(null,"hydra:previous")[0].object;
         // return fetchUrl(prevUrl, amount+1, max, state);
-
-        response.triples.forEach(triple => {
-          triples.push(new Triple(triple.subject, triple.predicate, triple.object, triple.graph));
-        });
-
-        resolve(triples);
+        resolve(responseStore);
       })
     })
   }
@@ -43,6 +38,7 @@ export class DataService {
   public getParkings(): any {
     const state = new n3.Store();
     const fetch = <any> new ldfetch();
+
     return new Promise((resolve) => {
       fetch.get('http://linked.open.gent/parking/').then(response => {
         state.addTriples(response.triples);
