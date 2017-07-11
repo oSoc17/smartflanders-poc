@@ -11,7 +11,7 @@ import 'rxjs/add/operator/catch';
 
 
 @Injectable()
-export class DataService {
+export class ParkingDataService {
   constructor() {}
 
   public get_data(): Promise<any> {
@@ -51,7 +51,7 @@ export class DataService {
     })
   }
 
-  private handleError(error: Response | any){
+  private handleError(error: Response | any) {
     console.log('There is an error in data.service.ts !');
 
     return Observable.throw('Error');

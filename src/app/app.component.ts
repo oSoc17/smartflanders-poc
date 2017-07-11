@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from './services/data.service';
+import { ParkingDataService } from './services/parking-data.service';
 import n3 from 'n3';
 import Parking from './models/parking';
 import find from 'lodash/find';
@@ -12,10 +12,10 @@ import find from 'lodash/find';
 
 export class AppComponent implements OnInit {
   public parkings: Array<Parking> = [];
-  private dataService: DataService;
+  private dataService: ParkingDataService;
   private N3Util;
 
-  constructor(dataService: DataService) {
+  constructor(dataService: ParkingDataService) {
     this.dataService = dataService;
   }
 
@@ -30,8 +30,8 @@ export class AppComponent implements OnInit {
       store.getTriples(null, 'rdfs:label').forEach(parking => {
        const _parking = this.N3Util.getLiteralValue(parking.object);
         if (_parking.substring(0, 3).match(/P[0-9]*$/)) {
-         this.parkings.push(new Parking( _parking.substring(0, 3), _parking.substring(4, _parking.length),parking.subject));
-        };
+         this.parkings.push(new Parking( _parking.substring(0, 3), _parking.substring(4, _parking.length), parking.subject));
+        }
       });
     });
   }
@@ -43,7 +43,7 @@ private getParkingData(){
         const _parking = find(this.parkings, function(e){ return e.uri === element.subject});
         if (_parking) {
             _parking.currentVacantSpaces = this.N3Util.getLiteralValue(element.object);
-        };
+        }
       });
     })
   }
