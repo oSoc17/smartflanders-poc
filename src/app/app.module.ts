@@ -4,10 +4,14 @@ import { HttpModule } from '@angular/http'
 import { AppComponent } from './app.component';
 
 import { DataService} from './services/data.service';
+import { HomepageComponent } from './details/homepage/homepage.component';
+import { DetailspageComponent } from './details/detailspage/detailspage.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomepageComponent,
+    DetailspageComponent
   ],
   imports: [
     BrowserModule,
