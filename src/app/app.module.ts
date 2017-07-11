@@ -11,6 +11,7 @@ import { ParkingCardComponent } from './home/homepage/parking-card/parking-card.
 import { NavbarComponent } from './shared/nav/navbar/navbar.component';
 import { DoughnutComponent } from './shared/charts/doughnut/doughnut.component';
 import { LineComponent } from './shared/charts/line/line.component';
+import { ScatterComponent } from './shared/charts/scatter/scatter.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { LineComponent } from './shared/charts/line/line.component';
     ParkingCardComponent,
     NavbarComponent,
     DoughnutComponent,
-    LineComponent
+    LineComponent,
+    ScatterComponent
   ],
   imports: [
     BrowserModule,
