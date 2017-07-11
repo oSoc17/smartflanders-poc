@@ -38,6 +38,7 @@ export class DataService {
   public getParkings(): any {
     const state = new n3.Store();
     const fetch = <any> new ldfetch();
+
     return new Promise((resolve) => {
       fetch.get('http://linked.open.gent/parking/').then(response => {
         state.addTriples(response.triples);
