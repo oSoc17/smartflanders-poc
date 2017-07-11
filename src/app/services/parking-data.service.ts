@@ -8,6 +8,7 @@ import 'rxjs/add/operator/catch';
 import Parking from '../models/parking';
 import ParkingHistory from '../models/parking-history';
 import Measurement from '../models/measurement';
+import * as moment from 'moment';
 
 @Injectable()
 export class ParkingDataService {
@@ -22,7 +23,51 @@ export class ParkingDataService {
     }
   }
 
+  private static getMeasurements(uri, store): Measurement[] {
+    const measurementTriples = store.getTriples(uri, 'datex:parkingNumberOfVacantSpaces');
+    const measurements: Measurement[] = [];
+
+    measurementTriples.forEach(triple => {
+      const generatedAtTriple = store.getTriples(triple.graph, 'http://www.w3.org/ns/prov#generatedAtTime')[0];
+      const genTimestamp = n3.Util.getLiteralValue(generatedAtTriple.object);
+      const genTime = moment(genTimestamp).unix();
+      const value = n3.Util.getLiteralValue(triple.object);
+      console.log(genTime);
+      measurements.push({
+        timestamp: genTime,
+        value: value
+      });
+    });
+    return measurements;
+  }
+
   constructor() {}
+
+  public getNewestParkingData(uri): Promise<Measurement> {
+    const fetch = new ldfetch();
+
+    return new Promise((resolve) => {
+      fetch.get('http://linked.open.gent/parking/').then(response => {
+        // Put all triples in store
+        const store = new n3.Store(response.triples, {prefixes: response.prefixes});
+
+        // Get all measurements
+        const measurements = ParkingDataService.getMeasurements(uri, store);
+
+        // Get latest
+        let latest: Measurement;
+        let latestTimestamp = 0;
+        measurements.forEach((measurement) => {
+          if (measurement.timestamp > latestTimestamp) {
+            latestTimestamp = measurement.timestamp;
+            latest = measurement;
+          }
+        });
+
+        resolve(latest);
+      })
+    });
+  }
 
   public getParkingHistory(uri, from, to): Promise<ParkingHistory> {
     const fetch = new ldfetch();
@@ -32,21 +77,10 @@ export class ParkingDataService {
         // Put all triples in store
         const store = new n3.Store(response.triples, {prefixes: response.prefixes});
 
-        // Get all measurement triples that have this parking as subject
-        const measurementTriples = store.getTriples(uri, 'datex:parkingNumberOfVacantSpaces');
-        const timeframe: Measurement[] = [];
-        // Build a time frame for this file
-        measurementTriples.forEach(triple => {
-          const generatedAtTriple = store.getTriples(triple.graph, 'http://www.w3.org/ns/prov#generatedAtTime')[0];
-          const genTime = n3.Util.getLiteralValue(generatedAtTriple.object);
-          const value = n3.Util.getLiteralValue(triple.object);
-          timeframe.push({
-            timestamp: genTime,
-            value: value
-          });
-        });
-
+        // Get parking and timeframe from store
+        const timeframe = ParkingDataService.getMeasurements(uri, store);
         const parking = ParkingDataService.getParking(uri, store);
+
         resolve({
           parking: parking,
           timeframe: timeframe
