@@ -1,12 +1,12 @@
 
- <md-card class="parking-card">
+ <md-card *ngIf="parking" class="parking-card">
   <md-card-header>
     <md-card-title>{{parking.name}}</md-card-title>
   </md-card-header>
   <md-card-content>
     <p>
-      <span class="percentage">{{percentage}}%</span><br />
-      <span>{{measurement.value}}/{{parking.totalSpaces}}</span>
+      <span *ngIf="percentage" class="percentage">{{percentage}}%</span><br />
+      <span *ngIf="measurement" >{{measurement.value}}/{{parking.totalSpaces}}</span>
     </p>
   </md-card-content>
 </md-card>

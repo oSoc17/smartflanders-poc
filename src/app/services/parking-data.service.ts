@@ -1,24 +1,28 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 import ldfetch from 'ldfetch';
 import n3 from 'n3';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import {EventEmitter} from 'events';
 
 import Parking from '../models/parking';
 import ParkingHistory from '../models/parking-history';
 import Measurement from '../models/measurement';
+import ParkingDataInterval from './parking-data-interval';
 import * as moment from 'moment';
 
 @Injectable()
 export class ParkingDataService {
+  private fetch;
+
   /**
    * Gets all static data for a certain parking from an N3 store
    * @param uri the uri of the parking
    * @param store the N3 store of triples
    * @returns {Parking}
    */
-  private static getParking(uri, store): Parking {
+  public static getParking(uri, store): Parking {
     const name = n3.Util.getLiteralValue(store.getTriples(uri, 'rdfs:label')[0].object);
     const totalSpacesObj = store.getTriples(uri, 'datex:parkingNumberOfSpaces')[0].object;
     const totalSpaces = parseInt(n3.Util.getLiteralValue(totalSpacesObj), 10);
@@ -38,7 +42,7 @@ export class ParkingDataService {
    * @param store the N3 store of triples
    * @returns {Measurement[]} (time frame, not necessarily sorted)
    */
-  private static getMeasurements(uri, store): Measurement[] {
+  public static getMeasurements(uri, store): Measurement[] {
     const measurementTriples = store.getTriples(uri, 'datex:parkingNumberOfVacantSpaces');
     const measurements: Measurement[] = [];
 
@@ -55,7 +59,9 @@ export class ParkingDataService {
     return measurements;
   }
 
-  constructor() {}
+  constructor() {
+    this.fetch = new ldfetch();
+  }
 
   /**
    * Fetches the newest measurement for a certain parking
@@ -63,10 +69,8 @@ export class ParkingDataService {
    * @returns {Promise<Measurement>}
    */
   public getNewestParkingData(uri): Promise<Measurement> {
-    const fetch = new ldfetch();
-
     return new Promise((resolve) => {
-      fetch.get('http://linked.open.gent/parking/').then(response => {
+      this.fetch.get('http://linked.open.gent/parking/').then(response => {
         // Put all triples in store
         const store = new n3.Store(response.triples, {prefixes: response.prefixes});
 
@@ -93,26 +97,14 @@ export class ParkingDataService {
    * @param uri the uri of the parking
    * @param from UNIX timestamp depicting the beginning of the time frame
    * @param to UNIX timestamp depicting the end of the time frame
+   * @param onData the function to call when data is available
    * @returns {Promise<ParkingHistory>}
    */
-  public getParkingHistory(uri, from, to): Promise<ParkingHistory> {
-    const fetch = new ldfetch();
-
-    return new Promise((resolve) => {
-      fetch.get('http://linked.open.gent/parking/').then(response => {
-        // Put all triples in store
-        const store = new n3.Store(response.triples, {prefixes: response.prefixes});
-
-        // Get parking and timeframe from store
-        const timeframe = ParkingDataService.getMeasurements(uri, store);
-        const parking = ParkingDataService.getParking(uri, store);
-
-        resolve({
-          parking: parking,
-          timeframe: timeframe
-        });
-      });
-    });
+  public getParkingHistory(uri, from, to, onData) {
+    const entry = 'http://linked.open.gent/parking/?time=' + moment.unix(to).format('YYYY-MM-DDTHH:mm:ss');
+    const pdi = new ParkingDataInterval(from, to, entry, uri);
+    (pdi as EventEmitter).on('data', onData);
+    pdi.fetch();
   }
 
   /**
@@ -120,10 +112,8 @@ export class ParkingDataService {
    * @returns {Promise<Parking[]>}
    */
   public getParkings(): Promise<Parking[]> {
-    const fetch = new ldfetch();
-
     return new Promise((resolve) => {
-      fetch.get('http://linked.open.gent/parking/').then(response => {
+      this.fetch.get('http://linked.open.gent/parking/').then(response => {
         // Put all triples in a store
         const store = new n3.Store(response.triples, {prefixes: response.prefixes});
 
