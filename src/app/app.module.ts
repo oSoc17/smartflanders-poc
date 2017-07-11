@@ -9,6 +9,8 @@ import { MdCardModule, MdButtonModule, MdToolbarModule } from '@angular/material
 import { DetailspageComponent } from './details/detailspage/detailspage.component';
 import { ParkingCardComponent } from './home/homepage/parking-card/parking-card.component';
 import { NavbarComponent } from './shared/nav/navbar/navbar.component';
+import { DoughnutComponent } from './shared/charts/doughnut/doughnut.component';
+import { LineComponent } from './shared/charts/line/line.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { NavbarComponent } from './shared/nav/navbar/navbar.component';
     HomepageComponent,
     DetailspageComponent,
     ParkingCardComponent,
-    NavbarComponent
+    NavbarComponent,
+    DoughnutComponent,
+    LineComponent
   ],
   imports: [
     BrowserModule,
