@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {MdCardModule} from '@angular/material';
-import Parking from './../../../models/parking'; 
+import Parking from './../../../models/parking';
+import  Measurement from "./../../../models/measurement"; 
+import { ParkingDataService } from './../../../services/parking-data.service';
 
 @Component({
   selector: 'app-parking-card',
@@ -9,8 +11,30 @@ import Parking from './../../../models/parking';
 })
 export class ParkingCardComponent implements OnInit {
  @Input() parking: Parking;
-  constructor() { }
-  ngOnInit() {
+ dataservice:ParkingDataService;
+ private measurement: Measurement;
+ private percentage:number;
+
+  constructor(private _dataservice:ParkingDataService) { 
+    this.dataservice = _dataservice;
   }
+  ngOnInit() {
+    this.calculatePercentage();
+    setInterval(()=>{
+      this.calculatePercentage() 
+    }, 3000);
+    
+  }
+
+  private calculatePercentage(){
+    this.dataservice.getNewestParkingData(this.parking.uri).then(result => {
+      console.log(result);
+      this.measurement = result;
+      this.percentage = Math.round((this.measurement.value/this.parking.totalSpaces)*100);
+    });
+  }
+
+
+ 
 
 }

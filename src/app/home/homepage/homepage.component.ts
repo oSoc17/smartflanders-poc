@@ -31,7 +31,7 @@ export class HomepageComponent implements OnInit {
     });
   }
   goToDetails(parking:Parking){
-    this.router.navigate(['/compare', parking.uri]);
+    this.router.navigate(['/compare', parking.id]);
   }
 
 }
