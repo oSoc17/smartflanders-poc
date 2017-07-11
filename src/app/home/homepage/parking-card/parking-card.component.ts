@@ -10,7 +10,6 @@ import Parking from './../../../models/parking';
 export class ParkingCardComponent implements OnInit {
  @Input() parking: Parking;
   constructor() { }
-
   ngOnInit() {
   }
 

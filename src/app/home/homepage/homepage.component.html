@@ -1,5 +1,6 @@
 <div class="container">
 <a><app-parking-card *ngFor="let parking of parkings" class="parking-card"
-[parking]= "parking">
+[parking]= "parking"
+(click)="goToDetails(parking)">
 </app-parking-card></a>
 </div>
