@@ -22,8 +22,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.N3Util = n3.Util;
     this.getParkings();
-    this.getParkingData();
-     setInterval(() => { this.getParkingData(); }, 15000);
+    setInterval(this.getParkingData(), 30000);
   }
 
   private getParkings() {
@@ -33,20 +32,19 @@ export class AppComponent implements OnInit {
         if (_parking.substring(0, 3).match(/P[0-9]*$/)) {
          this.parkings.push(new Parking( _parking.substring(0, 3), _parking.substring(4, _parking.length),parking.subject));
         };
-    });    
-  });
-}
+      });
+    });
+  }
 
 private getParkingData(){
   this.dataService.get_data().then(store => {
-        //let _parking = find(this.parkings, function(e){ return e.uri === element.subject});
-        //this.parkings.
+        // let _parking = find(this.parkings, function(e){ return e.uri === element.subject});
+        // this.parkings.
         let _parking = store.getTriples(this.parkings, null, null)
         this
         if(_parking){
-       //     _parking.currentVacantSpaces = parseInt(element.object);
+        // _parking.currentVacantSpaces = parseInt(element.object);
         };
-      
     })
   }
 }
