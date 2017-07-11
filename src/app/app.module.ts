@@ -1,20 +1,22 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http' 
+import { HttpModule } from '@angular/http'
 import { AppComponent } from './app.component';
+import { ParkingDataService} from './services/parking-data.service';
 import { AppRoutingModule } from './app.routes';
-import { DataService} from './services/data.service';
 import { HomepageComponent } from './home/homepage/homepage.component';
 import { MdCardModule, MdButtonModule } from '@angular/material';
 import { DetailspageComponent } from './details/detailspage/detailspage.component';
 import { ParkingCardComponent } from './home/homepage/parking-card/parking-card.component';
+import { NavbarComponent } from './shared/nav/navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
     DetailspageComponent,
-    ParkingCardComponent
+    ParkingCardComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +25,7 @@ import { ParkingCardComponent } from './home/homepage/parking-card/parking-card.
     MdCardModule,
     MdButtonModule
   ],
-  providers: [DataService],
+  providers: [ParkingDataService],
   bootstrap: [AppComponent]
 })
 

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MdCardModule} from '@angular/material';
-import { DataService } from './../../services/data.service';
+import { ParkingDataService } from './../../services/parking-data.service';
 import Parking from './../../models/parking'; 
 
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
-  providers: [DataService],
+  providers: [ParkingDataService],
   styleUrls: ['./homepage.component.css']
 })
 
@@ -15,11 +15,10 @@ export class HomepageComponent implements OnInit {
    * parkings
    */
   parkings: Array<Parking> = [];
-  dataservice: DataService;
+  dataservice: ParkingDataService;
 
-  constructor(private _dataservice:DataService) {
+  constructor(private _dataservice:ParkingDataService) {
     this.dataservice = _dataservice;
-
    }
 
   ngOnInit() {
