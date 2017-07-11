@@ -12,6 +12,12 @@ import * as moment from 'moment';
 
 @Injectable()
 export class ParkingDataService {
+  /**
+   * Gets all static data for a certain parking from an N3 store
+   * @param uri the uri of the parking
+   * @param store the N3 store of triples
+   * @returns {Parking}
+   */
   private static getParking(uri, store): Parking {
     const name = n3.Util.getLiteralValue(store.getTriples(uri, 'rdfs:label')[0].object);
     const totalSpacesObj = store.getTriples(uri, 'datex:parkingNumberOfSpaces')[0].object;
@@ -23,6 +29,12 @@ export class ParkingDataService {
     }
   }
 
+  /**
+   * Gets all measurements for a certain parking from an N3 store
+   * @param uri the uri of the parking
+   * @param store the N3 store of triples
+   * @returns {Measurement[]} (time frame, not necessarily sorted)
+   */
   private static getMeasurements(uri, store): Measurement[] {
     const measurementTriples = store.getTriples(uri, 'datex:parkingNumberOfVacantSpaces');
     const measurements: Measurement[] = [];
@@ -43,6 +55,11 @@ export class ParkingDataService {
 
   constructor() {}
 
+  /**
+   * Fetches the newest measurement for a certain parking
+   * @param uri the uri of the parking
+   * @returns {Promise<Measurement>}
+   */
   public getNewestParkingData(uri): Promise<Measurement> {
     const fetch = new ldfetch();
 
@@ -69,6 +86,13 @@ export class ParkingDataService {
     });
   }
 
+  /**
+   * Fetches a time frame of measurements for a certain parking as a ParkingHistory object
+   * @param uri the uri of the parking
+   * @param from UNIX timestamp depicting the beginning of the time frame
+   * @param to UNIX timestamp depicting the end of the time frame
+   * @returns {Promise<ParkingHistory>}
+   */
   public getParkingHistory(uri, from, to): Promise<ParkingHistory> {
     const fetch = new ldfetch();
 
@@ -89,6 +113,10 @@ export class ParkingDataService {
     });
   }
 
+  /**
+   * Fetches static data for all parkings
+   * @returns {Promise<Parking[]>}
+   */
   public getParkings(): Promise<Parking[]> {
     const fetch = new ldfetch();
 
