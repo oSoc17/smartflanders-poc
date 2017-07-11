@@ -5,18 +5,23 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routes';
 import { DataService} from './services/data.service';
 import { HomepageComponent } from './home/homepage/homepage.component';
+import { MdCardModule, MdButtonModule } from '@angular/material';
 import { DetailspageComponent } from './details/detailspage/detailspage.component';
+import { ParkingCardComponent } from './home/homepage/parking-card/parking-card.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
-    DetailspageComponent
+    DetailspageComponent,
+    ParkingCardComponent
   ],
   imports: [
     BrowserModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MdCardModule,
+    MdButtonModule
   ],
   providers: [DataService],
   bootstrap: [AppComponent]
