@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { ParkingDataService} from './services/parking-data.service';
 import { AppRoutingModule } from './app.routes';
 import { HomepageComponent } from './home/homepage/homepage.component';
-import { MdCardModule, MdButtonModule } from '@angular/material';
+import { MdCardModule, MdButtonModule, MdToolbarModule } from '@angular/material';
 import { DetailspageComponent } from './details/detailspage/detailspage.component';
 import { ParkingCardComponent } from './home/homepage/parking-card/parking-card.component';
 import { NavbarComponent } from './shared/nav/navbar/navbar.component';
@@ -23,7 +23,8 @@ import { NavbarComponent } from './shared/nav/navbar/navbar.component';
     HttpModule,
     AppRoutingModule,
     MdCardModule,
-    MdButtonModule
+    MdButtonModule,
+    MdToolbarModule
   ],
   providers: [ParkingDataService],
   bootstrap: [AppComponent]
