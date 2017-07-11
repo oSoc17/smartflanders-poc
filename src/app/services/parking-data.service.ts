@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
 
-import Triple from '../models/Triple';
-
 import ldfetch from 'ldfetch';
 import n3 from 'n3';
-
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import Parking from '../models/parking';
 
+import Parking from '../models/parking';
+import ParkingHistory from '../models/parking-history';
 
 @Injectable()
 export class ParkingDataService {
   constructor() {}
 
-  public get_data(): Promise<any> {
+  /*public get_data(): Promise<any> {
     const fetch = <any> new ldfetch();
     const amount = 0;
     const max = 1000;
@@ -33,9 +31,17 @@ export class ParkingDataService {
         resolve(responseStore);
       })
     })
+  }*/
+
+  public getParkingHistory(uri, from, to): Promise<ParkingHistory> {
+    const fetch = new ldfetch();
+
+    return new Promise((resolve) => {
+      resolve();
+    })
   }
 
-  public getParkings(): any {
+  public getParkings(): Promise<Parking[]> {
     const fetch = new ldfetch();
 
     return new Promise((resolve) => {
