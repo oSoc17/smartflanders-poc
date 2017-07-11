@@ -22,13 +22,11 @@ export class ParkingCardComponent implements OnInit {
     this.calculatePercentage();
     setInterval(()=>{
       this.calculatePercentage() 
-    }, 3000);
-    
+    }, 15000);
   }
 
   private calculatePercentage(){
     this.dataservice.getNewestParkingData(this.parking.uri).then(result => {
-      console.log(result);
       this.measurement = result;
       this.percentage = Math.round((this.measurement.value/this.parking.totalSpaces)*100);
     });

@@ -7,10 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class DetailspageComponent implements OnInit {
-
   constructor() { }
 
   ngOnInit() {
 
   }
 }
+
