@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { DataService} from './services/data.service';
 import { HomepageComponent } from './details/homepage/homepage.component';
 import { DetailspageComponent } from './details/detailspage/detailspage.component';
+import { NavbarComponent } from './shared/nav/navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
-    DetailspageComponent
+    DetailspageComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
