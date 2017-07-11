@@ -1,0 +1,44 @@
+a {
+    display: flex;
+    justify-content: space-around;
+    flex-flow: row wrap;
+}
+.parking-card {
+    margin-top: 5%; 
+    flex: 0 0 230px;
+    flex-grow: 0;
+    flex-basis: 30%;
+    padding-bottom: 0;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    z-index:0;
+}
+.parking-card:hover{
+    cursor: pointer;
+    z-index:1000;
+  box-shadow:rgba(0, 0, 0, 0.3) 0 10px 10px 0;
+  -webkit-box-shadow:rgba(0, 0, 0, 0.3) 0 10px 10px 0;
+  -moz-box-shadow:rgba(0, 0, 0, 0.3) 0 10px 10px 0;
+}
+.animate {
+	-webkit-animation:ripple 0.65s linear;
+   -moz-animation:ripple 0.65s linear;
+    -ms-animation:ripple 0.65s linear;
+     -o-animation:ripple 0.65s linear;
+        animation:ripple 0.65s linear;
+}
+
+@-webkit-keyframes ripple {
+    100% {opacity: 0; -webkit-transform: scale(2.5);}
+}
+@-moz-keyframes ripple {
+    100% {opacity: 0; -moz-transform: scale(2.5);}
+}
+@-o-keyframes ripple {
+    100% {opacity: 0; -o-transform: scale(2.5);}
+}
+@keyframes ripple {
+    100% {opacity: 0; transform: scale(2.5);}
+}
