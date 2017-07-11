@@ -47,7 +47,6 @@ export class ParkingDataService {
       const genTimestamp = n3.Util.getLiteralValue(generatedAtTriple.object);
       const genTime = moment(genTimestamp).unix();
       const value = n3.Util.getLiteralValue(triple.object);
-      console.log(genTime);
       measurements.push({
         timestamp: genTime,
         value: value
