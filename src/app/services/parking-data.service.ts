@@ -101,7 +101,8 @@ export class ParkingDataService {
    * @returns {Promise<ParkingHistory>}
    */
   public getParkingHistory(uri, from, to, onData) {
-    const pdi = new ParkingDataInterval(from, to, 'http://linked.open.gent/parking/', uri);
+    const entry = 'http://linked.open.gent/parking/';
+    const pdi = new ParkingDataInterval(from, to, entry, uri);
     (pdi as EventEmitter).on('data', onData);
     pdi.fetch();
   }
