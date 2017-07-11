@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 
 import Triple from '../models/Triple';
 
@@ -52,22 +51,17 @@ export class ParkingDataService {
         parkingTriples.forEach(parking => {
           const uri = parking.subject;
           const name = store.getTriples(uri, 'rdfs:label')[0].object;
-          const totalSpaces = parseInt(store.getTriples(uri, 'datex:numberOfSpaces')[0].object, 10);
+          const totalSpacesObj = store.getTriples(uri, 'datex:parkingNumberOfSpaces')[0].object;
+          const totalSpaces = parseInt(n3.Util.getLiteralValue(totalSpacesObj), 10);
           parkings.push({
             uri: uri,
             name: name,
             totalSpaces: totalSpaces
           });
         });
+
         resolve(parkings);
       })
     })
   }
-
-  private handleError(error: Response | any) {
-    console.log('There is an error in data.service.ts !');
-
-    return Observable.throw('Error');
-  }
-
 }

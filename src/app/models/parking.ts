@@ -3,9 +3,9 @@ export default class Parking {
   public totalSpaces: number;
   public uri: string;
 
-  constructor(name, uri) {
+  constructor(name, uri, totalSpaces) {
     this.uri = uri;
     this.name = name;
-    this.totalSpaces = 0;
+    this.totalSpaces = totalSpaces;
   }
 }

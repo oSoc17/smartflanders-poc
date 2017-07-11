@@ -26,17 +26,12 @@ export class AppComponent implements OnInit {
   }
 
   private getParkings() {
-    this.dataService.getParkings().then(store => {
-      store.getTriples(null, 'rdfs:label').forEach(parking => {
-       const _parking = this.N3Util.getLiteralValue(parking.object);
-        if (_parking.substring(0, 3).match(/P[0-9]*$/)) {
-         this.parkings.push(new Parking( _parking.substring(0, 3), _parking.substring(4, _parking.length), parking.subject));
-        }
-      });
+    this.dataService.getParkings().then(parkings => {
+      this.parkings = parkings;
     });
   }
 
-private getParkingData(){
+private getParkingData() {
   this.dataService.get_data().then(result => {
     console.log(result);
       result.forEach(element => {
