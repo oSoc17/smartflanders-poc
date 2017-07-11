@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
 
   private getParkings() {
     this.dataService.getParkings().then(store => {
-      store.getTriples(null, 'rdfs:label').forEach(parking => {
+      store.getTriples(null,'rdf:type' ,'datex:UrbanParkingSite').forEach(parking => {
        const _parking = this.N3Util.getLiteralValue(parking.object);
         if (_parking.substring(0, 3).match(/P[0-9]*$/)) {
          this.parkings.push(new Parking( _parking.substring(0, 3), _parking.substring(4, _parking.length),parking.subject));
@@ -38,15 +38,15 @@ export class AppComponent implements OnInit {
 }
 
 private getParkingData(){
-  this.dataService.get_data().then(result => {
-    console.log("getParkingData called");
-      result.forEach(element => {
-        let _parking = find(this.parkings, function(e){ return e.uri === element.subject});
+  this.dataService.get_data().then(store => {
+        //let _parking = find(this.parkings, function(e){ return e.uri === element.subject});
+        //this.parkings.
+        let _parking = store.getTriples(this.parkings, null, null)
+        this
         if(_parking){
-            _parking.currentVacantSpaces = parseInt(this.N3Util.getLiteralValue(element.object));
+       //     _parking.currentVacantSpaces = parseInt(element.object);
         };
-      });
+      
     })
   }
 }
-

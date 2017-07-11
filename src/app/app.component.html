@@ -1,16 +1,9 @@
 
-<!--The content below is only a placeholder and can be replaced.-->  
-<h2>LIVE DATA!!! AMAZING </h2>
-  <table>
-    <thead>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Predicate</th>
-    <th>subject</th>
-    </thead>
-    <tbody>
-        <tr *ngFor="let parking of parkings; index as i; first as isFirst"><td>{{parking.id}}</td> <td>{{parking.name}}</td> <td>{{parking.currentVacantSpaces}}</td></tr>
-    </tbody>
-  </table>
+<div class="header-bar"></div>
+    <nav>
+      <a routerLink="/home" routerLinkActive="active">Home</a>
+      <a routerLink="/detail">Details</a>
+    </nav>
+<router-outlet></router-outlet>
 
 
