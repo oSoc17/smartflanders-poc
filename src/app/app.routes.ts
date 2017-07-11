@@ -7,7 +7,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/overview', pathMatch: 'full' },
   { path: 'overview', component: HomepageComponent },
   { path: 'detail', component: DetailspageComponent },
-  { path: 'compare/:id', component: DetailspageComponent },
+  { path: 'parkings/:id', component: DetailspageComponent },
 ];
 
 @NgModule({
