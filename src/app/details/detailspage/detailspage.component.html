@@ -1,5 +1,6 @@
 <div *ngIf="measurement">
     <h2 >{{parking.name}}</h2>
+    <app-time-frame-select (onRangeChange)="onRangeChange($event)"></app-time-frame-select>
     <app-chart-doughnut [parking]="parking" [measurement]="measurement"></app-chart-doughnut>
     <app-chart-scatter [parking]="parking" [measurement]="measurement"></app-chart-scatter>
 </div>

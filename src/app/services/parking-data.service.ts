@@ -107,6 +107,13 @@ export class ParkingDataService {
    *  pdi.fetch();
    *}
    */
+  public getParkingHistory(uri, from, to, onData) {
+    const entry = 'http://linked.open.gent/parking/?time=' + moment.unix(to).format('YYYY-MM-DDTHH:mm:ss');
+    console.log(entry);
+    const pdi = new ParkingDataInterval(from, to, entry, uri);
+    (pdi as EventEmitter).on('data', onData);
+    pdi.fetch();
+  }
 
   /**
    * Fetches static data for all parkings
