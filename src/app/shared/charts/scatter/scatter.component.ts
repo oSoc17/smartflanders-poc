@@ -1,6 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-
+import { Component, OnInit, Input } from '@angular/core';
+import Parking from './../../../models/parking'
 import Chart from 'chart.js';
+import Measurement from './../../../models/measurement';
+import ParkingHistory from './../../../models/parking-history'
 
 @Component({
   selector: 'app-chart-scatter',
@@ -9,8 +11,10 @@ import Chart from 'chart.js';
 })
 export class ScatterComponent implements OnInit {
   @Input() private data;
+  @Input() private parking: Parking;
+  @Input() private measurement: Measurement;
   private context;
-  private parkingHistory;
+  private parkingHistory: Array<ParkingHistory> = [];
   private config;
   private chart;
 

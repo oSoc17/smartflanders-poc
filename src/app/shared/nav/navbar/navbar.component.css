@@ -1,13 +1,12 @@
-.example-fill-remaining-space {
-  flex: 1 1 auto;
+nav {
+  width: 100%;
+  background-color: #4fc3f7;
 }
-a {
-  color: rgba(255,255,255,.87);
-  text-decoration: none;
+
+nav a span:nth-of-type(1) {
+  font-weight: 300;
 }
- a:visited {
-    color: rgba(255,255,255,.87);
-}
- a:visited {
-    color: rgba(255,255,255,.87);
+
+nav a span:nth-of-type(2) {
+  font-weight: 100;
 }

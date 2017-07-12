@@ -4,8 +4,8 @@ import { HomepageComponent } from './home/homepage/homepage.component';
 import { DetailspageComponent } from './details/detailspage/detailspage.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/overview', pathMatch: 'full' },
-  { path: 'overview', component: HomepageComponent },
+  { path: '', redirectTo: '/parkings', pathMatch: 'full' },
+  { path: 'parkings', component: HomepageComponent },
   { path: 'detail', component: DetailspageComponent },
   { path: 'parkings/:id', component: DetailspageComponent },
 ];
