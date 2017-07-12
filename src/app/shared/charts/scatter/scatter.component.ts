@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import Chart from 'chart.js';
 
@@ -8,7 +8,7 @@ import Chart from 'chart.js';
   styleUrls: ['./scatter.component.css']
 })
 export class ScatterComponent implements OnInit {
-
+  @Input() private data;
   private context;
   private parkingHistory;
   private config;

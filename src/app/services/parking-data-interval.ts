@@ -24,7 +24,7 @@ export default class ParkingDataInterval extends EventEmitter {
   public fetch() {
     const link = this.fetchQueue.pop();
     if (this.fetchedUris.indexOf(link) === -1) {
-      console.log(link);
+      // console.log(link);
       this.fetchedUris.push(link);
       new ldfetch().get(link).then(response => {
         const store = new n3.Store(response.triples, {prefixes: response.prefixes});

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import * as moment from 'moment';
 
 @Component({
@@ -9,8 +9,19 @@ import * as moment from 'moment';
 export class TimeFrameSelectComponent implements OnInit {
   fromTimestamp: number;
   toTimestamp: number;
+  @Output() onRangeChange = new EventEmitter<Object>();
 
-  constructor() {}
+  constructor() {
+    this.fromTimestamp = moment().unix() - 3600;
+    this.toTimestamp = moment().unix();
+  }
+
+  updateRange() {
+    this.onRangeChange.emit({
+      from: this.fromTimestamp,
+      to: this.toTimestamp
+    });
+  }
 
   ngOnInit() {
 

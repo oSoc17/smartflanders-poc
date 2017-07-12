@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     this.getParkings();
     const now = moment().unix();
     this.dataService.getParkingHistory('https://stad.gent/id/parking/P10', now - 7200, now - 3600, (data) => {
-      console.log(data);
+      // console.log(data);
     });
   }
 

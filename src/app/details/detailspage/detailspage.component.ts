@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-detailspage',
@@ -7,10 +7,22 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class DetailspageComponent implements OnInit {
+  private rangeData;
+
   constructor() { }
 
   ngOnInit() {
 
+  }
+
+  onRangeChange($event) {
+    console.log('On range change in details page:');
+    console.log($event);
+  }
+
+  getData(range) {
+    console.log('getting data: ' + range);
+    this.rangeData = [1, 2, 3];
   }
 }
 
