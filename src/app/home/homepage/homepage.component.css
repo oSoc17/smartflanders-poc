@@ -60,3 +60,15 @@
     transform: scale(2.5);
   }
 }
+
+@media (min-width: 405), (max-width: 720px) {
+  .parking-card {
+    flex-basis: 45%;
+  }
+}
+
+@media (max-width: 405px) {
+  .parking-card {
+    flex-basis: 90%;
+  }
+}

@@ -1,8 +1,10 @@
 
  <md-card *ngIf="parking" class="parking-card">
   <md-card-content>
+    <div class="title">
+      <md-card-title>{{parking.name}}</md-card-title>
+    </div>
     <div *ngIf="measurement" class="chart">
-      
       <app-chart-doughnut [parking]="parking" [measurement]="measurement"></app-chart-doughnut>
     </div>
     <!-- <p>
@@ -10,5 +12,4 @@
       <span *ngIf="measurement" >{{measurement.value}}/{{parking.totalSpaces}}</span>
     </p> -->
   </md-card-content>
-  <md-card-title>{{parking.name}}</md-card-title>
 </md-card>
