@@ -25,7 +25,7 @@ export class DoughnutComponent implements OnInit {
     //wait until charts are drawn ....
     if(this.chart){
       console.log('change called');
-      this.addData([changes.measurement.currentValue.value, this.parking.totalSpaces]);
+      this.addData([this.parking.totalSpaces-changes.measurement.currentValue.value, changes.measurement.currentValue.value]);
     }
     
   }
@@ -38,12 +38,12 @@ export class DoughnutComponent implements OnInit {
    
     this.data = {
       labels: [
-        'Filled',
-        'Vacant'
+        'Taken',
+        'Free'
       ],
       datasets: [{
         // Filled spots, vacant spots
-        data: [this.measurement.value , this.parking.totalSpaces],
+        data: [this.parking.totalSpaces - this.measurement.value, this.measurement.value],
         backgroundColor: [
           '#C7C7C7',
           '#4fc3f7'
@@ -80,8 +80,6 @@ export class DoughnutComponent implements OnInit {
 
 
   }
-
-
     public addData( _data) {
     this.chart.data.datasets.forEach((dataset) => {
       dataset.data = _data;
