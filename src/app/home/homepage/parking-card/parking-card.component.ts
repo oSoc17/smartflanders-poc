@@ -27,6 +27,7 @@ export class ParkingCardComponent implements OnInit {
 
   private calculatePercentage(){
     this.dataservice.getNewestParkingData(this.parking.uri).then(result => {
+      console.log('update');
       this.measurement = result;
       this.percentage = Math.round((this.measurement.value/this.parking.totalSpaces)*100);
     });
