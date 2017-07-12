@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, Input } from '@angular/core';
+import Parking from './../../../models/parking'
 import Chart from 'chart.js';
 import $ from 'jquery';
+import Measurement from './../../../models/measurement';
 
 @Component({
   selector: 'app-chart-doughnut',
@@ -10,6 +11,8 @@ import $ from 'jquery';
 })
 export class DoughnutComponent implements OnInit {
 
+  @Input() private parking: Parking;
+  @Input() private measurement: Measurement;
   private vacantSpaces: string;
   private context;
   private data;
@@ -19,7 +22,8 @@ export class DoughnutComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    const number = 256;
+    
+    const number = this.measurement.value;
     // Replace number with amount of vacant spaces left
     this.vacantSpaces = number.toString();
     this.context = document.getElementById('doughnut-chart');
@@ -30,7 +34,7 @@ export class DoughnutComponent implements OnInit {
       ],
       datasets: [{
         // Filled spots, vacant spots
-        data: [1500, 100],
+        data: [this.measurement.value , this.parking.totalSpaces],
         backgroundColor: [
           '#4fc3f7',
           '#C7C7C7'
@@ -61,8 +65,19 @@ export class DoughnutComponent implements OnInit {
       }
     };
     this.chart = new Chart(this.context, this.config);
+
+
+  }
+
+
+    public addData( data) {
+    this.chart.data.datasets.forEach((dataset) => {
+      dataset.data = data;
+    });
+    this.chart.update();
   }
 }
+
 
 // Chartjs plugin to center a string inside the doughnut
 Chart.pluginService.register({
