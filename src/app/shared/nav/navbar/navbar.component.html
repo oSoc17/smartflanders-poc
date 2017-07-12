@@ -1,17 +1,14 @@
-<md-toolbar color="primary">
-  <span>SmartFlanders</span>
-
-  <!-- This fills the remaining space of the current row -->
-  <span class="example-fill-remaining-space"></span>
-
-  <span><a routerLink="/overview" routerLinkActive="active">Home </a></span>
-</md-toolbar>
-
-<!-- <nav>
-  md-toolbar
-  <a href="/overview"><h1><Span>Smart</Span><span>Flanders</span></h1></a>
-  <ul>
-    <li><a routerLink="/overview" routerLinkActive="active">Overview</a></li>
-    <li><a href="#">Compare</a></li>
-  </ul>
-</nav> -->
+<nav>
+  <div class="nav-wrapper container">
+    <a href="/overview" class="brand-logo"><Span>Smart</Span><span>Flanders</span></a>
+    <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <li><a href="/parkings">Parkings</a></li>
+      <li><a href="/compare">Compare</a></li>
+    </ul>
+    <ul class="side-nav" id="mobile-demo">
+      <li><a href="/parkings">Parkings</a></li>
+      <li><a href="/compare">Compare</a></li>
+    </ul>
+  </div>
+</nav>
