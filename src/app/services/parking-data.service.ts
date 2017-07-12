@@ -27,7 +27,7 @@ export class ParkingDataService {
     const totalSpacesObj = store.getTriples(uri, 'datex:parkingNumberOfSpaces')[0].object;
     const totalSpaces = parseInt(n3.Util.getLiteralValue(totalSpacesObj), 10);
     const rdfslabel = n3.Util.getLiteralValue(store.getTriples(uri, 'rdfs:label')[0].object);
-    const id = rdfslabel.replace(' ', '-');
+    const id = rdfslabel.replace(' ', '-').toLowerCase();
     return {
       uri: uri,
       name: name,
