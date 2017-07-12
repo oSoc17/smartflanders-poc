@@ -3,7 +3,7 @@ import * as Rx from 'rxjs/Rx';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { find } from 'lodash';
-import { ParkingDataService } from './../../services/parking-data.service';
+import { ParkingDataService } from '../../services/parking-data.service';
 import Parking from './../../models/parking'
 import Measurement from './../../models/measurement';
 
@@ -27,20 +27,20 @@ export class DetailspageComponent implements OnInit {
   constructor(
     private _parkingDataService: ParkingDataService,
     private route: ActivatedRoute,
-    private router: Router) 
-    { }
+    private router: Router) { }
 
   ngOnInit() {
-      let id = this.route.snapshot.paramMap.get('id');
-      this._parkingDataService.getParkings().then(result => {
+    const id = this.route.snapshot.paramMap.get('id');
+    this._parkingDataService.getParkings().then(result => {
       this.parking = find(result, function (o) {
-        return o.id == id
+        return o.id === id
       });
     }).then(() => {
       this._parkingDataService.getNewestParkingData(this.parking.uri).then(result => {
-        this.measurement = new Measurement(result.timestamp, result.value); 
+        this.measurement = new Measurement(result.timestamp, result.value);
       })
     })
+  }
 
   getData(range: TimestampRange) {
     console.log(range);

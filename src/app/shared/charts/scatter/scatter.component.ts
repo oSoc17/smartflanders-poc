@@ -21,8 +21,8 @@ export class ScatterComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.data.subscribe(data => {
-      console.log(data);
+    this.data.subscribe(d => {
+      console.log(d);
     });
 
 

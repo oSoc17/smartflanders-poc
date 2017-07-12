@@ -9,7 +9,7 @@ import {EventEmitter} from 'events';
 import Parking from '../models/parking';
 import ParkingHistory from '../models/parking-history';
 import Measurement from '../models/measurement';
-//import ParkingDataInterval from './parking-data-interval';
+import {ParkingDataInterval} from './parking-data-interval';
 import * as moment from 'moment';
 
 @Injectable()
@@ -109,7 +109,6 @@ export class ParkingDataService {
    */
   public getParkingHistory(uri, from, to, onData) {
     const entry = 'http://linked.open.gent/parking/?time=' + moment.unix(to).format('YYYY-MM-DDTHH:mm:ss');
-    console.log(entry);
     const pdi = new ParkingDataInterval(from, to, entry, uri);
     (pdi as EventEmitter).on('data', onData);
     pdi.fetch();
