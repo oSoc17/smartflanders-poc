@@ -16,6 +16,7 @@ import { ScatterComponent } from './shared/charts/scatter/scatter.component';
 import { TimeFrameSelectComponent } from './details/time-frame-select/time-frame-select.component';
 import { FooterComponent } from './shared/footer/footer/footer.component';
 import { MomentModule } from 'angular2-moment';
+import { BreadcrumbComponent } from './shared/nav/breadcrumb/breadcrumb.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { MomentModule } from 'angular2-moment';
     LineComponent,
     ScatterComponent,
     TimeFrameSelectComponent,
-    FooterComponent
+    FooterComponent,
+    BreadcrumbComponent
   ],
   imports: [
     BrowserModule,
