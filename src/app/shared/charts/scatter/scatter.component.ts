@@ -56,5 +56,4 @@ export class ScatterComponent implements OnInit {
     };
     this.chart = new Chart(this.context, this.config);
   }
-
 }
