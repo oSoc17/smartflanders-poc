@@ -3,7 +3,8 @@ import Parking from './../../../models/parking'
 import Chart from 'chart.js';
 import Measurement from './../../../models/measurement';
 import ParkingHistory from './../../../models/parking-history'
-
+import { sortedLastIndexBy } from 'lodash';
+import { sortedArray } from 'sorted-array';
 @Component({
   selector: 'app-chart-scatter',
   templateUrl: './scatter.component.html',
@@ -12,29 +13,28 @@ import ParkingHistory from './../../../models/parking-history'
 export class ScatterComponent implements OnInit {
   @Input() private data;
   @Input() private parking: Parking;
-  @Input() private measurement: Measurement;
   private context;
-  private parkingHistory: Array<ParkingHistory> = [];
+  private sorted: sortedArray;
+  private parkingHistory: ParkingHistory;
+  private chartData = [];
   private config;
   private chart;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
-    this.data.subscribe(d => {
-      console.log(d);
-    });
-
-
     this.context = document.getElementById('scatter-chart');
-    this.parkingHistory = [];
+    this.parkingHistory = new ParkingHistory(this.parking, []);
     this.config = {
       type: 'scatter',
       data: {
         datasets: [{
           label: '',
-          data: this.parkingHistory,
-          pointRadius: 0,
+          showLine: true,
+          data: this.chartData,
+          pointRadius: 1,
+          pointStyle: 'line',
           backgroundColor: [
             '#e1f5fe',
           ],
@@ -48,12 +48,20 @@ export class ScatterComponent implements OnInit {
         scales: {
           xAxes: [{
             ticks: {
-              display: false
+              display: true
             }
           }]
         }
       }
     };
     this.chart = new Chart(this.context, this.config);
+    this.data.subscribe(d => {
+      const index = sortedLastIndexBy(this.chartData, {x: d.timestamp, y: parseInt(d.value, 10)}, function(o) { return o.x; });
+      console.log(index);
+      this.chartData.splice(index , 0, {x: d.timestamp, y: parseInt(d.value, 10)});
+      //this.chartData.sort((a, b) => a.timestamp - b.timestamp);
+      //this.chartData.push({x: d.timestamp, y: parseInt(d.value, 10)});
+      this.chart.update();
+    });
   }
 }
