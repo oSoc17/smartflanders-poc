@@ -10,7 +10,7 @@ import ParkingHistory from './../../../models/parking-history'
   styleUrls: ['./scatter.component.css']
 })
 export class ScatterComponent implements OnInit {
-
+  @Input() private data;
   @Input() private parking: Parking;
   @Input() private measurement: Measurement;
   private context;
@@ -21,6 +21,10 @@ export class ScatterComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.data.subscribe(d => {
+      console.log(d);
+    });
+
 
     this.context = document.getElementById('scatter-chart');
     this.parkingHistory = [];
