@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ParkingDataService } from './services/parking-data.service';
 import n3 from 'n3';
 import Parking from './models/parking';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-root',
@@ -22,10 +21,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.N3Util = n3.Util;
     this.getParkings();
-    const now = moment().unix();
-    this.dataService.getParkingHistory('https://stad.gent/id/parking/P10', now - 7200, now - 3600, (data) => {
-      // console.log(data);
-    });
   }
 
   private getParkings() {

@@ -8,19 +8,19 @@ import Chart from 'chart.js';
   styleUrls: ['./scatter.component.css']
 })
 export class ScatterComponent implements OnInit {
-  private _data;
+  @Input() private data;
   private context;
   private parkingHistory;
   private config;
   private chart;
 
-  @Input() set data(val) {
-    console.log('scatter received data: ' + val);
-  }
-
   constructor() { }
 
   ngOnInit() {
+    this.data.subscribe(data => {
+      console.log(data);
+    });
+
 
     this.context = document.getElementById('scatter-chart');
     this.parkingHistory = [];
