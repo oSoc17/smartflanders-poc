@@ -2,3 +2,24 @@
 .percentage {
     font-size: 3em;
 }
+
+.chart {
+    width: 150px;
+}
+
+md-card {
+    height: 300px;
+}
+
+md-card * {
+    margin: 0 auto;
+}
+
+md-card-title {
+    text-align: center;
+    font-size: 1rem;
+}
+
+md-card-content {
+    margin: 0 auto;
+}

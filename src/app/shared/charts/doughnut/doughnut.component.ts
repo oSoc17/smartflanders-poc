@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import Chart from 'chart.js';
+import $ from 'jquery';
 
 @Component({
   selector: 'app-chart-doughnut',
@@ -24,19 +25,19 @@ export class DoughnutComponent implements OnInit {
     this.context = document.getElementById('doughnut-chart');
     this.data = {
       labels: [
-        'Red',
-        'Blue'
+        'Filled',
+        'Vacant'
       ],
       datasets: [{
         // Filled spots, vacant spots
         data: [1500, 100],
         backgroundColor: [
-          '#FF6384',
-          '#36A2EB'
+          '#4fc3f7',
+          '#C7C7C7'
         ],
         hoverBackgroundColor: [
-          '#FF6384',
-          '#36A2EB'
+          '#0aa2e7',
+          '#9d9d9d'
         ]
       }]
     };
@@ -44,16 +45,16 @@ export class DoughnutComponent implements OnInit {
       type: 'doughnut',
       data: this.data,
       options: {
-        rotation: -1.25 * Math.PI,
-        circumference: 1.5 * Math.PI,
+        // rotation: -1.25 * Math.PI,
+        // circumference: 1.5 * Math.PI,
         legend: {
           display: false
         },
         elements: {
           center: {
             text: this.vacantSpaces,
-            color: '#FF6384', // Default is #000000
-            fontStyle: 'Arial', // Default is Arial
+            color: '#C7C7C7', // Default is #000000
+            fontStyle: 'Roboto', // Default is Arial
             sidePadding: 20 // Defualt is 20 (as a percentage)
           }
         }
@@ -96,7 +97,7 @@ Chart.pluginService.register({
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
-      const centerY = (((chart.chartArea.top + chart.chartArea.bottom) * 1.1) / 2);
+      const centerY = (((chart.chartArea.top + chart.chartArea.bottom) /* * 1.1 */) / 2); // Multiply with 1.1 when using incomplete donut
       ctx.font = fontSizeToUse + 'px ' + fontStyle;
       ctx.fillStyle = color;
 
