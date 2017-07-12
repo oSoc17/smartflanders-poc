@@ -9,7 +9,7 @@ import {EventEmitter} from 'events';
 import Parking from '../models/parking';
 import ParkingHistory from '../models/parking-history';
 import Measurement from '../models/measurement';
-import ParkingDataInterval from './parking-data-interval';
+//import ParkingDataInterval from './parking-data-interval';
 import * as moment from 'moment';
 
 @Injectable()
@@ -99,13 +99,14 @@ export class ParkingDataService {
    * @param to UNIX timestamp depicting the end of the time frame
    * @param onData the function to call when data is available
    * @returns {Promise<ParkingHistory>}
+   *
+   * public getParkingHistory(uri, from, to, onData) {
+   *  const entry = 'http://linked.open.gent/parking/?time=' + moment.unix(to).format('YYYY-MM-DDTHH:mm:ss');
+   *  const pdi = new ParkingDataInterval(from, to, entry, uri);
+   * (pdi as EventEmitter).on('data', onData);
+   *  pdi.fetch();
+   *}
    */
-  public getParkingHistory(uri, from, to, onData) {
-    const entry = 'http://linked.open.gent/parking/?time=' + moment.unix(to).format('YYYY-MM-DDTHH:mm:ss');
-    const pdi = new ParkingDataInterval(from, to, entry, uri);
-    (pdi as EventEmitter).on('data', onData);
-    pdi.fetch();
-  }
 
   /**
    * Fetches static data for all parkings

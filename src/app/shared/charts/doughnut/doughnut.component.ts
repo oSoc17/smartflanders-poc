@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, Input } from '@angular/core';
+import Parking from './../../../models/parking'
 import Chart from 'chart.js';
+import $ from 'jquery';
+import Measurement from './../../../models/measurement';
 
 @Component({
   selector: 'app-chart-doughnut',
@@ -9,6 +11,8 @@ import Chart from 'chart.js';
 })
 export class DoughnutComponent implements OnInit {
 
+  @Input() private parking: Parking;
+  @Input() private measurement: Measurement;
   private vacantSpaces: string;
   private context;
   private data;
@@ -18,25 +22,27 @@ export class DoughnutComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    const number = 256;
+    
+    const number = this.measurement.value;
     // Replace number with amount of vacant spaces left
     this.vacantSpaces = number.toString();
-    this.context = document.getElementById('doughnut-chart');
+
+   
     this.data = {
       labels: [
-        'Red',
-        'Blue'
+        'Filled',
+        'Vacant'
       ],
       datasets: [{
         // Filled spots, vacant spots
-        data: [1500, 100],
+        data: [this.measurement.value , this.parking.totalSpaces],
         backgroundColor: [
-          '#FF6384',
-          '#36A2EB'
+          '#C7C7C7',
+          '#4fc3f7'
         ],
         hoverBackgroundColor: [
-          '#FF6384',
-          '#36A2EB'
+          '#9d9d9d',
+          '#0aa2e7'
         ]
       }]
     };
@@ -44,24 +50,38 @@ export class DoughnutComponent implements OnInit {
       type: 'doughnut',
       data: this.data,
       options: {
-        rotation: -1.25 * Math.PI,
-        circumference: 1.5 * Math.PI,
+        // rotation: -1.25 * Math.PI,
+        // circumference: 1.5 * Math.PI,
         legend: {
           display: false
         },
         elements: {
           center: {
             text: this.vacantSpaces,
-            color: '#FF6384', // Default is #000000
-            fontStyle: 'Arial', // Default is Arial
+            color: '#4fc3f7', // Default is #000000
+            fontStyle: 'Roboto', // Default is Arial
             sidePadding: 20 // Defualt is 20 (as a percentage)
           }
         }
       }
     };
-    this.chart = new Chart(this.context, this.config);
+       setTimeout( () => {
+          this.context = document.getElementById(this.parking.id);
+          this.chart = new Chart(this.context, this.config);
+    }, 1);
+
+
+  }
+
+
+    public addData( data) {
+    this.chart.data.datasets.forEach((dataset) => {
+      dataset.data = data;
+    });
+    this.chart.update();
   }
 }
+
 
 // Chartjs plugin to center a string inside the doughnut
 Chart.pluginService.register({
@@ -96,7 +116,7 @@ Chart.pluginService.register({
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       const centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
-      const centerY = (((chart.chartArea.top + chart.chartArea.bottom) * 1.1) / 2);
+      const centerY = (((chart.chartArea.top + chart.chartArea.bottom) /* * 1.1 */) / 2); // Multiply with 1.1 when using incomplete donut
       ctx.font = fontSizeToUse + 'px ' + fontStyle;
       ctx.fillStyle = color;
 

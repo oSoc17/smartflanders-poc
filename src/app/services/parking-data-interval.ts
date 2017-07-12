@@ -2,8 +2,10 @@ import ldfetch from 'ldfetch';
 import n3 from 'n3';
 import {ParkingDataService} from './parking-data.service';
 import {EventEmitter} from 'events';
+import { Injectable } from '@angular/core'; 
 
-export default class ParkingDataInterval extends EventEmitter {
+@Injectable()
+export class ParkingDataInterval extends EventEmitter {
   private from: number;
   private to: number;
   private fetchedUris: string[];
@@ -24,7 +26,6 @@ export default class ParkingDataInterval extends EventEmitter {
   public fetch() {
     const link = this.fetchQueue.pop();
     if (this.fetchedUris.indexOf(link) === -1) {
-      console.log(link);
       this.fetchedUris.push(link);
       new ldfetch().get(link).then(response => {
         const store = new n3.Store(response.triples, {prefixes: response.prefixes});

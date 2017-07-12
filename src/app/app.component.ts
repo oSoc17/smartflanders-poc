@@ -23,9 +23,8 @@ export class AppComponent implements OnInit {
     this.N3Util = n3.Util;
     this.getParkings();
     const now = moment().unix();
-    this.dataService.getParkingHistory('https://stad.gent/id/parking/P10', now - 7200, now - 3600, (data) => {
-      console.log(data);
-    });
+   // this.dataService.getParkingHistory('https://stad.gent/id/parking/P10', now - 7200, now - 3600, (data) => {
+    //});
   }
 
   private getParkings() {
