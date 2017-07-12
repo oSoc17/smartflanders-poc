@@ -1,0 +1,15 @@
+<md-card>
+  <md-card-header>
+    Select time frame:
+  </md-card-header>
+  <md-card-content>
+    <input [(ngModel)]="fromTimestamp">
+    <input [(ngModel)]="toTimestamp">
+    <h3>
+      From: {{fromTimestamp}}
+    </h3>
+    <h3>
+      To: {{toTimestamp}}
+    </h3>
+  </md-card-content>
+</md-card>
