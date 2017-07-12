@@ -10,9 +10,9 @@ export class BreadcrumbComponent implements OnInit {
 
   @Input() private parking: Parking;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
 }
+
