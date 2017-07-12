@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import Parking from './../../../models/parking'
 import Chart from 'chart.js';
 import $ from 'jquery';
@@ -21,8 +21,16 @@ export class DoughnutComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges) {
+    //wait until charts are drawn ....
+    if(this.chart){
+      console.log('change called');
+      this.addData([this.parking.totalSpaces-changes.measurement.currentValue.value, changes.measurement.currentValue.value]);
+    }
     
+  }
+
+  ngOnInit() {
     const number = this.measurement.value;
     // Replace number with amount of vacant spaces left
     this.vacantSpaces = number.toString();
@@ -30,12 +38,12 @@ export class DoughnutComponent implements OnInit {
    
     this.data = {
       labels: [
-        'Filled',
-        'Vacant'
+        'Taken',
+        'Free'
       ],
       datasets: [{
         // Filled spots, vacant spots
-        data: [this.measurement.value , this.parking.totalSpaces],
+        data: [this.parking.totalSpaces - this.measurement.value, this.measurement.value],
         backgroundColor: [
           '#C7C7C7',
           '#4fc3f7'
@@ -72,11 +80,9 @@ export class DoughnutComponent implements OnInit {
 
 
   }
-
-
-    public addData( data) {
+    public addData( _data) {
     this.chart.data.datasets.forEach((dataset) => {
-      dataset.data = data;
+      dataset.data = _data;
     });
     this.chart.update();
   }
