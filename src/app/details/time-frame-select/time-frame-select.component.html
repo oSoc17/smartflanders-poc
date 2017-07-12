@@ -7,10 +7,10 @@
     <label>To: </label><input [(ngModel)]="toTimestamp">
     <button (click)="this.updateRange()">Go</button>
     <h3>
-      From: {{fromTimestamp}}
+      From: {{fromTimestamp | amFromUnix | amDateFormat:'YYYY-MM-DD HH:mm'}}
     </h3>
     <h3>
-      To: {{toTimestamp}}
+      To: {{toTimestamp | amFromUnix | amDateFormat:'YYYY-MM-DD HH:mm' }}
     </h3>
   </md-card-content>
 </md-card>
