@@ -12,28 +12,23 @@ import ParkingHistory from './../../../models/parking-history'
 export class ScatterComponent implements OnInit {
   @Input() private data;
   @Input() private parking: Parking;
-  @Input() private measurement: Measurement;
   private context;
-  private parkingHistory: Array<ParkingHistory> = [];
+  private parkingHistory: ParkingHistory;
+  private chartData = [];
   private config;
   private chart;
 
   constructor() { }
 
   ngOnInit() {
-    this.data.subscribe(d => {
-      console.log(d);
-    });
-
-
     this.context = document.getElementById('scatter-chart');
-    this.parkingHistory = [];
+    this.parkingHistory = new ParkingHistory(this.parking, []);
     this.config = {
       type: 'scatter',
       data: {
         datasets: [{
           label: '',
-          data: this.parkingHistory,
+          data: this.chartData,
           pointRadius: 0,
           backgroundColor: [
             '#e1f5fe',
@@ -55,6 +50,11 @@ export class ScatterComponent implements OnInit {
       }
     };
     this.chart = new Chart(this.context, this.config);
+
+    this.data.subscribe(d => {
+      this.chartData.push({x: d.timestamp, y: parseInt(d.value, 10)});
+      this.chart.update();
+    });
   }
 
 }
