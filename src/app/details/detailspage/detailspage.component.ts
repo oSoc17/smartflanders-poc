@@ -18,10 +18,11 @@ export class DetailspageComponent implements OnInit {
   onRangeChange($event) {
     console.log('On range change in details page:');
     console.log($event);
+    this.getData($event);
   }
 
   getData(range) {
-    console.log('getting data: ' + range);
+    // TODO GET REAL DATA
     this.rangeData = [1, 2, 3];
   }
 }

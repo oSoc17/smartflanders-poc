@@ -8,11 +8,15 @@ import Chart from 'chart.js';
   styleUrls: ['./scatter.component.css']
 })
 export class ScatterComponent implements OnInit {
-  @Input() private data;
+  private _data;
   private context;
   private parkingHistory;
   private config;
   private chart;
+
+  @Input() set data(val) {
+    console.log('scatter received data: ' + val);
+  }
 
   constructor() { }
 
