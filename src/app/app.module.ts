@@ -14,6 +14,7 @@ import { DoughnutComponent } from './shared/charts/doughnut/doughnut.component';
 import { LineComponent } from './shared/charts/line/line.component';
 import { ScatterComponent } from './shared/charts/scatter/scatter.component';
 import { TimeFrameSelectComponent } from './details/time-frame-select/time-frame-select.component';
+import { FooterComponent } from './shared/footer/footer/footer.component';
 import { MomentModule } from 'angular2-moment';
 
 @NgModule({
@@ -26,7 +27,8 @@ import { MomentModule } from 'angular2-moment';
     DoughnutComponent,
     LineComponent,
     ScatterComponent,
-    TimeFrameSelectComponent
+    TimeFrameSelectComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,19 @@
+footer {
+    margin-top: 5rem;
+}
+
+.page-footer {
+    background-color: #4fc3f7;
+}
+
+* {
+    font-weight: 300;
+}
+
+h5 span:nth-of-type(1) {
+  font-weight: 300;
+}
+
+h5 span:nth-of-type(2) {
+  font-weight: 100;
+}
