@@ -1,8 +1,9 @@
 
  <md-card *ngIf="parking" class="parking-card">
   <md-card-content>
-    <div class="chart">
-      <app-chart-doughnut></app-chart-doughnut>
+    <div *ngIf="measurement" class="chart">
+      
+      <app-chart-doughnut [parking]="parking" [measurement]="measurement"></app-chart-doughnut>
     </div>
     <!-- <p>
       <span *ngIf="percentage" class="percentage">{{percentage}}%</span><br />

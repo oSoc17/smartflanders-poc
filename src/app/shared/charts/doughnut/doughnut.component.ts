@@ -26,7 +26,8 @@ export class DoughnutComponent implements OnInit {
     const number = this.measurement.value;
     // Replace number with amount of vacant spaces left
     this.vacantSpaces = number.toString();
-    this.context = document.getElementById('doughnut-chart');
+
+   
     this.data = {
       labels: [
         'Filled',
@@ -36,12 +37,12 @@ export class DoughnutComponent implements OnInit {
         // Filled spots, vacant spots
         data: [this.measurement.value , this.parking.totalSpaces],
         backgroundColor: [
-          '#4fc3f7',
-          '#C7C7C7'
+          '#C7C7C7',
+          '#4fc3f7'
         ],
         hoverBackgroundColor: [
-          '#0aa2e7',
-          '#9d9d9d'
+          '#9d9d9d',
+          '#0aa2e7'
         ]
       }]
     };
@@ -57,14 +58,17 @@ export class DoughnutComponent implements OnInit {
         elements: {
           center: {
             text: this.vacantSpaces,
-            color: '#C7C7C7', // Default is #000000
+            color: '#4fc3f7', // Default is #000000
             fontStyle: 'Roboto', // Default is Arial
             sidePadding: 20 // Defualt is 20 (as a percentage)
           }
         }
       }
     };
-    this.chart = new Chart(this.context, this.config);
+       setTimeout( () => {
+          this.context = document.getElementById(this.parking.id);
+          this.chart = new Chart(this.context, this.config);
+    }, 1);
 
 
   }
