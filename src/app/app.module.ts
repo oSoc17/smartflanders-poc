@@ -14,6 +14,7 @@ import { DoughnutComponent } from './shared/charts/doughnut/doughnut.component';
 import { LineComponent } from './shared/charts/line/line.component';
 import { ScatterComponent } from './shared/charts/scatter/scatter.component';
 import { TimeFrameSelectComponent } from './details/time-frame-select/time-frame-select.component';
+import { FooterComponent } from './shared/footer/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { TimeFrameSelectComponent } from './details/time-frame-select/time-frame
     DoughnutComponent,
     LineComponent,
     ScatterComponent,
-    TimeFrameSelectComponent
+    TimeFrameSelectComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
