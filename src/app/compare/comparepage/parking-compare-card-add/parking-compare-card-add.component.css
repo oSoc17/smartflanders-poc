@@ -1,0 +1,53 @@
+md-card:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+h5 {
+    margin-bottom: 2rem !important;
+}
+
+p {
+  float: left;
+  font-size: 1.2rem;
+  line-height: 2.6rem;
+  margin: 0;
+}
+
+.btn {
+  float: right;
+  background-color: #4fc3f7;
+}
+
+.card-panel {
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-bottom: 0px;
+}
+
+.modal .modal-footer {
+  padding: 0 2rem;
+  margin-bottom: 1rem;
+}
+
+.collection a {
+    color: #4fc3f7;
+}
+
+.collection .collection-item.active {
+    background-color: #4fc3f7;
+    color: #FFFFFF;
+}
+
+
+@media (max-width: 374px) {
+  p {
+    line-height: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+  .btn {
+    float: none;
+    margin: 0 auto;
+  }
+}
