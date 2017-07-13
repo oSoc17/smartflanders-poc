@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ParkingDataService} from '../../services/parking-data.service';
+import * as Rx from 'rxjs/Rx';
 
 @Component({
   selector: 'app-comparepage',
@@ -14,14 +15,23 @@ export class ComparepageComponent implements OnInit {
   constructor(private _parkingDataService: ParkingDataService) { }
 
   onRangeChange($event) {
-    console.log($event);
+    this.getData($event);
   }
 
   ngOnInit() {
     this._parkingDataService.getParkings().then((parkings) => {
       parkings.forEach(parking => {
         this.parkings.push(parking);
+        this.data[parking.uri] = new Rx.Subject();
       });
+    })
+  }
+
+  getData(range) {
+    this.parkings.forEach(parking => {
+      this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, data => {
+        this.data[parking.uri].next(data);
+      })
     })
   }
 
