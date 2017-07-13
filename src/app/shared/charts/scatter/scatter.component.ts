@@ -30,7 +30,7 @@ export class ScatterComponent implements OnInit {
       type: 'scatter',
       data: {
         datasets: [{
-          label: '',
+          label: 'Free Spaces',
           showLine: true,
           data: this.chartData,
           pointRadius: 1,
