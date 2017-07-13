@@ -18,6 +18,7 @@ import { FooterComponent } from './shared/footer/footer/footer.component';
 import { MomentModule } from 'angular2-moment';
 import { BreadcrumbComponent } from './shared/nav/breadcrumb/breadcrumb.component';
 import { ComparepageComponent } from './compare/comparepage/comparepage.component';
+import { ParkingCompareCardComponent } from './compare/comparepage/parking-compare-card/parking-compare-card.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ComparepageComponent } from './compare/comparepage/comparepage.componen
     TimeFrameSelectComponent,
     FooterComponent,
     BreadcrumbComponent,
-    ComparepageComponent
+    ComparepageComponent,
+    ParkingCompareCardComponent
   ],
   imports: [
     BrowserModule,
