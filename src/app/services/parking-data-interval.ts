@@ -2,7 +2,7 @@ import ldfetch from 'ldfetch';
 import n3 from 'n3';
 import {ParkingDataService} from './parking-data.service';
 import {EventEmitter} from 'events';
-import { Injectable } from '@angular/core'; 
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ParkingDataInterval extends EventEmitter {
@@ -25,7 +25,7 @@ export class ParkingDataInterval extends EventEmitter {
 
   public fetch() {
     const link = this.fetchQueue.pop();
-    if (this.fetchedUris.indexOf(link) === -1) {
+    if (link !== undefined && this.fetchedUris.indexOf(link) === -1) {
       this.fetchedUris.push(link);
       new ldfetch().get(link).then(response => {
         const store = new n3.Store(response.triples, {prefixes: response.prefixes});
@@ -37,7 +37,7 @@ export class ParkingDataInterval extends EventEmitter {
             hasOverlap = true;
           }
         });
-        if (hasOverlap) {
+        if (hasOverlap || link === this.entry) {
           const prevLinks = store.getTriples(null, 'hydra:previous');
           const nextLinks = store.getTriples(null, 'hydra:next');
           if (prevLinks.length > 0) {
