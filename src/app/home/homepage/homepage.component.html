@@ -1,6 +1,10 @@
 <div class="container" *ngIf="parkings">
+    <h2>parkings</h2>
 <a><app-parking-card  *ngFor="let parking of parkings" class="parking-card"
 [parking]= "parking"
 (click)="goToDetails(parking)">
 </app-parking-card></a>
+<div class="message">
+    <p>more coming!</p>
+</div>
 </div>

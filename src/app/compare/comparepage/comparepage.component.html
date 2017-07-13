@@ -1,6 +1,8 @@
-<div *ngIf="parkings" class="container">
-   <app-parking-compare-card-add [parkings]="parkings" (parkingAdded)="parkinghandler($event)" (parkingRemoved)="parkingRemovedHandler($event)"></app-parking-compare-card-add> 
+<div class="container">
+  <h2>compare parkings</h2>
   <app-time-frame-select (onRangeChange)="onRangeChange($event)"></app-time-frame-select>
+  <div *ngIf="parkings">
+   <app-parking-compare-card-add [parkings]="parkings" (parkingAdded)="parkinghandler($event)" (parkingRemoved)="parkingRemovedHandler($event)"></app-parking-compare-card-add> 
   <app-parking-compare-card *ngFor="let parking of parkingToCompare" [parking]="parking" [data]="data[parking.uri]"></app-parking-compare-card>
-  
+  </div>
 </div>

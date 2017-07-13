@@ -1,6 +1,8 @@
 nav {
   background: transparent;
   box-shadow: none;
+  margin-top: -1rem;
+  font-weight: 300;
 }
 
 nav a,
