@@ -38,20 +38,20 @@ If you have the [Angular CLI](https://cli.angular.io/) installed globally you ca
 $ ng serve
 ```
 
-## Ready for distribution
+### Ready for distribution
 To distribute the application, use one of the following commands in the root directory to generate a `dist` folder.
 
-### npm
+#### npm
 ```
 $ npm build
 ```
 
-### yarn
+#### yarn
 ```
 $ yarn build
 ```
 
-### angular-cli
+#### angular-cli
 ```
 $ ng build
 ```
