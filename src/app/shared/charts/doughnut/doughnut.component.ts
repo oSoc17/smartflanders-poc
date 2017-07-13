@@ -24,8 +24,9 @@ export class DoughnutComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     //wait until charts are drawn ....
-    if(this.chart){
-      console.log('change called');
+    if(this.chart) {
+      console.log('change called' + changes.measurement.currentValue.value );
+      this.vacantSpaces = changes.measurement.currentValue.value;
       this.addData([this.parking.totalSpaces-changes.measurement.currentValue.value, changes.measurement.currentValue.value]);
     }
 
@@ -83,7 +84,7 @@ export class DoughnutComponent implements OnInit {
   }
     public addData( _data) {
     this.chart.data.datasets.forEach((dataset) => {
-      dataset.data = _data;
+      dataset.data.push(_data);
     });
     this.chart.update();
   }

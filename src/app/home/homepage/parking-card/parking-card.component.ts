@@ -13,7 +13,6 @@ export class ParkingCardComponent implements OnInit {
  @Input() parking: Parking;
  dataservice:ParkingDataService;
  private measurement: Measurement;
- private percentage:number;
 
   constructor(private _dataservice:ParkingDataService) { 
     this.dataservice = _dataservice;
@@ -21,15 +20,13 @@ export class ParkingCardComponent implements OnInit {
   ngOnInit() {
     this.calculatePercentage();
     setInterval(()=>{
-      this.calculatePercentage() 
-    }, 15000);
+      this.calculatePercentage();
+    }, 10000);
   }
 
   private calculatePercentage(){
     this.dataservice.getNewestParkingData(this.parking.uri).then(result => {
-      console.log('update');
       this.measurement = result;
-      this.percentage = Math.round((this.measurement.value/this.parking.totalSpaces)*100);
     });
   }
 

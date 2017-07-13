@@ -10,6 +10,7 @@ export class ParkingCompareCardComponent implements OnInit {
 
   @Input() private data;
   @Input() private parking: Parking;
+  @Input() private clear;
 
   constructor() { }
 

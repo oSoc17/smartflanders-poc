@@ -1,7 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import {ParkingDataService} from '../../services/parking-data.service';
+import {
+  Component,
+  OnInit,
+  EventEmitter
+} from '@angular/core';
+import {
+  ParkingDataService
+} from '../../services/parking-data.service';
 import * as Rx from 'rxjs/Rx';
-import { find, indexOf } from 'lodash';
+import {
+  find,
+  indexOf
+} from 'lodash';
 
 @Component({
   selector: 'app-comparepage',
@@ -13,8 +22,9 @@ export class ComparepageComponent implements OnInit {
   data = {};
   parkings = [];
   parkingToCompare = [];
+  clear = new EventEmitter();
 
-  constructor(private _parkingDataService: ParkingDataService) { }
+  constructor(private _parkingDataService: ParkingDataService) {}
 
   onRangeChange($event) {
     this.getData($event);
@@ -26,24 +36,30 @@ export class ComparepageComponent implements OnInit {
         this.parkings.push(parking);
         this.data[parking.uri] = new Rx.Subject();
       });
+      console.log(this.data);
     })
   }
 
   getData(range) {
-    this.parkings.forEach(parking => {
+    this.clear.emit();
+    this.parkingToCompare.forEach(parking => {
       this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, data => {
         this.data[parking.uri].next(data);
       })
     })
   }
-parkingRemovedHandler(parkingID) {
-  let _parking = find(this.parkings, function(o) { return o.id === parkingID; });
-  this.parkingToCompare.splice(indexOf(this.parkingToCompare, _parking), 1);
-}
+  parkingRemovedHandler(parkingID) {
+    let _parking = find(this.parkings, function (o) {
+      return o.id === parkingID;
+    });
+    this.parkingToCompare.splice(indexOf(this.parkingToCompare, _parking), 1);
+  }
   parkinghandler(parkingID) {
-    let _parking = find(this.parkings, function(o) { return o.id === parkingID; });
+    let _parking = find(this.parkings, function (o) {
+      return o.id === parkingID;
+    });
     if (this.parkingToCompare.indexOf(_parking) === -1) {
-         this.parkingToCompare.push(_parking);
+      this.parkingToCompare.push(_parking);
     }
   }
 }
