@@ -11,3 +11,7 @@ nav a span:nth-of-type(1) {
 nav a span:nth-of-type(2) {
   font-weight: 100;
 }
+
+ul {
+  font-weight: 300;
+}
