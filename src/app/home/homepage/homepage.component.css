@@ -4,8 +4,16 @@
   flex-flow: row wrap;
 }
 
+h2 {
+  text-align: center;
+  font-weight: 100;
+  font-size: 3rem;
+  color: #C7C7C7;
+  margin-bottom: 2rem;
+}
+
 .parking-card {
-  margin-top: 5%;
+  margin-bottom: 5%;
   flex: 0 0 230px;
   flex-grow: 0;
   flex-basis: 30%;
