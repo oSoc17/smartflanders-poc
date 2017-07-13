@@ -21,7 +21,7 @@ export class DetailspageComponent implements OnInit {
 
   onRangeChange($event) {
     console.log('On range change in details page:');
-    this.getData($event);
+    this.getData($event, this.parking);
   }
 
   constructor(
@@ -42,10 +42,10 @@ export class DetailspageComponent implements OnInit {
     })
   }
 
-  getData(range: TimestampRange) {
+  getData(range: TimestampRange, parking: Parking) {
     console.log(range);
     const _this = this;
-    this._parkingDataService.getParkingHistory('https://stad.gent/id/parking/P10', range.from, range.to, (data) => {
+    this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {
       _this.rangeData.next(data);
     });
   }

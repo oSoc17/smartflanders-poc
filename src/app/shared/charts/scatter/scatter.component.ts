@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import Parking from './../../../models/parking'
 import Chart from 'chart.js';
 import Measurement from './../../../models/measurement';
@@ -13,8 +13,8 @@ import { sortedArray } from 'sorted-array';
 export class ScatterComponent implements OnInit {
   @Input() private data;
   @Input() private parking: Parking;
+  @ViewChild('scatter') scatter;
   private context;
-  private sorted: sortedArray;
   private parkingHistory: ParkingHistory;
   private chartData = [];
   private config;
@@ -24,7 +24,7 @@ export class ScatterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.context = document.getElementById('scatter-chart');
+    this.context = this.scatter.nativeElement;
     this.parkingHistory = new ParkingHistory(this.parking, []);
     this.config = {
       type: 'scatter',
@@ -57,10 +57,8 @@ export class ScatterComponent implements OnInit {
     this.chart = new Chart(this.context, this.config);
     this.data.subscribe(d => {
       const index = sortedLastIndexBy(this.chartData, {x: d.timestamp, y: parseInt(d.value, 10)}, function(o) { return o.x; });
-      console.log(index);
       this.chartData.splice(index , 0, {x: d.timestamp, y: parseInt(d.value, 10)});
-      //this.chartData.sort((a, b) => a.timestamp - b.timestamp);
-      //this.chartData.push({x: d.timestamp, y: parseInt(d.value, 10)});
+      this.parkingHistory.timeframe.splice(index, 0, d);
       this.chart.update();
     });
   }
