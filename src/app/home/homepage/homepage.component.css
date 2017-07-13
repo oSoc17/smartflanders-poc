@@ -61,6 +61,14 @@
   }
 }
 
+.message {
+  text-align: center;
+  font-weight: 100;
+  font-size: 1.5rem;
+  color: #C7C7C7;
+  margin-bottom: 0;
+}
+
 @media (min-width: 405), (max-width: 720px) {
   .parking-card {
     flex-basis: 45%;
