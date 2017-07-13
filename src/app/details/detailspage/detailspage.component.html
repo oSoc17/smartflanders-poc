@@ -1,4 +1,5 @@
 <div class="container">
+    <app-breadcrumb [parking]="parking"></app-breadcrumb>
     <div *ngIf="measurement" class="detail-card">
         <md-card>
             <div class="details">
@@ -10,7 +11,7 @@
                 <p>Recent trend: <i class="material-icons">trending_up</i></p>
             </div>
                 <app-time-frame-select (onRangeChange)="onRangeChange($event)"></app-time-frame-select>
-                <app-chart-scatter [parking]="parking" [data]="rangeData"></app-chart-scatter>
+                <app-chart-scatter [parking]="parking" [data]="rangeData" [clear]="clear"></app-chart-scatter>
         </md-card>
     </div>
 </div>

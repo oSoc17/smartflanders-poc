@@ -15,6 +15,12 @@ import { LineComponent } from './shared/charts/line/line.component';
 import { ScatterComponent } from './shared/charts/scatter/scatter.component';
 import { TimeFrameSelectComponent } from './details/time-frame-select/time-frame-select.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FooterComponent } from './shared/footer/footer/footer.component';
+import { MomentModule } from 'angular2-moment';
+import { BreadcrumbComponent } from './shared/nav/breadcrumb/breadcrumb.component';
+import { ComparepageComponent } from './compare/comparepage/comparepage.component';
+import { ParkingCompareCardComponent } from './compare/comparepage/parking-compare-card/parking-compare-card.component';
+import { ParkingCompareCardAddComponent } from './compare/comparepage/parking-compare-card-add/parking-compare-card-add.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +32,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DoughnutComponent,
     LineComponent,
     ScatterComponent,
-    TimeFrameSelectComponent
+    TimeFrameSelectComponent,
+    FooterComponent,
+    BreadcrumbComponent,
+    ComparepageComponent,
+    ParkingCompareCardComponent,
+    ParkingCompareCardAddComponent
   ],
   imports: [
     BrowserModule,
@@ -36,8 +47,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MdButtonModule,
     MdToolbarModule,
     MdInputModule,
-    FormsModule,
     BrowserAnimationsModule,
+    FormsModule,
+    MomentModule
     ],
   providers: [ParkingDataService],
   bootstrap: [AppComponent]
