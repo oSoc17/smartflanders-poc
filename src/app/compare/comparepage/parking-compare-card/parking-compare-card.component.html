@@ -1,8 +1,8 @@
 <md-card>
-  <md-card-title>Parking name here</md-card-title>
+  <md-card-title>{{parking.name}}</md-card-title>
   <md-card-content>
-    <div class="charts">
-      <app-chart-scatter [parking]="parking" [data]="rangeData"></app-chart-scatter>
+    <div  class="charts">
+      <app-chart-scatter [parking]="parking" [data]="data"></app-chart-scatter>
     </div>
   </md-card-content>
 </md-card>
