@@ -1,0 +1,24 @@
+md-card:after { content:""; clear:both; display:block; }
+
+p {
+    float: left;
+    font-size: 1.2rem;
+    line-height: 2.6rem;
+    margin: 0;
+}
+
+.btn {
+    float: right;
+    background-color: #4fc3f7;
+}
+
+@media (max-width: 461px) {
+  p {
+    line-height: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+    .btn {
+        float: none;
+        margin: 0 auto;
+    }
+}
