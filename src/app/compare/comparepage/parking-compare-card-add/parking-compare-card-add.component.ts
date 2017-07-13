@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import Parking from '../../../models/parking';
 
 @Component({
   selector: 'app-parking-compare-card-add',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./parking-compare-card-add.component.css']
 })
 export class ParkingCompareCardAddComponent implements OnInit {
+
+  @Input() private parkings: Parking[];
 
   constructor() { }
 

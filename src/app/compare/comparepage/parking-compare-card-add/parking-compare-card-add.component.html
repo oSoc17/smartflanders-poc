@@ -1,14 +1,34 @@
 <md-card>
   <md-card-content>
     <p>Compare parkings!</p>
-    <a href="#parkingsModal"class="waves-effect waves-light btn">Add a parking</a>
+    <a href="#parkingsModal" class="waves-effect waves-light btn">Add a parking</a>
   </md-card-content>
 </md-card>
 
 <div id="parkingsModal" class="modal">
   <div class="modal-content">
     <h4>Add a parking</h4>
-    <div class="parking-list"></div>
+    <div class="parking-list">
+      <div class="row">
+        <a *ngFor="let parking of parkings">
+          <div class="col s12">
+            <div class="card-panel">
+              <div class="row">
+                <div class="col s6">
+                  <p>{{parking.name}}</p>
+                </div>
+                <div class="col s3">
+                  <p id="P10Vacant">...</p>
+                </div>
+                <div class="col s3 trending">
+                  <p><i class="material-icons" id="P10Trend">...</i></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
   <div class="modal-footer">
     <a class="modal-action modal-close waves-effect btn-flat">Cancel</a>

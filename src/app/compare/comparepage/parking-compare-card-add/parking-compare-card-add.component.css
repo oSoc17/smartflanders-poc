@@ -12,6 +12,12 @@ p {
     background-color: #4fc3f7;
 }
 
+.card-panel {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0px;
+}
+
 @media (max-width: 461px) {
   p {
     line-height: 1.4rem;
