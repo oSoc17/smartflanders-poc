@@ -8,11 +8,15 @@
 }
 
 .title {
-    height: 5rem;
+    height: 4rem;
+}
+
+.mat-card-title {
+    font-weight: 300;
 }
 
 md-card {
-    height: 295px;
+    height: 19rem;;
 }
 
 md-card * {

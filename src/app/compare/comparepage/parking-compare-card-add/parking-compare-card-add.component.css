@@ -4,6 +4,10 @@ md-card:after {
   display: block;
 }
 
+md-card p {
+    font-weight: 300;
+}
+
 h5 {
     margin-bottom: 2rem !important;
 }
