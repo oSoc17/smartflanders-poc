@@ -4,6 +4,7 @@ import Chart from 'chart.js';
 import Measurement from './../../../models/measurement';
 import ParkingHistory from './../../../models/parking-history'
 import { sortedLastIndexBy } from 'lodash';
+import * as moment from 'moment';
 @Component({
   selector: 'app-chart-scatter',
   templateUrl: './scatter.component.html',
@@ -47,9 +48,21 @@ export class ScatterComponent implements OnInit {
       options: {
         scales: {
           xAxes: [{
+            type: 'time',
+            time: {
+                    unit: 'hour',
+                     displayFormats: {
+                        hour: 'MMM D, HH:mm'
+                    },
+                    parse:  (value) => { return moment.unix(value).toISOString()},
+                }
+          }],
+          yAxes: [{
             ticks: {
-              display: true
-            }
+                    beginAtZero: true,
+                    suggestedMin: 50,
+                    suggestedMax: this.parking.totalSpaces
+                }
           }]
         }
       }
@@ -57,7 +70,7 @@ export class ScatterComponent implements OnInit {
     this.chart = new Chart(this.context, this.config);
     this.data.subscribe(d => {
       const index = sortedLastIndexBy(this.chartData, {x: d.timestamp, y: parseInt(d.value, 10)}, function(o) { return o.x; });
-      this.chartData.splice(index , 0, {x: d.timestamp, y: parseInt(d.value, 10)});
+      this.chartData.splice(index , 0, {x: d.timestamp * 1000, y: parseInt(d.value, 10)});
       this.parkingHistory.timeframe.splice(index, 0, d);
       this.chart.update();
       console.log('updated');
