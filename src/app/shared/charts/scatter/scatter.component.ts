@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import Parking from './../../../models/parking'
 import Chart from 'chart.js';
 import Measurement from './../../../models/measurement';
@@ -13,6 +13,7 @@ import { sortedArray } from 'sorted-array';
 export class ScatterComponent implements OnInit {
   @Input() private data;
   @Input() private parking: Parking;
+  @ViewChild('scatter') scatter;
   private context;
   private parkingHistory: ParkingHistory;
   private chartData = [];
@@ -23,7 +24,7 @@ export class ScatterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.context = document.getElementById('scatter-chart');
+    this.context = this.scatter.nativeElement;
     this.parkingHistory = new ParkingHistory(this.parking, []);
     this.config = {
       type: 'scatter',

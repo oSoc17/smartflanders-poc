@@ -1,3 +1,3 @@
 <div class="container">
-  Compare page works!
+  <app-chart-scatter *ngFor="let parking of parkings" [parking]="parking" [data]="data[parking.uri]"></app-chart-scatter>
 </div>

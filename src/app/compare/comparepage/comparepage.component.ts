@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ParkingDataService} from '../../services/parking-data.service';
 
 @Component({
   selector: 'app-comparepage',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ComparepageComponent implements OnInit {
 
-  constructor() { }
+  data = {};
+  parkings = [];
+
+  constructor(private _parkingDataService: ParkingDataService) { }
 
   ngOnInit() {
+    this._parkingDataService.getParkings().then((parkings) => {
+      parkings.forEach(parking => {
+        this.parkings.push(parking);
+      });
+    })
   }
 
 }
