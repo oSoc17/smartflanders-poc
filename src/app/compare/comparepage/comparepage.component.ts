@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ParkingDataService} from '../../services/parking-data.service';
 import * as Rx from 'rxjs/Rx';
+import { find, indexOf } from 'lodash';
 
 @Component({
   selector: 'app-comparepage',
@@ -11,6 +12,7 @@ export class ComparepageComponent implements OnInit {
 
   data = {};
   parkings = [];
+  parkingToCompare = [];
 
   constructor(private _parkingDataService: ParkingDataService) { }
 
@@ -34,5 +36,14 @@ export class ComparepageComponent implements OnInit {
       })
     })
   }
-
+parkingRemovedHandler(parkingID) {
+  let _parking = find(this.parkings, function(o) { return o.id === parkingID; });
+  this.parkingToCompare.splice(indexOf(this.parkingToCompare, _parking), 1);
+}
+  parkinghandler(parkingID) {
+    let _parking = find(this.parkings, function(o) { return o.id === parkingID; });
+    if (this.parkingToCompare.indexOf(_parking) === -1) {
+         this.parkingToCompare.push(_parking);
+    }
+  }
 }
