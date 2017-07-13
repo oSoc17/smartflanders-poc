@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import {Component, OnInit, Input, SimpleChanges, ViewChild} from '@angular/core';
 import Parking from './../../../models/parking'
 import Chart from 'chart.js';
 import $ from 'jquery';
@@ -13,6 +13,7 @@ export class DoughnutComponent implements OnInit {
 
   @Input() private parking: Parking;
   @Input() private measurement: Measurement;
+  @ViewChild('parking') parkingCanvas;
   private vacantSpaces: string;
   private context;
   private data;
@@ -27,7 +28,7 @@ export class DoughnutComponent implements OnInit {
       console.log('change called');
       this.addData([this.parking.totalSpaces-changes.measurement.currentValue.value, changes.measurement.currentValue.value]);
     }
-    
+
   }
 
   ngOnInit() {
@@ -35,7 +36,7 @@ export class DoughnutComponent implements OnInit {
     // Replace number with amount of vacant spaces left
     this.vacantSpaces = number.toString();
 
-   
+
     this.data = {
       labels: [
         'Taken',
@@ -74,7 +75,7 @@ export class DoughnutComponent implements OnInit {
       }
     };
        setTimeout( () => {
-          this.context = document.getElementById(this.parking.id);
+          this.context = this.parkingCanvas.nativeElement;
           this.chart = new Chart(this.context, this.config);
     }, 1);
 
