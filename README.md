@@ -21,17 +21,17 @@ $ yarn install
 ### Run locally
 Serve your app locally on port [4200](http://localhost:4200/) by using the following commands in the root directory.
 
-### npm
+#### npm
 ```
 $ npm start
 ```
 
-### yarn
+#### yarn
 ```
 $ yarn start
 ```
 
-### angular-cli
+#### angular-cli
 If you have the [Angular CLI](https://cli.angular.io/) installed globally you can run the following command
 
 ```
