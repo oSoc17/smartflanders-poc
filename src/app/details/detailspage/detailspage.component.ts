@@ -20,7 +20,6 @@ export class DetailspageComponent implements OnInit {
   private measurement: Measurement;
 
   onRangeChange($event) {
-    console.log('On range change in details page:');
     this.getData($event);
   }
 
@@ -43,9 +42,10 @@ export class DetailspageComponent implements OnInit {
   }
 
   getData(range: TimestampRange) {
-    console.log(range);
     const _this = this;
+    console.log('WHYY??');
     this._parkingDataService.getParkingHistory('https://stad.gent/id/parking/P10', range.from, range.to, (data) => {
+       console.log(data);
       _this.rangeData.next(data);
     });
   }

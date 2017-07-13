@@ -28,6 +28,7 @@
     "jquery": "^3.2.1",
     "ldfetch": "0.0.3",
     "lodash": "^4.17.4",
+    "material-datetime-picker": "^2.4.0",
     "materialize-css": "^0.99.0",
     "moment": "^2.18.1",
     "n3": "^0.11.0",

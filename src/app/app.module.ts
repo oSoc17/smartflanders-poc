@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { ParkingDataService} from './services/parking-data.service';
 import { AppRoutingModule } from './app.routes';
 import { HomepageComponent } from './home/homepage/homepage.component';
-import { MdCardModule, MdButtonModule, MdToolbarModule } from '@angular/material';
+import { MdCardModule, MdButtonModule, MdToolbarModule, MdInputModule } from '@angular/material';
 import { DetailspageComponent } from './details/detailspage/detailspage.component';
 import { ParkingCardComponent } from './home/homepage/parking-card/parking-card.component';
 import { NavbarComponent } from './shared/nav/navbar/navbar.component';
@@ -14,6 +14,7 @@ import { DoughnutComponent } from './shared/charts/doughnut/doughnut.component';
 import { LineComponent } from './shared/charts/line/line.component';
 import { ScatterComponent } from './shared/charts/scatter/scatter.component';
 import { TimeFrameSelectComponent } from './details/time-frame-select/time-frame-select.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,9 @@ import { TimeFrameSelectComponent } from './details/time-frame-select/time-frame
     MdCardModule,
     MdButtonModule,
     MdToolbarModule,
-    FormsModule
+    MdInputModule,
+    FormsModule,
+    BrowserAnimationsModule,
     ],
   providers: [ParkingDataService],
   bootstrap: [AppComponent]
