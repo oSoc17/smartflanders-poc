@@ -9,11 +9,10 @@
   <div class="modal-content">
     <h5>Add parkings to compare!</h5>
     <div class="collection">
-      <a class="collection-item" class="collection-item" *ngFor="let parking of parkings">{{parking.name}}</a>
+      <a class="collection-item" (click)="activeStatus[i]=!activeStatus[i]" [class.active]="activeStatus[i]" class="collection-item" *ngFor="let parking of parkings, let i = index" (click)="addParking(parking.id, activeStatus[i])" >{{parking.name}}</a>
     </div>
   </div>
   <div class="modal-footer">
-    <a class="modal-action modal-close waves-effect btn-flat">Cancel</a>
-    <a class="modal-action modal-close waves-effect btn">Compare</a>
+    <a class="modal-action modal-close waves-effect btn">Done</a>
   </div>
 </div>

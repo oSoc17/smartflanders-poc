@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import Parking from '../../../models/parking';
 
 @Component({
@@ -7,12 +7,25 @@ import Parking from '../../../models/parking';
   styleUrls: ['./parking-compare-card-add.component.css']
 })
 export class ParkingCompareCardAddComponent implements OnInit {
-
-  @Input() private parkings: Parking[];
+   @Output() parkingAdded = new EventEmitter();
+   @Output() parkingRemoved = new EventEmitter();
+   @Input() private parkings: Parking[];
+   activeStatus: Array<boolean> = [];
 
   constructor() { }
 
   ngOnInit() {
   }
+
+  addParking(parkingId: string, activeStatus: boolean) {
+    console.log(activeStatus);
+    if (activeStatus) {
+       this.parkingAdded.emit(parkingId);
+    }
+    else {
+       this.parkingRemoved.emit(parkingId);
+    }
+  }
+
 
 }
