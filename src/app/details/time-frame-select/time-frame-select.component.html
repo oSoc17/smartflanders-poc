@@ -1,16 +1,23 @@
 <md-card>
-  <md-card-header>
-    Select time frame:
-  </md-card-header>
   <md-card-content>
-    <label>From: </label><input [(ngModel)]="fromTimestamp">
-    <label>To: </label><input [(ngModel)]="toTimestamp">
-    <button (click)="this.updateRange()">Go</button>
-    <h3>
-      From: {{fromTimestamp | amFromUnix | amDateFormat:'YYYY-MM-DD HH:mm'}}
-    </h3>
-    <h3>
-      To: {{toTimestamp | amFromUnix | amDateFormat:'YYYY-MM-DD HH:mm' }}
-    </h3>
+    <form>
+      <table class="example-full-width">
+        <tr>
+          <td>
+            <md-input-container class="example-full-width">
+              <input mdInput id="from" placeholder="From" (click)="openTimePickerFrom('from')" class="c-datepicker-btn" value="{{fromTimestamp*1000 | date:'medium' }}">
+            </md-input-container>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <md-input-container class="example-full-width">
+              <input mdInput id="to" placeholder="To" (click)="openTimePickerTo('to')" class="c-datepicker-btn" value="{{toTimestamp*1000 | date:'medium' }}">
+            </md-input-container>
+          </td>
+        </tr>
+      </table>
+      <button (click)="this.updateRange()" md-raised-button>GO</button>
+    </form>
   </md-card-content>
 </md-card>

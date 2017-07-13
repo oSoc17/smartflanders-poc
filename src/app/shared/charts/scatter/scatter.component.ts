@@ -4,7 +4,6 @@ import Chart from 'chart.js';
 import Measurement from './../../../models/measurement';
 import ParkingHistory from './../../../models/parking-history'
 import { sortedLastIndexBy } from 'lodash';
-import { sortedArray } from 'sorted-array';
 @Component({
   selector: 'app-chart-scatter',
   templateUrl: './scatter.component.html',
@@ -31,7 +30,7 @@ export class ScatterComponent implements OnInit {
       type: 'scatter',
       data: {
         datasets: [{
-          label: '',
+          label: 'Free Spaces',
           showLine: true,
           data: this.chartData,
           pointRadius: 1,

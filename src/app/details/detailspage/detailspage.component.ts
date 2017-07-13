@@ -21,7 +21,6 @@ export class DetailspageComponent implements OnInit {
   private measurement: Measurement;
 
   onRangeChange($event) {
-    console.log('On range change in details page:');
     this.getData($event, this.parking);
   }
 
