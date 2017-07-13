@@ -13,7 +13,7 @@ h2 {
 }
 
 .parking-card {
-  margin-bottom: 5%;
+  margin-bottom: 1.5rem;
   flex: 0 0 230px;
   flex-grow: 0;
   flex-basis: 30%;
