@@ -14,7 +14,6 @@ export class ScatterComponent implements OnInit {
   @Input() private data;
   @Input() private parking: Parking;
   private context;
-  private sorted: sortedArray;
   private parkingHistory: ParkingHistory;
   private chartData = [];
   private config;
@@ -59,8 +58,7 @@ export class ScatterComponent implements OnInit {
       const index = sortedLastIndexBy(this.chartData, {x: d.timestamp, y: parseInt(d.value, 10)}, function(o) { return o.x; });
       console.log(index);
       this.chartData.splice(index , 0, {x: d.timestamp, y: parseInt(d.value, 10)});
-      //this.chartData.sort((a, b) => a.timestamp - b.timestamp);
-      //this.chartData.push({x: d.timestamp, y: parseInt(d.value, 10)});
+      this.parkingHistory.timeframe.splice(index, 0, d);
       this.chart.update();
     });
   }
