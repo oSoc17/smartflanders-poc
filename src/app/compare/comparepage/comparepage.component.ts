@@ -13,6 +13,10 @@ export class ComparepageComponent implements OnInit {
 
   constructor(private _parkingDataService: ParkingDataService) { }
 
+  onRangeChange($event) {
+    console.log($event);
+  }
+
   ngOnInit() {
     this._parkingDataService.getParkings().then((parkings) => {
       parkings.forEach(parking => {
