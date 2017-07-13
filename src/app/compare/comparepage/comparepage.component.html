@@ -1,3 +1,4 @@
 <div class="container">
-  <app-parking-compare-card></app-parking-compare-card>
+  <app-time-frame-select (onRangeChange)="onRangeChange($event)"></app-time-frame-select>
+  <app-parking-compare-card *ngFor="let parking of parkings" [parking]="parking" [data]="data[parking.uri]"></app-parking-compare-card>
 </div>
