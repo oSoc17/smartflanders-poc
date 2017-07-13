@@ -1,6 +1,6 @@
 import TimestampRange from '../../models/timestamp-range';
 import * as Rx from 'rxjs/Rx';
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { find } from 'lodash';
 import { ParkingDataService } from '../../services/parking-data.service';
@@ -16,6 +16,7 @@ import Measurement from './../../models/measurement';
 
 export class DetailspageComponent implements OnInit {
   private rangeData = new Rx.Subject();
+  private clear = new EventEmitter();
   private parking: Parking;
   private measurement: Measurement;
 
@@ -44,6 +45,7 @@ export class DetailspageComponent implements OnInit {
 
   getData(range: TimestampRange, parking: Parking) {
     console.log(range);
+    this.clear.emit();
     const _this = this;
     this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {
       _this.rangeData.next(data);

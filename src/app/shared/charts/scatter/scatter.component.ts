@@ -12,6 +12,7 @@ import { sortedArray } from 'sorted-array';
 })
 export class ScatterComponent implements OnInit {
   @Input() private data;
+  @Input() private clear;
   @Input() private parking: Parking;
   @ViewChild('scatter') scatter;
   private context;
@@ -60,6 +61,12 @@ export class ScatterComponent implements OnInit {
       this.chartData.splice(index , 0, {x: d.timestamp, y: parseInt(d.value, 10)});
       this.parkingHistory.timeframe.splice(index, 0, d);
       this.chart.update();
+      console.log('updated');
     });
+    this.clear.subscribe(() => {
+      this.chartData.splice(0, this.chartData.length);
+      this.chart.update();
+      console.log('cleared');
+    })
   }
 }
