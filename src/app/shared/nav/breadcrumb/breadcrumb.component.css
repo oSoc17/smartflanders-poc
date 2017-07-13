@@ -1,0 +1,13 @@
+nav {
+  background: transparent;
+  box-shadow: none;
+}
+
+nav a,
+nav a:before {
+  color: #4fc3f7;
+}
+
+nav a:last-of-type {
+  color: #c7c7c7;
+}

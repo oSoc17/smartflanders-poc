@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MdCardModule} from '@angular/material';
 import { ParkingDataService } from './../../services/parking-data.service';
-import Parking from './../../models/parking'; 
+import Parking from './../../models/parking';
 
 @Component({
   selector: 'app-homepage',
@@ -31,6 +31,7 @@ export class HomepageComponent implements OnInit {
     });
   }
   goToDetails(parking:Parking){
+    console.log(parking.id);
     this.router.navigate(['/parkings', parking.id]);
   }
 

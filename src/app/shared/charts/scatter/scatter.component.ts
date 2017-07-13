@@ -1,10 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import Parking from './../../../models/parking'
 import Chart from 'chart.js';
 import Measurement from './../../../models/measurement';
 import ParkingHistory from './../../../models/parking-history'
 import { sortedLastIndexBy } from 'lodash';
-import { sortedArray } from 'sorted-array';
 @Component({
   selector: 'app-chart-scatter',
   templateUrl: './scatter.component.html',
@@ -12,9 +11,10 @@ import { sortedArray } from 'sorted-array';
 })
 export class ScatterComponent implements OnInit {
   @Input() private data;
+  @Input() private clear;
   @Input() private parking: Parking;
+  @ViewChild('scatter') scatter;
   private context;
-  private sorted: sortedArray;
   private parkingHistory: ParkingHistory;
   private chartData = [];
   private config;
@@ -24,7 +24,7 @@ export class ScatterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.context = document.getElementById('scatter-chart');
+    this.context = this.scatter.nativeElement;
     this.parkingHistory = new ParkingHistory(this.parking, []);
     this.config = {
       type: 'scatter',
@@ -58,8 +58,14 @@ export class ScatterComponent implements OnInit {
     this.data.subscribe(d => {
       const index = sortedLastIndexBy(this.chartData, {x: d.timestamp, y: parseInt(d.value, 10)}, function(o) { return o.x; });
       this.chartData.splice(index , 0, {x: d.timestamp, y: parseInt(d.value, 10)});
+      this.parkingHistory.timeframe.splice(index, 0, d);
       this.chart.update();
+      console.log('updated');
     });
+    this.clear.subscribe(() => {
+      this.chartData.splice(0, this.chartData.length);
+      this.chart.update();
+      console.log('cleared');
+    })
   }
-
 }
