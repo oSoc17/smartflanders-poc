@@ -14,6 +14,7 @@ export class TimeFrameSelectComponent implements OnInit {
   private toTimestamp: number;
   private picker: MaterialDateTimePicker;
   @Output() onRangeChange = new EventEmitter<TimestampRange>();
+  @Output() onCancel = new EventEmitter();
   constructor() {
   }
 openTimePickerFrom(diff: string) {
@@ -35,6 +36,10 @@ openTimePickerTo(diff: string) {
       from: this.fromTimestamp,
       to: this.toTimestamp
     });
+  }
+
+  cancel() {
+    this.onCancel.emit();
   }
 
   ngOnInit() {

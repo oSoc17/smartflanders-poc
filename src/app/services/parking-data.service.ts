@@ -98,20 +98,14 @@ export class ParkingDataService {
    * @param from UNIX timestamp depicting the beginning of the time frame
    * @param to UNIX timestamp depicting the end of the time frame
    * @param onData the function to call when data is available
-   * @returns {Promise<ParkingHistory>}
-   *
-   * public getParkingHistory(uri, from, to, onData) {
-   *  const entry = 'http://linked.open.gent/parking/?time=' + moment.unix(to).format('YYYY-MM-DDTHH:mm:ss');
-   *  const pdi = new ParkingDataInterval(from, to, entry, uri);
-   * (pdi as EventEmitter).on('data', onData);
-   *  pdi.fetch();
-   *}
+   * @returns ParkingDataInterval: call fetch() on this object to start fetching, cancel() to cancel
    */
   public getParkingHistory(uri, from, to, onData) {
     const entry = 'http://linked.open.gent/parking/?time=' + moment.unix(to).format('YYYY-MM-DDTHH:mm:ss');
     const pdi = new ParkingDataInterval(from, to, entry, uri);
     (pdi as EventEmitter).on('data', onData);
-    pdi.fetch();
+    // pdi.fetch();
+    return pdi;
   }
 
   /**

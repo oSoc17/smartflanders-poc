@@ -6,6 +6,7 @@ import { find } from 'lodash';
 import { ParkingDataService } from '../../services/parking-data.service';
 import Parking from './../../models/parking'
 import Measurement from './../../models/measurement';
+import {ParkingDataInterval} from '../../services/parking-data-interval';
 
 @Component({
   selector: 'app-detailspage',
@@ -19,9 +20,18 @@ export class DetailspageComponent implements OnInit {
   private clear = new EventEmitter();
   private parking: Parking;
   private measurement: Measurement;
+  private intervalFetcher: ParkingDataInterval;
 
   onRangeChange($event) {
     this.getData($event, this.parking);
+  }
+
+  onCancel() {
+    this.intervalFetcher.cancel();
+    const clear = this.clear;
+    setTimeout(function() {
+      clear.emit();
+    }, 1000);
   }
 
   constructor(
@@ -46,9 +56,10 @@ export class DetailspageComponent implements OnInit {
     console.log(range);
     this.clear.emit();
     const _this = this;
-    this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {
+    this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {
       _this.rangeData.next(data);
     });
+    this.intervalFetcher.fetch();
   }
 }
 

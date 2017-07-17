@@ -12,6 +12,7 @@ export class ParkingDataInterval extends EventEmitter {
   private fetchQueue: string[];
   private entry: string;
   private parking: string;
+  private canceled: boolean;
 
   constructor(from, to, entry, parking) {
     super();
@@ -33,11 +34,13 @@ export class ParkingDataInterval extends EventEmitter {
         let hasOverlap = false;
         timeframe.forEach(measurement => {
           if (this.from <= measurement.timestamp && measurement.timestamp <= this.to) {
-            (this as EventEmitter).emit('data', measurement);
-            hasOverlap = true;
+            if (!this.canceled) {
+              (this as EventEmitter).emit('data', measurement);
+              hasOverlap = true;
+            }
           }
         });
-        if (hasOverlap || link === this.entry) {
+        if (!this.canceled && (hasOverlap || link === this.entry)) {
           const prevLinks = store.getTriples(null, 'hydra:previous');
           const nextLinks = store.getTriples(null, 'hydra:next');
           if (prevLinks.length > 0) {
@@ -52,5 +55,10 @@ export class ParkingDataInterval extends EventEmitter {
     } else if (link !== undefined) {
       this.fetch();
     }
+  }
+
+  public cancel() {
+    this.canceled = true;
+    this.fetchQueue = [];
   }
 }

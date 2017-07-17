@@ -10,7 +10,7 @@
                 <p>Total places: 456</p>
                 <p>Recent trend: <i class="material-icons">trending_up</i></p>
             </div>
-                <app-time-frame-select (onRangeChange)="onRangeChange($event)"></app-time-frame-select>
+                <app-time-frame-select (onRangeChange)="onRangeChange($event)" (onCancel)="onCancel()"></app-time-frame-select>
                 <app-chart-scatter [parking]="parking" [data]="rangeData" [clear]="clear"></app-chart-scatter>
         </md-card>
     </div>

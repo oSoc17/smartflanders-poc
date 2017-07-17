@@ -23,10 +23,14 @@ export class ComparepageComponent implements OnInit {
   parkings = [];
   parkingToCompare = [];
   clear = new EventEmitter();
+  intervalFetchers = {};
 
   constructor(private _parkingDataService: ParkingDataService) {}
 
   onRangeChange($event) {
+    if (Object.keys(this.intervalFetchers).length !== 0) {
+      this.onCancel();
+    }
     this.getData($event);
   }
 
@@ -36,26 +40,37 @@ export class ComparepageComponent implements OnInit {
         this.parkings.push(parking);
         this.data[parking.uri] = new Rx.Subject();
       });
-      console.log(this.data);
     })
   }
 
   getData(range) {
     this.clear.emit();
     this.parkingToCompare.forEach(parking => {
-      this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, data => {
+      this.intervalFetchers[parking.uri] = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, data => {
         this.data[parking.uri].next(data);
-      })
-    })
+      });
+      this.intervalFetchers[parking.uri].fetch();
+    });
   }
+
+  onCancel() {
+    Object.keys(this.intervalFetchers).forEach((uri) => {
+      const interval = this.intervalFetchers[uri];
+      interval.cancel();
+      console.log(uri);
+    });
+    this.clear.emit();
+    this.intervalFetchers = {};
+  }
+
   parkingRemovedHandler(parkingID) {
-    let _parking = find(this.parkings, function (o) {
+    const _parking = find(this.parkings, function (o) {
       return o.id === parkingID;
     });
     this.parkingToCompare.splice(indexOf(this.parkingToCompare, _parking), 1);
   }
   parkinghandler(parkingID) {
-    let _parking = find(this.parkings, function (o) {
+    const _parking = find(this.parkings, function (o) {
       return o.id === parkingID;
     });
     if (this.parkingToCompare.indexOf(_parking) === -1) {
