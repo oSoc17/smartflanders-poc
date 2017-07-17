@@ -53,4 +53,8 @@ export class ParkingDataInterval extends EventEmitter {
       this.fetch();
     }
   }
+
+  public cancel() {
+    console.log('Cancel');
+  }
 }

@@ -23,6 +23,7 @@ export class ComparepageComponent implements OnInit {
   parkings = [];
   parkingToCompare = [];
   clear = new EventEmitter();
+  intervalFetchers = {};
 
   constructor(private _parkingDataService: ParkingDataService) {}
 
@@ -43,19 +44,28 @@ export class ComparepageComponent implements OnInit {
   getData(range) {
     this.clear.emit();
     this.parkingToCompare.forEach(parking => {
-      this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, data => {
+      this.intervalFetchers[parking] = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, data => {
         this.data[parking.uri].next(data);
-      })
+      });
+      this.intervalFetchers[parking].fetch();
+    });
+  }
+
+  onCancel() {
+    Object.keys(this.intervalFetchers).forEach((parking) => {
+      const interval = this.intervalFetchers[parking];
+      interval.cancel();
     })
   }
+
   parkingRemovedHandler(parkingID) {
-    let _parking = find(this.parkings, function (o) {
+    const _parking = find(this.parkings, function (o) {
       return o.id === parkingID;
     });
     this.parkingToCompare.splice(indexOf(this.parkingToCompare, _parking), 1);
   }
   parkinghandler(parkingID) {
-    let _parking = find(this.parkings, function (o) {
+    const _parking = find(this.parkings, function (o) {
       return o.id === parkingID;
     });
     if (this.parkingToCompare.indexOf(_parking) === -1) {
