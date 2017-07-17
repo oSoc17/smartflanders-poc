@@ -28,6 +28,9 @@ export class ComparepageComponent implements OnInit {
   constructor(private _parkingDataService: ParkingDataService) {}
 
   onRangeChange($event) {
+    if (Object.keys(this.intervalFetchers).length !== 0) {
+      this.onCancel();
+    }
     this.getData($event);
   }
 
@@ -37,29 +40,27 @@ export class ComparepageComponent implements OnInit {
         this.parkings.push(parking);
         this.data[parking.uri] = new Rx.Subject();
       });
-      console.log(this.data);
     })
   }
 
   getData(range) {
     this.clear.emit();
     this.parkingToCompare.forEach(parking => {
-      this.intervalFetchers[parking] = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, data => {
+      this.intervalFetchers[parking.uri] = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, data => {
         this.data[parking.uri].next(data);
       });
-      this.intervalFetchers[parking].fetch();
+      this.intervalFetchers[parking.uri].fetch();
     });
   }
 
   onCancel() {
-    Object.keys(this.intervalFetchers).forEach((parking) => {
-      const interval = this.intervalFetchers[parking];
+    Object.keys(this.intervalFetchers).forEach((uri) => {
+      const interval = this.intervalFetchers[uri];
       interval.cancel();
+      console.log(uri);
     });
-    const clear = this.clear;
-    setTimeout(function() {
-      clear.emit();
-    }, 1000);
+    this.clear.emit();
+    this.intervalFetchers = {};
   }
 
   parkingRemovedHandler(parkingID) {
