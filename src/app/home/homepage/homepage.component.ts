@@ -19,8 +19,8 @@ export class HomepageComponent implements OnInit {
   dataservice: ParkingDataService;
 
   constructor(
-    private _dataservice:ParkingDataService,
-    private router:Router
+    private _dataservice: ParkingDataService,
+    private router: Router
     ) {
     this.dataservice = _dataservice;
    }
@@ -30,7 +30,7 @@ export class HomepageComponent implements OnInit {
         this.parkings = result;
     });
   }
-  goToDetails(parking:Parking){
+  goToDetails(parking: Parking){
     console.log(parking.id);
     this.router.navigate(['/parkings', parking.id]);
   }

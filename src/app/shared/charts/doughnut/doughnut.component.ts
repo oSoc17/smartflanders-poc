@@ -3,6 +3,7 @@ import Parking from './../../../models/parking'
 import Chart from 'chart.js';
 import $ from 'jquery';
 import Measurement from './../../../models/measurement';
+import {  } from "ser";
 
 @Component({
   selector: 'app-chart-doughnut',
