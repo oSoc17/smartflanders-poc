@@ -12,6 +12,7 @@
     opacity: 1; }
 
 .c-datepicker {
+  z-index: 9999;
   min-height: 700px;
   position: fixed;
   left: 50%;
@@ -552,17 +553,17 @@ border-collapse: initial;
       z-index: -1;
       background: rgba(0, 0, 0, 0.05); }
       
-      /* Smart Flanders changes */
-      @media only screen and (max-height: 800px) {
+/* Smart Flanders changes */
+@media only screen and (max-height: 800px) {
 
-        .c-datepicker {
-          min-height: 500px !important;
-          max-height: 600px !important;
-          overflow: scroll;
-        }
+  .c-datepicker {
+    min-height: 500px !important;
+    max-height: 600px !important;
+    overflow: scroll;
+  }
 
-        .modal-btns {
-          position: relative;
-          display: inline-block;
-        }
-      }
+  .modal-btns {
+    position: relative;
+    display: inline-block;
+  }
+}
