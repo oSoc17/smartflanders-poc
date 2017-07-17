@@ -55,7 +55,11 @@ export class ComparepageComponent implements OnInit {
     Object.keys(this.intervalFetchers).forEach((parking) => {
       const interval = this.intervalFetchers[parking];
       interval.cancel();
-    })
+    });
+    const clear = this.clear;
+    setTimeout(function() {
+      clear.emit();
+    }, 1000);
   }
 
   parkingRemovedHandler(parkingID) {
