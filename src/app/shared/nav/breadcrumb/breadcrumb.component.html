@@ -1,8 +1,8 @@
 <nav>
   <div *ngIf="parking" class="nav-wrapper">
     <div class="col s12">
-      <a href="/parkings" class="breadcrumb">Parkings</a>
-      <a href="/parkings/{{parking.id}}" class="breadcrumb">{{parking.name}}</a>
+      <a routerLink="/parkings" class="breadcrumb">Parkings</a>
+      <a routerLink="/parkings/{{parking.id}}" class="breadcrumb">{{parking.name}}</a>
     </div>
   </div>
 </nav>
