@@ -12,6 +12,7 @@
     opacity: 1; }
 
 .c-datepicker {
+  z-index: 9999;
   min-height: 700px;
   position: fixed;
   left: 50%;
@@ -552,3 +553,17 @@ border-collapse: initial;
       height: 36px;
       z-index: -1;
       background: rgba(0, 0, 0, 0.05); }
+      
+/* Smart Flanders changes */
+@media only screen and (max-height: 700px) {
+
+  .c-datepicker {
+    min-height: 75% !important;
+    max-height: 90% !important;
+    overflow: scroll;
+  }
+
+  .modal-btns {
+    bottom: 10px;
+  }
+}
