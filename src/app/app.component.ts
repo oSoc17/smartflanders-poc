@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ParkingDataService } from './services/parking-data.service';
 import n3 from 'n3';
 import Parking from './models/parking';
+import {enableProdMode} from '@angular/core';
+enableProdMode();
 
 @Component({
   selector: 'app-root',
