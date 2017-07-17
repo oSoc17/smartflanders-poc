@@ -551,3 +551,18 @@ border-collapse: initial;
       height: 36px;
       z-index: -1;
       background: rgba(0, 0, 0, 0.05); }
+      
+      /* Smart Flanders changes */
+      @media only screen and (max-height: 800px) {
+
+        .c-datepicker {
+          min-height: 500px !important;
+          max-height: 600px !important;
+          overflow: scroll;
+        }
+
+        .modal-btns {
+          position: relative;
+          display: inline-block;
+        }
+      }
