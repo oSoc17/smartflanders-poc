@@ -1,3 +1,30 @@
-<p>
-  chart-settings works!
-</p>
+<md-card>
+  <md-card-title><h4>Chart settings</h4></md-card-title>
+  <md-card-content>
+    <div class="setting-container">
+      <h5>TYPE</h5>
+      <md-button-toggle-group #group="mdButtonToggleGroup">
+        <md-button-toggle value="scatter">scatter</md-button-toggle>
+        <md-button-toggle value="block">block</md-button-toggle>
+      </md-button-toggle-group>
+    </div>
+    <div class="setting-container">
+      <h5>TIMEFRAME</h5>
+      <md-button-toggle-group #group="mdButtonToggleGroup">
+        <md-button-toggle value="hour">1h</md-button-toggle>
+        <md-button-toggle value="day">1d</md-button-toggle>
+        <md-button-toggle value="week">1w</md-button-toggle>
+        <md-button-toggle value="month">1m</md-button-toggle>
+        <md-button-toggle value="year">1y</md-button-toggle>
+        <md-button-toggle value="all">all</md-button-toggle>
+        <md-button-toggle value="advanced">advanced</md-button-toggle>
+      </md-button-toggle-group>
+    </div>
+    <div class="setting-container">
+      <h5>INTERVAL</h5>
+      <p class="range-field">
+        <input type="range" id="" min="0" max="10" />
+      </p>
+    </div>
+  </md-card-content>
+</md-card>

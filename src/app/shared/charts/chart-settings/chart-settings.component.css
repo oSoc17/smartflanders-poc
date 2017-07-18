@@ -1,0 +1,17 @@
+md-card {
+  margin-bottom: 1rem;
+}
+
+md-button-toggle-group {
+  flex-wrap: wrap;
+  justify-content: space-around;
+  box-shadow: none;
+}
+
+.setting-container {
+  margin-bottom: 2rem;
+}
+
+input[type=range]+.thumb {
+  background-color: #4fc3f7;
+}
