@@ -12,6 +12,26 @@ md-button-toggle-group {
   margin-bottom: 2rem;
 }
 
-input[type=range]+.thumb {
+app-time-frame-select {
+    display: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
   background-color: #4fc3f7;
+}
+
+input[type=range]::-moz-range-thumb {
+  background-color: #4fc3f7;
+}
+
+input[type=range]::-ms-thumb {
+  background-color: #4fc3f7;
+}
+
+input[type=range]+.thumb {
+  background-color: #4fc3f7 !important;
+}
+
+input[type=range]+.thumb.active .value {
+  color: #4fc3f7;
 }

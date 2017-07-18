@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { EventEmitter } from 'events';
+import { Component, OnInit, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-chart-settings',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chart-settings.component.css']
 })
 export class ChartSettingsComponent implements OnInit {
+
+  @Input() selected;
 
   constructor() { }
 
