@@ -21,6 +21,7 @@ import { BreadcrumbComponent } from './shared/nav/breadcrumb/breadcrumb.componen
 import { ComparepageComponent } from './compare/comparepage/comparepage.component';
 import { ParkingCompareCardComponent } from './compare/comparepage/parking-compare-card/parking-compare-card.component';
 import { ParkingCompareCardAddComponent } from './compare/comparepage/parking-compare-card-add/parking-compare-card-add.component';
+import { ChartSettingsComponent } from './shared/charts/chart-settings/chart-settings.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ParkingCompareCardAddComponent } from './compare/comparepage/parking-co
     BreadcrumbComponent,
     ComparepageComponent,
     ParkingCompareCardComponent,
-    ParkingCompareCardAddComponent
+    ParkingCompareCardAddComponent,
+    ChartSettingsComponent
   ],
   imports: [
     BrowserModule,
