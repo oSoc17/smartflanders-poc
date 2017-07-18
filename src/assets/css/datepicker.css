@@ -141,9 +141,10 @@
 
 .modal-btns {
   padding: 20px;
-  position: absolute;
-  bottom: 0;
-  right: 0; }
+  position: relative;
+  margin-top: 25%;
+  margin-left: 10%;
+}
 
 .c-datepicker__day-body {
     text-align: center;
@@ -555,15 +556,13 @@ border-collapse: initial;
       background: rgba(0, 0, 0, 0.05); }
       
 /* Smart Flanders changes */
-@media only screen and (max-height: 700px) {
+@media only screen and (max-height: 680px) {
 
   .c-datepicker {
-    min-height: 75% !important;
-    max-height: 90% !important;
+    min-height: 95%;
+    max-height: 95%;
+    max-width: 95%;
     overflow: scroll;
   }
 
-  .modal-btns {
-    bottom: 10px;
-  }
 }
