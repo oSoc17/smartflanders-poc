@@ -16,12 +16,13 @@ import * as moment from 'moment';
 export class ParkingDataService {
   private fetch;
 
-  private cityParkingUrls: Array<String> = [
-    'http://kortrijk.datapiloten.be/parking/',
-    'http://linked.open.gent/parking/',
-    'http://leuven.datapiloten.be/parking/',
-    'https://sint-niklaas.datapiloten.be/parking'
-  ]
+  private cityParkingUrls: Array<String> = {
+    'Kortrijk': 'http://kortrijk.datapiloten.be/parking/',
+    'Gent': 'http://linked.open.gent/parking/',
+    'Leuven': 'http://leuven.datapiloten.be/parking/',
+    'Sint-Niklaas': 'https://sint-niklaas.datapiloten.be/parking',
+    'Nederland': 'https://nederland.datapiloten.be/parking'
+  }
 
   /**
    * Gets all static data for a certain parking from an N3 store
