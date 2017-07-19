@@ -3,14 +3,14 @@
   <md-card-content>
     <div class="setting-container">
       <h5>TYPE</h5>
-      <md-button-toggle-group name="type">
-        <md-button-toggle class="mat-button-toggle mat-button-toggle-checked"value="scatter">scatter</md-button-toggle>
+      <md-button-toggle-group name="type" value="scatter" (change)="changeSelectedType($event)">
+        <md-button-toggle value="scatter">scatter</md-button-toggle>
         <md-button-toggle value="block">block</md-button-toggle>
       </md-button-toggle-group>
     </div>
     <div class="setting-container">
       <h5>TIMEFRAME</h5>
-      <md-button-toggle-group name="timeframe">
+      <md-button-toggle-group name="timeframe" value="hour" (change)="changeSelectedTimeframe($event)">
         <md-button-toggle value="hour">1h</md-button-toggle>
         <md-button-toggle value="day">1d</md-button-toggle>
         <md-button-toggle value="week">1w</md-button-toggle>

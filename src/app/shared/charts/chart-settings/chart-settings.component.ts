@@ -1,3 +1,4 @@
+import { MdButtonToggleModule } from '@angular/material';
 import { EventEmitter } from 'events';
 import { Component, OnInit, Input, Output } from '@angular/core';
 
@@ -8,11 +9,20 @@ import { Component, OnInit, Input, Output } from '@angular/core';
 })
 export class ChartSettingsComponent implements OnInit {
 
-  @Input() selected;
+  @Output() change: EventEmitter = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
+
+  }
+
+  public changeSelectedType(selectedType) {
+    console.log(selectedType.value);
+  }
+
+  public changeSelectedTimeframe(selectedTimeframe) {
+    console.log(selectedTimeframe.value);
   }
 
 }
