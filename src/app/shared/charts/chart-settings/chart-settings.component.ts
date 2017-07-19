@@ -2,6 +2,7 @@ import { MdButtonToggleModule } from '@angular/material';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import MaterialDateTimePicker from 'material-datetime-picker';
 import TimestampRange from '../../../models/timestamp-range';
+import * as Moment from 'moment';
 
 @Component({
   selector: 'app-chart-settings',
@@ -24,7 +25,13 @@ export class ChartSettingsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-
+    this.selectedChart = 'scatter';
+    this.selectedData = 'vacant';
+    this.selectedTimeframe = 'hour';
+    this.toTimestamp = Moment().unix();
+    // Argument of type '1' is not assignable to parameter of type 'DurationConstructor'
+    // this.fromTimestamp = Moment().subtract(1, this.selectedTimeframe).unix();
+    this.updateRange();
   }
 
   openTimePickerFrom(diff: string) {
@@ -55,17 +62,20 @@ export class ChartSettingsComponent implements OnInit {
   }
 
   public changeSelectedChart(selectedChart) {
-    console.log(selectedChart.value);
+    this.selectedChart = selectedChart.value;
   }
 
   public changeSelectedTimeframe(selectedTimeframe) {
-    console.log(selectedTimeframe.value);
     this.selectedTimeframe = selectedTimeframe.value;
-    console.log(this.selectedTimeframe);
+    if (this.selectedTimeframe !== 'custom') {
+      this.toTimestamp = Moment().unix();
+      this.fromTimestamp = Moment().subtract(1, selectedTimeframe.value).unix();
+      this.updateRange();
+    }
   }
 
   public changeSelectedData(selectedData) {
-    console.log(selectedData.value);
+    this.changeSelectedData = selectedData.value;
   }
 
 }

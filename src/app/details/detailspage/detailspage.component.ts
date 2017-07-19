@@ -1,6 +1,6 @@
 import TimestampRange from '../../models/timestamp-range';
 import * as Rx from 'rxjs/Rx';
-import {Component, EventEmitter, OnInit} from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { find } from 'lodash';
 import { ParkingDataService } from '../../services/parking-data.service';
