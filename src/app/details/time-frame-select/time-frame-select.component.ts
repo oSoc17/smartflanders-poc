@@ -10,27 +10,32 @@ import MaterialDateTimePicker from 'material-datetime-picker';
   styleUrls: ['./time-frame-select.component.css'],
 })
 export class TimeFrameSelectComponent implements OnInit {
+
   private fromTimestamp: number;
   private toTimestamp: number;
   private picker: MaterialDateTimePicker;
-  @Output() onRangeChange = new EventEmitter<TimestampRange>();
+
+  @Output() onRangeChange = new EventEmitter <TimestampRange> ();
   @Output() onCancel = new EventEmitter();
-  constructor() {
+
+  constructor() {}
+
+  openTimePickerFrom(diff: string) {
+    this.picker = new MaterialDateTimePicker();
+    this.picker.open()
+    this.picker.on('submit', (val) => {
+      this.fromTimestamp = val.unix();
+    })
   }
-openTimePickerFrom(diff: string) {
-  this.picker = new MaterialDateTimePicker();
-  this.picker.open()
-  this.picker.on('submit', (val) => {
-    this.fromTimestamp =  val.unix();
-})
-}
-openTimePickerTo(diff: string) {
-  this.picker = new MaterialDateTimePicker();
-  this.picker.open()
-  this.picker.on('submit', (val) => {
-    this.toTimestamp =  val.unix();
-})
-}
+
+  openTimePickerTo(diff: string) {
+    this.picker = new MaterialDateTimePicker();
+    this.picker.open()
+    this.picker.on('submit', (val) => {
+      this.toTimestamp = val.unix();
+    })
+  }
+
   updateRange() {
     this.onRangeChange.emit({
       from: this.fromTimestamp,
@@ -46,3 +51,4 @@ openTimePickerTo(diff: string) {
 
   }
 }
+
