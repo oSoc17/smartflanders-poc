@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { ParkingDataService} from './services/parking-data.service';
 import { AppRoutingModule } from './app.routes';
 import { HomepageComponent } from './home/homepage/homepage.component';
-import { MdCardModule, MdButtonModule, MdToolbarModule, MdInputModule } from '@angular/material';
+import { MdCardModule, MdButtonModule, MdToolbarModule, MdInputModule, MdProgressSpinnerModule } from '@angular/material';
 import { DetailspageComponent } from './details/detailspage/detailspage.component';
 import { ParkingCardComponent } from './home/homepage/parking-card/parking-card.component';
 import { NavbarComponent } from './shared/nav/navbar/navbar.component';
@@ -21,6 +21,7 @@ import { BreadcrumbComponent } from './shared/nav/breadcrumb/breadcrumb.componen
 import { ComparepageComponent } from './compare/comparepage/comparepage.component';
 import { ParkingCompareCardComponent } from './compare/comparepage/parking-compare-card/parking-compare-card.component';
 import { ParkingCompareCardAddComponent } from './compare/comparepage/parking-compare-card-add/parking-compare-card-add.component';
+import { CitySectionComponent } from './home/homepage/city-section/city-section.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ParkingCompareCardAddComponent } from './compare/comparepage/parking-co
     BreadcrumbComponent,
     ComparepageComponent,
     ParkingCompareCardComponent,
-    ParkingCompareCardAddComponent
+    ParkingCompareCardAddComponent,
+    CitySectionComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +49,7 @@ import { ParkingCompareCardAddComponent } from './compare/comparepage/parking-co
     MdButtonModule,
     MdToolbarModule,
     MdInputModule,
+    MdProgressSpinnerModule,
     BrowserAnimationsModule,
     FormsModule,
     MomentModule
