@@ -9,6 +9,9 @@ import { Component, OnInit, Input, Output } from '@angular/core';
 })
 export class ChartSettingsComponent implements OnInit {
 
+  public selectedTimeframe: string;
+  private selectedType;
+
   @Output() change: EventEmitter = new EventEmitter();
 
   constructor() { }
@@ -23,6 +26,8 @@ export class ChartSettingsComponent implements OnInit {
 
   public changeSelectedTimeframe(selectedTimeframe) {
     console.log(selectedTimeframe.value);
+    this.selectedTimeframe = selectedTimeframe.value;
+    console.log(this.selectedTimeframe);
   }
 
 }

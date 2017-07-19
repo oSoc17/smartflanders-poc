@@ -1,24 +1,15 @@
-<md-card>
-  <md-card-content>
-    <form>
-      <table class="example-full-width">
-        <tr>
-          <td>
-            <md-input-container class="example-full-width">
-              <input mdInput id="from" placeholder="From" (click)="openTimePickerFrom('from')" class="c-datepicker-btn" value="{{fromTimestamp*1000 | date:'medium' }}">
-            </md-input-container>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <md-input-container class="example-full-width">
-              <input mdInput id="to" placeholder="To" (click)="openTimePickerTo('to')" class="c-datepicker-btn" value="{{toTimestamp*1000 | date:'medium' }}">
-            </md-input-container>
-          </td>
-        </tr>
-      </table>
-      <button (click)="this.updateRange()" md-raised-button>GO</button>
-      <button (click)="this.cancel()" md-raised-button>Cancel</button>
-    </form>
-  </md-card-content>
-</md-card>
+
+    <div class="time-frame-container">
+
+      <md-input-container>
+      <input mdInput id="from" placeholder="Start date" (click)="openTimePickerFrom('from')" class="c-datepicker-btn" value="{{fromTimestamp*1000 | date:'medium' }}">
+      </md-input-container>
+
+      <md-input-container>
+        <input mdInput id="to" placeholder="End date" (click)="openTimePickerTo('to')" class="c-datepicker-btn" value="{{toTimestamp*1000 | date:'medium' }}">
+      </md-input-container>
+      
+    </div>
+
+    <button (click)="this.updateRange()" md-raised-button>GO</button>
+    <button (click)="this.cancel()" md-raised-button>Cancel</button>

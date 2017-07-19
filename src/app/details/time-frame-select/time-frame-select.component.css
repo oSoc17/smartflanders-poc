@@ -1,3 +1,7 @@
+md-card {
+  margin-bottom: 1rem;
+}
+
 .example-full-width {
   width: 100%;
 }
@@ -7,8 +11,14 @@
   display: inline-block;
 }
 
-md-card {
-  margin-bottom: 1rem;
+.time-frame-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+md-input-container {
+  width: 15rem;
+  margin-right: 2rem;
 }
 
 

@@ -1,6 +1,7 @@
 <md-card>
   <md-card-title><h4>Chart settings</h4></md-card-title>
   <md-card-content>
+
     <div class="setting-container">
       <h5>TYPE</h5>
       <md-button-toggle-group name="type" value="scatter" (change)="changeSelectedType($event)">
@@ -8,6 +9,7 @@
         <md-button-toggle value="block">block</md-button-toggle>
       </md-button-toggle-group>
     </div>
+
     <div class="setting-container">
       <h5>TIMEFRAME</h5>
       <md-button-toggle-group name="timeframe" value="hour" (change)="changeSelectedTimeframe($event)">
@@ -16,14 +18,16 @@
         <md-button-toggle value="week">1w</md-button-toggle>
         <md-button-toggle value="month">1m</md-button-toggle>
         <md-button-toggle value="year">1y</md-button-toggle>
-        <md-button-toggle value="all">all</md-button-toggle>
-        <md-button-toggle value="advanced">advanced</md-button-toggle>
+        <md-button-toggle value="specific">specific</md-button-toggle>
       </md-button-toggle-group>
-      <app-time-frame-select></app-time-frame-select>
+      <app-time-frame-select *ngIf="selectedTimeframe=='specific'"></app-time-frame-select>
     </div>
-    <div class="setting-container">
+
+    <!-- Interval setting  -->
+    <!-- <div class="setting-container">
       <h5>INTERVAL</h5>
       <md-slider thumbLabel min="1" max="25" step="1" value="1"></md-slider>
-    </div>
+    </div> -->
+
   </md-card-content>
 </md-card>
