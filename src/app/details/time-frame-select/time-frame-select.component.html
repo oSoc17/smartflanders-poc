@@ -1,15 +1,14 @@
+<div class="time-frame-container">
 
-    <div class="time-frame-container">
+  <md-input-container>
+    <input mdInput id="from" placeholder="Start date" (click)="openTimePickerFrom('from')" class="c-datepicker-btn" value="{{fromTimestamp*1000 | date:'medium' }}">
+  </md-input-container>
 
-      <md-input-container>
-      <input mdInput id="from" placeholder="Start date" (click)="openTimePickerFrom('from')" class="c-datepicker-btn" value="{{fromTimestamp*1000 | date:'medium' }}">
-      </md-input-container>
+  <md-input-container>
+    <input mdInput id="to" placeholder="End date" (click)="openTimePickerTo('to')" class="c-datepicker-btn" value="{{toTimestamp*1000 | date:'medium' }}">
+  </md-input-container>
 
-      <md-input-container>
-        <input mdInput id="to" placeholder="End date" (click)="openTimePickerTo('to')" class="c-datepicker-btn" value="{{toTimestamp*1000 | date:'medium' }}">
-      </md-input-container>
-      
-    </div>
+</div>
 
-    <button (click)="this.updateRange()" md-raised-button>GO</button>
-    <button (click)="this.cancel()" md-raised-button>Cancel</button>
+<button (click)="this.updateRange()" md-raised-button>GO</button>
+<button (click)="this.cancel()" md-raised-button>Cancel</button>

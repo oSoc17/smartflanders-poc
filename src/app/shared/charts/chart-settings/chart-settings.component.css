@@ -8,13 +8,21 @@ md-button-toggle-group {
   box-shadow: none;
 }
 
-.setting-container {
+.settings-container {
+  display: flex;
+  flex-wrap: wrap
+}
+
+.selector-container:first-of-type {
+  margin-right: 2rem;
+}
+
+.selector-container {
   margin-bottom: 2rem;
 }
 
-app-time-frame-select {
-    display: none;
-}
+
+/* INTERVAL SLIDER  */
 
 input[type=range]::-webkit-slider-thumb {
   background-color: #4fc3f7;
@@ -34,4 +42,55 @@ input[type=range]+.thumb {
 
 input[type=range]+.thumb.active .value {
   color: #4fc3f7;
+}
+
+
+/* DATEPICKER */
+
+.time-frame-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+md-input-container {
+  width: 15rem;
+  margin-right: 2rem;
+}
+
+md-input-container >>> .mat-input-infix {
+  padding-bottom: 0em !important;
+}
+
+input:not([type]),
+input[type=text]:not(.browser-default),
+input[type=password]:not(.browser-default),
+input[type=email]:not(.browser-default),
+input[type=url]:not(.browser-default),
+input[type=time]:not(.browser-default),
+input[type=date]:not(.browser-default),
+input[type=datetime]:not(.browser-default),
+input[type=datetime-local]:not(.browser-default),
+input[type=tel]:not(.browser-default),
+input[type=number]:not(.browser-default),
+input[type=search]:not(.browser-default),
+textarea.materialize-textarea {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+input[_ngcontent-c5]:not([type]):focus:not([readonly]),
+input[type=text][_ngcontent-c5]:not(.browser-default):focus:not([readonly]),
+input[type=password][_ngcontent-c5]:not(.browser-default):focus:not([readonly]),
+input[type=email][_ngcontent-c5]:not(.browser-default):focus:not([readonly]),
+input[type=url][_ngcontent-c5]:not(.browser-default):focus:not([readonly]),
+input[type=time][_ngcontent-c5]:not(.browser-default):focus:not([readonly]),
+input[type=date][_ngcontent-c5]:not(.browser-default):focus:not([readonly]),
+input[type=datetime][_ngcontent-c5]:not(.browser-default):focus:not([readonly]),
+input[type=datetime-local][_ngcontent-c5]:not(.browser-default):focus:not([readonly]),
+input[type=tel][_ngcontent-c5]:not(.browser-default):focus:not([readonly]),
+input[type=number][_ngcontent-c5]:not(.browser-default):focus:not([readonly]),
+input[type=search][_ngcontent-c5]:not(.browser-default):focus:not([readonly]),
+textarea.materialize-textarea[_ngcontent-c5]:focus:not([readonly]) {
+  border-bottom: none;
+  box-shadow: none;
 }
