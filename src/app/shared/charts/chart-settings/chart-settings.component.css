@@ -13,12 +13,16 @@ md-button-toggle-group {
   flex-wrap: wrap
 }
 
+.settings-container .btn {
+  float: right;
+}
+
 .selector-container:first-of-type {
   margin-right: 2rem;
 }
 
 .selector-container {
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
 }
 
 

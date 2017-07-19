@@ -1,54 +1,48 @@
-<md-card>
-  <!-- <md-card-title>
-    <h4>Chart settings</h4>
-  </md-card-title> -->
-  <md-card-content>
+<div class="chart-settings-container">
+  <div class="settings-container">
 
-    <div class="settings-container">
-      
-      <!-- TYPE SELECTOR  -->
-      <div class="selector-container">
-        <h5>TYPE</h5>
-        <md-button-toggle-group name="type" value="scatter" (change)="changeSelectedType($event)">
-          <md-button-toggle value="scatter">scatter</md-button-toggle>
-          <md-button-toggle value="block">block</md-button-toggle>
-        </md-button-toggle-group>
-      </div>
-
-      <!-- TIMEFRAME SELECTOR  -->
-      <div class="selector-container">
-        <h5>TIMEFRAME</h5>
-        <md-button-toggle-group name="timeframe" value="hour" (change)="changeSelectedTimeframe($event)">
-          <md-button-toggle value="hour">1h</md-button-toggle>
-          <md-button-toggle value="day">1d</md-button-toggle>
-          <md-button-toggle value="week">1w</md-button-toggle>
-          <md-button-toggle value="month">1m</md-button-toggle>
-          <md-button-toggle value="year">1y</md-button-toggle>
-          <md-button-toggle value="specific">specific</md-button-toggle>
-        </md-button-toggle-group>
-      </div>
-
-      <!-- DATEPICKER -->
-      <div *ngIf="selectedTimeframe=='specific'" class="setting-container">
-        <md-input-container>
-          <input mdInput id="from" placeholder="Start date" (click)="openTimePickerFrom('from')" class="c-datepicker-btn" value="{{fromTimestamp*1000 | date:'medium' }}">
-        </md-input-container>
-        <md-input-container>
-          <input mdInput id="to" placeholder="End date" (click)="openTimePickerTo('to')" class="c-datepicker-btn" value="{{toTimestamp*1000 | date:'medium' }}">
-        </md-input-container>
-      </div>
+    <!-- TYPE SELECTOR  -->
+    <div class="selector-container">
+      <h5>TYPE</h5>
+      <md-button-toggle-group name="type" value="scatter" (change)="changeSelectedType($event)">
+        <md-button-toggle value="scatter">scatter</md-button-toggle>
+        <md-button-toggle value="block">block</md-button-toggle>
+      </md-button-toggle-group>
     </div>
 
-    <!-- Interval setting  -->
-    <!-- <div class="setting-container">
+    <!-- TIMEFRAME SELECTOR  -->
+    <div class="selector-container">
+      <h5>TIMEFRAME</h5>
+      <md-button-toggle-group name="timeframe" value="hour" (change)="changeSelectedTimeframe($event)">
+        <md-button-toggle value="hour">1h</md-button-toggle>
+        <md-button-toggle value="day">1d</md-button-toggle>
+        <md-button-toggle value="week">1w</md-button-toggle>
+        <md-button-toggle value="month">1m</md-button-toggle>
+        <md-button-toggle value="year">1y</md-button-toggle>
+        <md-button-toggle value="specific">specific</md-button-toggle>
+      </md-button-toggle-group>
+    </div>
+
+    <!-- DATEPICKER -->
+    <div *ngIf="selectedTimeframe=='specific'" class="setting-container valign-wrapper">
+      <md-input-container>
+        <input mdInput id="from" placeholder="Start date" (click)="openTimePickerFrom('from')" class="c-datepicker-btn" value="{{fromTimestamp*1000 | date:'medium' }}">
+      </md-input-container>
+      <md-input-container>
+        <input mdInput id="to" placeholder="End date" (click)="openTimePickerTo('to')" class="c-datepicker-btn" value="{{toTimestamp*1000 | date:'medium' }}">
+      </md-input-container>
+      <a class="waves-effect waves-light btn" (click)="this.updateRange()">Apply</a>
+    </div>
+  </div>
+
+  <!-- Interval setting  -->
+  <!-- <div class="setting-container">
       <h5>INTERVAL</h5>
       <md-slider thumbLabel min="1" max="25" step="1" value="1"></md-slider>
     </div> -->
 
-    <div class="actions-container">
-      <button (click)="this.cancel()" md-raised-button>Cancel</button>
-      <button (click)="this.updateRange()" md-raised-button>Apply</button>
-    </div>
-
-  </md-card-content>
-</md-card>
+  <!-- <div class="actions-container">
+    <button (click)="this.cancel()" md-raised-button>Cancel</button>
+    <button (click)="this.updateRange()" md-raised-button>Apply</button>
+  </div> -->
+</div>
