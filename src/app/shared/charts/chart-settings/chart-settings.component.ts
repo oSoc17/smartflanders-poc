@@ -10,8 +10,9 @@ import TimestampRange from '../../../models/timestamp-range';
 })
 export class ChartSettingsComponent implements OnInit {
 
-  public selectedTimeframe: string;
-  private selectedType;
+  private selectedChart: string;
+  private selectedTimeframe: string;
+  private selectedData: string;
   private fromTimestamp: number;
   private toTimestamp: number;
   private picker: MaterialDateTimePicker;
@@ -53,14 +54,18 @@ export class ChartSettingsComponent implements OnInit {
     this.onCancel.emit();
   }
 
-  public changeSelectedType(selectedType) {
-    console.log(selectedType.value);
+  public changeSelectedChart(selectedChart) {
+    console.log(selectedChart.value);
   }
 
   public changeSelectedTimeframe(selectedTimeframe) {
     console.log(selectedTimeframe.value);
     this.selectedTimeframe = selectedTimeframe.value;
     console.log(this.selectedTimeframe);
+  }
+
+  public changeSelectedData(selectedData) {
+    console.log(selectedData.value);
   }
 
 }

@@ -3,8 +3,8 @@
 
     <!-- TYPE SELECTOR  -->
     <div class="selector-container">
-      <h5>TYPE</h5>
-      <md-button-toggle-group name="type" value="scatter" (change)="changeSelectedType($event)">
+      <h5>CHART</h5>
+      <md-button-toggle-group name="chart" value="scatter" (change)="changeSelectedChart($event)">
         <md-button-toggle value="scatter">scatter</md-button-toggle>
         <md-button-toggle value="block">block</md-button-toggle>
       </md-button-toggle-group>
@@ -19,12 +19,21 @@
         <md-button-toggle value="week">1w</md-button-toggle>
         <md-button-toggle value="month">1m</md-button-toggle>
         <md-button-toggle value="year">1y</md-button-toggle>
-        <md-button-toggle value="specific">specific</md-button-toggle>
+        <md-button-toggle value="custom">custom</md-button-toggle>
+      </md-button-toggle-group>
+    </div>
+
+    <!-- TYPE SELECTOR  -->
+    <div class="selector-container">
+      <h5>DATA</h5>
+      <md-button-toggle-group name="data" value="vacant" (change)="changeSelectedData($event)">
+        <md-button-toggle value="vacant">vacant</md-button-toggle>
+        <md-button-toggle value="taken">taken</md-button-toggle>
       </md-button-toggle-group>
     </div>
 
     <!-- DATEPICKER -->
-    <div *ngIf="selectedTimeframe=='specific'" class="setting-container valign-wrapper">
+    <div *ngIf="selectedTimeframe=='custom'" class="setting-container valign-wrapper">
       <md-input-container>
         <input mdInput id="from" placeholder="Start date" (click)="openTimePickerFrom('from')" class="c-datepicker-btn" value="{{fromTimestamp*1000 | date:'medium' }}">
       </md-input-container>
