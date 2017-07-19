@@ -1,6 +1,7 @@
+import { element } from 'protractor';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MdCardModule} from '@angular/material';
+import { MdCardModule, MdProgressSpinnerModule} from '@angular/material';
 import { ParkingDataService } from './../../services/parking-data.service';
 import Parking from './../../models/parking';
 
@@ -12,11 +13,10 @@ import Parking from './../../models/parking';
 })
 
 export class HomepageComponent implements OnInit {
-  /**
-   * parkings
-   */
+
   parkings: Array<Parking> = [];
   dataservice: ParkingDataService;
+  public cities: Array<string> = [];
 
   constructor(
     private _dataservice: ParkingDataService,
@@ -26,13 +26,15 @@ export class HomepageComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.dataservice.getParkings().then(result => {
-        this.parkings = result;
-    });
+    this._dataservice.getDatasetUrls().then(parkingURLS => {
+    for (let key in parkingURLS) {
+      if (parkingURLS.hasOwnProperty(key)) {
+        this.cities.push(parkingURLS[key])
+      }
+    }
+  })
   }
-  goToDetails(parking: Parking){
-    console.log(parking.id);
+  goToDetails(parking: Parking) {
     this.router.navigate(['/parkings', parking.id]);
   }
-
 }

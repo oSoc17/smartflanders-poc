@@ -35,12 +35,11 @@ export class ComparepageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._parkingDataService.getParkings().then((parkings) => {
-      parkings.forEach(parking => {
-        this.parkings.push(parking);
-        this.data[parking.uri] = new Rx.Subject();
+    Promise.all(this._parkingDataService.getParkings()).then(result => {
+      result.forEach(element => {
+         this.parkings.push.apply(this.parkings, element);
       });
-    })
+    });
   }
 
   getData(range) {

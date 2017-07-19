@@ -3,6 +3,9 @@
   justify-content: space-around;
   flex-flow: row wrap;
 }
+.example-margin {
+  margin: 0 50%;
+}
 
 .parking-card {
   margin-bottom: 1.5rem;
