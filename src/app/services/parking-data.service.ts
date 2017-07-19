@@ -7,7 +7,6 @@ import 'rxjs/add/operator/catch';
 import {EventEmitter} from 'events';
 
 import Parking from '../models/parking';
-import ParkingHistory from '../models/parking-history';
 import Measurement from '../models/measurement';
 import {ParkingDataInterval} from './parking-data-interval';
 import * as moment from 'moment';
