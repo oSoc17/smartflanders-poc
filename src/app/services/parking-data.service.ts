@@ -16,13 +16,13 @@ import * as moment from 'moment';
 export class ParkingDataService {
   private fetch;
 
-  private cityParkingUrls: Array<String> = {
+  private datasetUrls = {
     'Kortrijk': 'http://kortrijk.datapiloten.be/parking/',
     'Gent': 'http://linked.open.gent/parking/',
     'Leuven': 'http://leuven.datapiloten.be/parking/',
     'Sint-Niklaas': 'https://sint-niklaas.datapiloten.be/parking',
     'Nederland': 'https://nederland.datapiloten.be/parking'
-  }
+  };
 
   /**
    * Gets all static data for a certain parking from an N3 store
@@ -31,15 +31,14 @@ export class ParkingDataService {
    * @returns {Parking}
    */
   public static getParking(uri, store): Parking {
-    // const totalSpacesObj = store.getTriples(uri, 'datex:parkingNumberOfSpaces')[0].object;
-   // const totalSpaces = parseInt(n3.Util.getLiteralValue(totalSpacesObj), 10);
+    const totalSpacesObj = store.getTriples(uri, 'datex:parkingNumberOfSpaces')[0].object;
+    const totalSpaces = parseInt(n3.Util.getLiteralValue(totalSpacesObj), 10);
     const rdfslabel = n3.Util.getLiteralValue(store.getTriples(uri, 'rdfs:label')[0].object);
     const id = rdfslabel.replace(' ', '-').toLowerCase();
-    //const name = n3.Util.getLiteralValue(store.getTriples(uri, 'dct:description')[0].object);
     return {
       uri: uri,
-      name: 'name',
-      totalSpaces: 750,
+      name: rdfslabel,
+      totalSpaces: totalSpaces,
       id: id
     }
   }
@@ -50,7 +49,7 @@ export class ParkingDataService {
    * @param store the N3 store of triples
    * @returns {Measurement[]} (time frame, not necessarily sorted)
    */
-  public static getMeasurements(uri, store): Measurement[] {
+  public static getMeasurements(uri, store, datasetUrl): Measurement[] {
     const measurementTriples = store.getTriples(uri, 'datex:parkingNumberOfVacantSpaces');
     const measurements: Measurement[] = [];
 
@@ -76,7 +75,7 @@ export class ParkingDataService {
    * @param uri the uri of the parking
    * @returns {Promise<Measurement>}
    */
-  public getNewestParkingData(uri): Array<Promise < Measurement >> {
+  public getNewestParkingData(uri, datasetUrl): Array<Promise < Measurement >> {
     let _promises: Array<Promise < Measurement >> = [];
     this.cityParkingUrls.forEach(url => {
       _promises.push(new Promise((resolve) => {
@@ -107,6 +106,10 @@ export class ParkingDataService {
   return _promises;
 }
 
+  public getDatasetUrls() {
+    return new Promise((resolve) => resolve(this.datasetUrls));
+  }
+
 
   /**
    * Fetches a time frame of measurements for a certain parking as a ParkingHistory object
@@ -116,7 +119,7 @@ export class ParkingDataService {
    * @param onData the function to call when data is available
    * @returns ParkingDataInterval: call fetch() on this object to start fetching, cancel() to cancel
    */
-  public getParkingHistory(uri, from, to, onData) {
+  public getParkingHistory(uri, from, to, onData, datasetUrl) {
     const entry = 'http://linked.open.gent/parking/?time=' + moment.unix(to).format('YYYY-MM-DDTHH:mm:ss');
     const pdi = new ParkingDataInterval(from, to, entry, uri);
     (pdi as EventEmitter).on('data', onData);
