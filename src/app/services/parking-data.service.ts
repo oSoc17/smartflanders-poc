@@ -7,7 +7,6 @@ import 'rxjs/add/operator/catch';
 import {EventEmitter} from 'events';
 
 import Parking from '../models/parking';
-import ParkingHistory from '../models/parking-history';
 import Measurement from '../models/measurement';
 import {ParkingDataInterval} from './parking-data-interval';
 import * as moment from 'moment';
@@ -16,12 +15,13 @@ import * as moment from 'moment';
 export class ParkingDataService {
   private fetch;
 
-  private cityParkingUrls: Array<String> = [
-    'http://kortrijk.datapiloten.be/parking/',
-    'http://linked.open.gent/parking/',
-    'http://leuven.datapiloten.be/parking/',
-    'https://sint-niklaas.datapiloten.be/parking'
-  ]
+  private datasetUrls = {
+    'Kortrijk': 'http://kortrijk.datapiloten.be/parking/',
+    'Gent': 'http://linked.open.gent/parking/',
+    'Leuven': 'http://leuven.datapiloten.be/parking/',
+    'Sint-Niklaas': 'https://sint-niklaas.datapiloten.be/parking',
+    'Nederland': 'https://nederland.datapiloten.be/parking'
+  };
 
   /**
    * Gets all static data for a certain parking from an N3 store
@@ -30,15 +30,14 @@ export class ParkingDataService {
    * @returns {Parking}
    */
   public static getParking(uri, store): Parking {
-    // const totalSpacesObj = store.getTriples(uri, 'datex:parkingNumberOfSpaces')[0].object;
-   // const totalSpaces = parseInt(n3.Util.getLiteralValue(totalSpacesObj), 10);
+    const totalSpacesObj = store.getTriples(uri, 'datex:parkingNumberOfSpaces')[0].object;
+    const totalSpaces = parseInt(n3.Util.getLiteralValue(totalSpacesObj), 10);
     const rdfslabel = n3.Util.getLiteralValue(store.getTriples(uri, 'rdfs:label')[0].object);
     const id = rdfslabel.replace(' ', '-').toLowerCase();
-    //const name = n3.Util.getLiteralValue(store.getTriples(uri, 'dct:description')[0].object);
     return {
       uri: uri,
-      name: 'name',
-      totalSpaces: 750,
+      name: rdfslabel,
+      totalSpaces: totalSpaces,
       id: id
     }
   }
@@ -73,38 +72,38 @@ export class ParkingDataService {
   /**
    * Fetches the newest measurement for a certain parking
    * @param uri the uri of the parking
+   * @param datasetUrl the url of the dataset where this parking can be found
    * @returns {Promise<Measurement>}
    */
-  public getNewestParkingData(uri): Array<Promise < Measurement >> {
-    let _promises: Array<Promise < Measurement >> = [];
-    this.cityParkingUrls.forEach(url => {
-      _promises.push(new Promise((resolve) => {
+  public getNewestParkingData(uri, datasetUrl): Promise<Measurement> {
+    return new Promise((resolve) => {
       let latest: Measurement;
-        this.fetch.get(url).then(response => {
-          // Put all triples in store
-          const store = new n3.Store(response.triples, {
-            prefixes: response.prefixes
+      this.fetch.get(datasetUrl).then(response => {
+        // Put all triples in store
+        const store = new n3.Store(response.triples, {
+          prefixes: response.prefixes
+        });
+        // Get all measurements
+        const measurements = ParkingDataService.getMeasurements(uri, store);
+        // Get latest
+        let latestTimestamp = 0;
+        if (measurements) {
+          measurements.forEach((measurement) => {
+            if (measurement.timestamp > latestTimestamp) {
+              latestTimestamp = measurement.timestamp;
+              console.log(measurement);
+              latest = measurement;
+            }
           });
-          // Get all measurements
-          const measurements = ParkingDataService.getMeasurements(uri, store);
-          // Get latest
-          let latestTimestamp = 0;
-          if (measurements) {
-            measurements.forEach((measurement) => {
-              if (measurement.timestamp > latestTimestamp) {
-                latestTimestamp = measurement.timestamp;
-                console.log(measurement);
-                latest = measurement;
-              }
-            });
-            resolve(latest);
-          }
-        })
-      })
-    );
-  })
-  return _promises;
-}
+          resolve(latest);
+        }
+      });
+    });
+  }
+
+  public getDatasetUrls() {
+    return new Promise((resolve) => resolve(this.datasetUrls));
+  }
 
 
   /**
@@ -113,43 +112,37 @@ export class ParkingDataService {
    * @param from UNIX timestamp depicting the beginning of the time frame
    * @param to UNIX timestamp depicting the end of the time frame
    * @param onData the function to call when data is available
+   * @param datasetUrl the url of the dataset where the parking can be found
    * @returns ParkingDataInterval: call fetch() on this object to start fetching, cancel() to cancel
    */
-  public getParkingHistory(uri, from, to, onData) {
-    const entry = 'http://linked.open.gent/parking/?time=' + moment.unix(to).format('YYYY-MM-DDTHH:mm:ss');
+  public getParkingHistory(uri, from, to, onData, datasetUrl) {
+    const entry = datasetUrl + '?time=' + moment.unix(to).format('YYYY-MM-DDTHH:mm:ss');
     const pdi = new ParkingDataInterval(from, to, entry, uri);
     (pdi as EventEmitter).on('data', onData);
-    // pdi.fetch();
     return pdi;
   }
 
   /**
-   * Fetches static data for all parkings
+   * Fetches static data for all parkings from a certain dataset
    * @returns {Promise<Parking[]>}
    */
-  public getParkings(): Array<Promise<Parking[]>> {
-    const _promises = [];
-      const parkings: Parking[] = [];
-      let parkingTriples;
-      this.cityParkingUrls.forEach(url => {
-          _promises.push(new Promise((resolve) => {
-        this.fetch.get(url).then(response => {
-          // Put all triples in a store
-          const store = new n3.Store(response.triples, {
-            prefixes: response.prefixes
-          });
-          // Get all subjects that are parkings
-          parkingTriples = store.getTriples(null, 'rdf:type', 'datex:UrbanParkingSite');
-          // Get static data for each parking
-          parkingTriples.forEach(parking => {
-            const uri = parking.subject;
-            parkings.push(ParkingDataService.getParking(uri, store));
-          });
-          resolve(parkings);
-        })
-      }))
-    })
-    return _promises;
+  public getParkings(datasetUrl): Promise<Parking[]> {
+    return new Promise((resolve) => {
+      this.fetch.get(datasetUrl).then(response => {
+        // Put all triples in a store
+        const store = new n3.Store(response.triples, {
+          prefixes: response.prefixes
+        });
+        // Get all subjects that are parkings
+        const parkingTriples = store.getTriples(null, 'rdf:type', 'datex:UrbanParkingSite');
+        // Get static data for each parking
+        const parkings = [];
+        parkingTriples.forEach(parking => {
+          const uri = parking.subject;
+          parkings.push(ParkingDataService.getParking(uri, store));
+        });
+        resolve(parkings);
+      })
+    });
   }
-  }
-
+}
