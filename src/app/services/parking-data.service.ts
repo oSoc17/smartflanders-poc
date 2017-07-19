@@ -49,7 +49,7 @@ export class ParkingDataService {
    * @param store the N3 store of triples
    * @returns {Measurement[]} (time frame, not necessarily sorted)
    */
-  public static getMeasurements(uri, store, datasetUrl): Measurement[] {
+  public static getMeasurements(uri, store): Measurement[] {
     const measurementTriples = store.getTriples(uri, 'datex:parkingNumberOfVacantSpaces');
     const measurements: Measurement[] = [];
 
@@ -73,38 +73,34 @@ export class ParkingDataService {
   /**
    * Fetches the newest measurement for a certain parking
    * @param uri the uri of the parking
+   * @param datasetUrl the url of the dataset where this parking can be found
    * @returns {Promise<Measurement>}
    */
-  public getNewestParkingData(uri, datasetUrl): Array<Promise < Measurement >> {
-    let _promises: Array<Promise < Measurement >> = [];
-    this.cityParkingUrls.forEach(url => {
-      _promises.push(new Promise((resolve) => {
+  public getNewestParkingData(uri, datasetUrl): Promise<Measurement> {
+    return new Promise((resolve) => {
       let latest: Measurement;
-        this.fetch.get(url).then(response => {
-          // Put all triples in store
-          const store = new n3.Store(response.triples, {
-            prefixes: response.prefixes
+      this.fetch.get(datasetUrl).then(response => {
+        // Put all triples in store
+        const store = new n3.Store(response.triples, {
+          prefixes: response.prefixes
+        });
+        // Get all measurements
+        const measurements = ParkingDataService.getMeasurements(uri, store);
+        // Get latest
+        let latestTimestamp = 0;
+        if (measurements) {
+          measurements.forEach((measurement) => {
+            if (measurement.timestamp > latestTimestamp) {
+              latestTimestamp = measurement.timestamp;
+              console.log(measurement);
+              latest = measurement;
+            }
           });
-          // Get all measurements
-          const measurements = ParkingDataService.getMeasurements(uri, store);
-          // Get latest
-          let latestTimestamp = 0;
-          if (measurements) {
-            measurements.forEach((measurement) => {
-              if (measurement.timestamp > latestTimestamp) {
-                latestTimestamp = measurement.timestamp;
-                console.log(measurement);
-                latest = measurement;
-              }
-            });
-            resolve(latest);
-          }
-        })
-      })
-    );
-  })
-  return _promises;
-}
+          resolve(latest);
+        }
+      });
+    });
+  }
 
   public getDatasetUrls() {
     return new Promise((resolve) => resolve(this.datasetUrls));
