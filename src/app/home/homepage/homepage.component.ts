@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MdCardModule} from '@angular/material';
@@ -12,9 +13,7 @@ import Parking from './../../models/parking';
 })
 
 export class HomepageComponent implements OnInit {
-  /**
-   * parkings
-   */
+
   parkings: Array<Parking> = [];
   dataservice: ParkingDataService;
 
@@ -26,13 +25,11 @@ export class HomepageComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.dataservice.getParkings().then(result => {
-        this.parkings = result;
-    });
+    Promise.all(this.dataservice.getParkings()).then(result => {
+      this.parkings = result[result.length - 1];
+    })
   }
-  goToDetails(parking: Parking){
-    console.log(parking.id);
+  goToDetails(parking: Parking) {
     this.router.navigate(['/parkings', parking.id]);
   }
-
 }
