@@ -1,11 +1,15 @@
-md-card {
-  margin-bottom: 1rem;
-}
-
 md-button-toggle-group {
   flex-wrap: wrap;
   justify-content: space-around;
   box-shadow: none;
+}
+
+h5 {
+  /* text-align: center; */
+}
+
+.chart-settings-container {
+  margin-bottom: 2rem;
 }
 
 .settings-container {

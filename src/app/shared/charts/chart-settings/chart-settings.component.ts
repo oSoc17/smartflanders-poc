@@ -28,8 +28,9 @@ export class ChartSettingsComponent implements OnInit {
     this.selectedChart = 'scatter';
     this.selectedData = 'vacant';
     this.selectedTimeframe = 'hour';
+    this.changeSelectedTimeframe(this.selectedTimeframe);
     this.toTimestamp = Moment().unix();
-    // Argument of type '1' is not assignable to parameter of type 'DurationConstructor'
+    // // Argument of type '1' is not assignable to parameter of type 'DurationConstructor'
     // this.fromTimestamp = Moment().subtract(1, this.selectedTimeframe).unix();
     this.updateRange();
   }
@@ -61,11 +62,11 @@ export class ChartSettingsComponent implements OnInit {
     this.onCancel.emit();
   }
 
-  public changeSelectedChart(selectedChart) {
+  changeSelectedChart(selectedChart) {
     this.selectedChart = selectedChart.value;
   }
 
-  public changeSelectedTimeframe(selectedTimeframe) {
+  changeSelectedTimeframe(selectedTimeframe) {
     this.selectedTimeframe = selectedTimeframe.value;
     if (this.selectedTimeframe !== 'custom') {
       this.toTimestamp = Moment().unix();
@@ -74,7 +75,7 @@ export class ChartSettingsComponent implements OnInit {
     }
   }
 
-  public changeSelectedData(selectedData) {
+  changeSelectedData(selectedData) {
     this.changeSelectedData = selectedData.value;
   }
 

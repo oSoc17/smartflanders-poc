@@ -60,6 +60,10 @@ export class ScatterComponent implements OnInit {
             }
           }],
           yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Parking spots'
+            },
             ticks: {
               beginAtZero: true,
               suggestedMin: 50,
