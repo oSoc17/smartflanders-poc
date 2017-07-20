@@ -12,7 +12,8 @@ export class ParkingCompareCardAddComponent implements OnInit {
    @Output() parkingRemoved = new EventEmitter();
    @Input() private parkings: Parking[];
    activeStatus: Array<boolean> = [];
-   modalActions = new EventEmitter<string|MaterializeAction>();
+  modalActions = new EventEmitter<string|MaterializeAction>();
+
   constructor() { }
 
   ngOnInit() {

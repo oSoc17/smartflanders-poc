@@ -7,12 +7,12 @@
 
 <div id="parkingsModal2" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
   <div class="modal-content">
-    <h5>Add parkings to compare!</h5>
+    <h4>Add parkings to compare!</h4>
     <div class="collection">
       <a class="collection-item" (click)="activeStatus[i]=!activeStatus[i]" [class.active]="activeStatus[i]" class="collection-item" *ngFor="let parking of parkings, let i = index" (click)="addParking(parking.id, activeStatus[i])" >{{parking.name}}</a>
     </div>
   </div>
   <div class="modal-footer">
-    <a class="modal-action modal-close waves-effect btn">Done</a>
+    <a class="modal-action modal-close waves-effect btn-flat">Done</a>
   </div>
 </div>

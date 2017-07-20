@@ -1,33 +1,70 @@
-md-card {
-  margin-bottom: 1rem;
+md-button-toggle-group {
+  flex-wrap: wrap;
+  justify-content: space-around;
+  box-shadow: none;
 }
 
-.example-full-width {
-  width: 100%;
+.mat-button-toggle-checked {
+  background-color: #4fc3f7;
+  color: #ffffff !important;
 }
 
-.example-half-width {
-  width: 40%;
-  display: inline-block;
+.mat-button-toggle-checked >>> label.mat-button-toggle-label {
+  color: #ffffff;
 }
 
-.time-frame-container {
+.chart-settings-container {
+  margin-bottom: 2rem;
+}
+
+.settings-container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
+
+.settings-container .btn {
+  float: right;
+}
+
+.selector-container {
+  margin-bottom: 0.5rem;
+}
+
+
+/* INTERVAL SLIDER  */
+
+input[type=range]::-webkit-slider-thumb {
+  background-color: #4fc3f7;
+}
+
+input[type=range]::-moz-range-thumb {
+  background-color: #4fc3f7;
+}
+
+input[type=range]::-ms-thumb {
+  background-color: #4fc3f7;
+}
+
+input[type=range]+.thumb {
+  background-color: #4fc3f7 !important;
+}
+
+input[type=range]+.thumb.active .value {
+  color: #4fc3f7;
+}
+
+
+/* DATEPICKER */
 
 md-input-container {
   width: 15rem;
   margin-right: 2rem;
 }
 
-
-/* Undo materializecss input styling  */
-
 md-input-container >>> .mat-input-infix {
   padding-bottom: 0em !important;
 }
-
 
 input:not([type]),
 input[type=text]:not(.browser-default),

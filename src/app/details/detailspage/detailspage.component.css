@@ -1,24 +1,36 @@
-.details {
-    margin-top: 1rem;
+.parking-info-container {
+    margin-top: 2rem;
     height: 100%;
-    margin-bottom: 5rem;
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #F5F5F5;
+    margin-bottom: 2rem;
 }
 
-.details p {
-    font-weight: 300;
+.parking-info-container p:last-of-type {
+    margin-bottom: 1rem;
 }
 
-.doughnut {
+.parking-info p {
+    font-weight: 400;
+    margin: 0;
+}
+
+.parking-doughnut {
     width: 150px;
     float: left;
     margin-right: 2rem;
+    margin-bottom: 2rem;
 }
 
-.scatter {
+.parking-scatter {
     margin-top: 2rem;
 }
 
-h2 {
-    font-size: 2rem;
-    line-height: 2.2rem;
+#settingsBtn {
+    float: right;
+}
+
+h3 {
+    margin-top: 0rem;
 }

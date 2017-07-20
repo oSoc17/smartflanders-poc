@@ -1,7 +1,7 @@
 import { element } from 'protractor';
 import TimestampRange from '../../models/timestamp-range';
 import * as Rx from 'rxjs/Rx';
-import {Component, EventEmitter, OnInit} from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { findLast } from 'lodash';
 import { ParkingDataService } from '../../services/parking-data.service';
@@ -51,6 +51,7 @@ ngOnInit() {
         if (p.id === id) {
           this.parking = p;
         }
+
       })
   }).then(() => {
     this._parkingDataService.getNewestParkingData(this.parking.uri, this.cityUrl).then(result => {

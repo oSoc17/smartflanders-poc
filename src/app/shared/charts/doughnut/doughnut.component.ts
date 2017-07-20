@@ -24,11 +24,11 @@ export class DoughnutComponent implements OnInit {
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
-    //wait until charts are drawn ....
-    if(this.chart) {
+    // wait until charts are drawn ....
+    if (this.chart) {
       console.log('change called' + changes.measurement.currentValue.value );
       this.vacantSpaces = changes.measurement.currentValue.value;
-      this.addData([this.parking.totalSpaces-changes.measurement.currentValue.value, changes.measurement.currentValue.value]);
+      this.addData([changes.measurement.currentValue.value, this.parking.totalSpaces - changes.measurement.currentValue.value]);
     }
 
   }
@@ -41,19 +41,19 @@ export class DoughnutComponent implements OnInit {
 
     this.data = {
       labels: [
-        'Taken',
-        'Free'
+        'Free',
+        'Taken'
       ],
       datasets: [{
         // Filled spots, vacant spots
-        data: [this.parking.totalSpaces - this.measurement.value, this.measurement.value],
+        data: [this.measurement.value, this.parking.totalSpaces - this.measurement.value],
         backgroundColor: [
-          '#C7C7C7',
-          '#4fc3f7'
+          '#4fc3f7',
+          '#C7C7C7'
         ],
         hoverBackgroundColor: [
-          '#9d9d9d',
-          '#0aa2e7'
+          '#0aa2e7',
+          '#9d9d9d'
         ]
       }]
     };

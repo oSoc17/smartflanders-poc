@@ -34,7 +34,7 @@ export class ScatterComponent implements OnInit {
       type: 'scatter',
       data: {
         datasets: [{
-          label: 'Free Spaces',
+          label: 'Vacant spaces',
           showLine: true,
           data: this.chartData,
           pointRadius: 1,
@@ -45,27 +45,34 @@ export class ScatterComponent implements OnInit {
           borderColor: [
             '#4fc3f7',
           ],
-          borderWidth: 1
+          borderWidth: 2
         }]
       },
       options: {
+        legend: {
+          display: false
+        },
         scales: {
           xAxes: [{
             type: 'time',
             time: {
-                    unit: 'hour',
-                     displayFormats: {
-                        hour: 'MMM D, HH:mm'
-                    },
-                    parse:  (value) => { return moment.unix(value).toISOString()},
-                }
+              unit: 'hour',
+              displayFormats: {
+                hour: 'MMM D, HH:mm'
+              },
+              parse: (value) => moment.unix(value).toISOString(),
+            }
           }],
           yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Spots'
+            },
             ticks: {
-                    beginAtZero: true,
-                    suggestedMin: 50,
-                    suggestedMax: this.parking.totalSpaces
-                }
+              beginAtZero: true,
+              suggestedMin: 50,
+              suggestedMax: this.parking.totalSpaces
+            }
           }]
         }
       }

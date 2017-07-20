@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { ParkingDataService} from './services/parking-data.service';
 import { AppRoutingModule } from './app.routes';
 import { HomepageComponent } from './home/homepage/homepage.component';
-import { MdCardModule, MdButtonModule, MdToolbarModule, MdInputModule, MdProgressSpinnerModule } from '@angular/material';
+import { MdCardModule, MdButtonModule, MdToolbarModule, MdInputModule, MdButtonToggleModule, MdSliderModule } from '@angular/material';
 import { DetailspageComponent } from './details/detailspage/detailspage.component';
 import { ParkingCardComponent } from './home/homepage/parking-card/parking-card.component';
 import { NavbarComponent } from './shared/nav/navbar/navbar.component';
@@ -21,6 +21,7 @@ import { BreadcrumbComponent } from './shared/nav/breadcrumb/breadcrumb.componen
 import { ComparepageComponent } from './compare/comparepage/comparepage.component';
 import { ParkingCompareCardComponent } from './compare/comparepage/parking-compare-card/parking-compare-card.component';
 import { ParkingCompareCardAddComponent } from './compare/comparepage/parking-compare-card-add/parking-compare-card-add.component';
+import { ChartSettingsComponent } from './shared/charts/chart-settings/chart-settings.component';
 import { CitySectionComponent } from './home/homepage/city-section/city-section.component';
 import { MaterializeModule } from 'angular2-materialize';
 
@@ -40,6 +41,7 @@ import { MaterializeModule } from 'angular2-materialize';
     ComparepageComponent,
     ParkingCompareCardComponent,
     ParkingCompareCardAddComponent,
+    ChartSettingsComponent,
     CitySectionComponent
   ],
   imports: [
@@ -50,7 +52,8 @@ import { MaterializeModule } from 'angular2-materialize';
     MdButtonModule,
     MdToolbarModule,
     MdInputModule,
-    MdProgressSpinnerModule,
+    MdButtonToggleModule,
+    MdSliderModule,
     BrowserAnimationsModule,
     FormsModule,
     MomentModule,

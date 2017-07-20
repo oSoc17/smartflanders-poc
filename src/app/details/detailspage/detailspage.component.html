@@ -1,18 +1,23 @@
 <div class="container">
-    <app-breadcrumb [parking]="parking"></app-breadcrumb>
-    <div *ngIf="measurement" class="detail-card">
-        <md-card>
-            <div class="details">
-                <div class="doughnut">
-                    <app-chart-doughnut class="doughnut" [parking]="parking" [measurement]="measurement"></app-chart-doughnut>
-                </div>
-                <h3>{{parking.name}}</h3>
-                <p>Total places: 456</p>
-                <p>Recent trend: <i class="material-icons">trending_up</i></p>
-            </div>
-                <app-time-frame-select (onRangeChange)="onRangeChange($event)" (onCancel)="onCancel()"></app-time-frame-select>
-                <app-chart-scatter [parking]="parking" [data]="rangeData" [clear]="clear"></app-chart-scatter>
-        </md-card>
-    </div>
-</div>
 
+  <app-breadcrumb [parking]="parking"></app-breadcrumb>
+  <md-card *ngIf="measurement">
+    <div class="parking-info-container">
+      <app-chart-doughnut class="parking-doughnut" [parking]="parking" [measurement]="measurement"></app-chart-doughnut>
+      <div class="parking-info">
+        <h3>{{parking.name}}</h3>
+        <h5>TOTAL SPOTS</h5>
+        <p>{{parking.totalSpaces}}</p>
+        <h5>TREND</h5>
+        <p><i class="material-icons">trending_up</i></p>
+      </div>
+
+    </div>
+    <div class="chart-container">
+      <h4>Visualize historic data</h4>
+      <app-chart-settings (onRangeChange)="onRangeChange($event)" (onCancel)="onCancel()"></app-chart-settings>
+      <app-chart-scatter [parking]="parking" [data]="rangeData" [clear]="clear"></app-chart-scatter>
+    </div>
+  </md-card>
+
+</div>
