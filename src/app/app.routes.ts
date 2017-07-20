@@ -11,7 +11,6 @@ const routes: Routes = [
   { path: 'compare', component: ComparepageComponent },
   { path: 'detail', component: DetailspageComponent },
   { path: 'parkings/:id', component: DetailspageComponent },
-  { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 
 @NgModule({
