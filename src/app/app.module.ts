@@ -22,6 +22,7 @@ import { ComparepageComponent } from './compare/comparepage/comparepage.componen
 import { ParkingCompareCardComponent } from './compare/comparepage/parking-compare-card/parking-compare-card.component';
 import { ParkingCompareCardAddComponent } from './compare/comparepage/parking-compare-card-add/parking-compare-card-add.component';
 import { ChartSettingsComponent } from './shared/charts/chart-settings/chart-settings.component';
+import { MaterializeModule } from 'angular2-materialize';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { ChartSettingsComponent } from './shared/charts/chart-settings/chart-set
     MdSliderModule,
     BrowserAnimationsModule,
     FormsModule,
-    MomentModule
+    MomentModule,
+    MaterializeModule,
     ],
   providers: [ParkingDataService],
   bootstrap: [AppComponent]
