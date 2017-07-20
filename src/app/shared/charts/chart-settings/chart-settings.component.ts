@@ -27,12 +27,7 @@ export class ChartSettingsComponent implements OnInit {
   ngOnInit() {
     this.selectedChart = 'scatter';
     this.selectedData = 'vacant';
-    this.selectedTimeframe = 'hour';
-    this.changeSelectedTimeframe(this.selectedTimeframe);
-    this.toTimestamp = Moment().unix();
-    // // Argument of type '1' is not assignable to parameter of type 'DurationConstructor'
-    // this.fromTimestamp = Moment().subtract(1, this.selectedTimeframe).unix();
-    this.updateRange();
+    
   }
 
   openTimePickerFrom(diff: string) {

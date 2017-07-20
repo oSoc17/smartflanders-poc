@@ -4,8 +4,13 @@ md-button-toggle-group {
   box-shadow: none;
 }
 
-h5 {
-  /* text-align: center; */
+.mat-button-toggle-checked {
+  background-color: #4fc3f7;
+  color: #ffffff !important;
+}
+
+.mat-button-toggle-checked >>> label.mat-button-toggle-label {
+  color: #ffffff;
 }
 
 .chart-settings-container {

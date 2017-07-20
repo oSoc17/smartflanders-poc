@@ -3,6 +3,12 @@
     height: 100%;
     display: flex;
     flex-wrap: wrap;
+    border-bottom: 1px solid #F5F5F5;
+    margin-bottom: 2rem;
+}
+
+.parking-info-container p:last-of-type {
+    margin-bottom: 1rem;
 }
 
 .parking-info p {

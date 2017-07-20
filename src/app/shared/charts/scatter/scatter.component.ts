@@ -31,6 +31,7 @@ export class ScatterComponent implements OnInit {
       type: 'scatter',
       data: {
         datasets: [{
+          label: 'Vacant spaces',
           showLine: true,
           data: this.chartData,
           pointRadius: 1,
@@ -41,7 +42,7 @@ export class ScatterComponent implements OnInit {
           borderColor: [
             '#4fc3f7',
           ],
-          borderWidth: 1
+          borderWidth: 2
         }]
       },
       options: {
@@ -62,7 +63,7 @@ export class ScatterComponent implements OnInit {
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Parking spots'
+              labelString: 'Spots'
             },
             ticks: {
               beginAtZero: true,

@@ -48,6 +48,7 @@ export class DetailspageComponent implements OnInit {
     }).then(() => {
       this._parkingDataService.getNewestParkingData(this.parking.uri).then(result => {
         this.measurement = new Measurement(result.timestamp, result.value);
+        console.log(this.parking);
       })
     })
   }
