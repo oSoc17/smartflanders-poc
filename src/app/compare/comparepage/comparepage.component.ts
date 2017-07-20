@@ -9,8 +9,11 @@ import {
 import * as Rx from 'rxjs/Rx';
 import {
   find,
-  indexOf
+  indexOf,
+  values
 } from 'lodash';
+import Parking from './../../models/parking'
+
 
 @Component({
   selector: 'app-comparepage',
@@ -20,11 +23,10 @@ import {
 export class ComparepageComponent implements OnInit {
 
   data = {};
-  parkings = [];
+  parkings: Array<Parking> = [];
   parkingToCompare = [];
   clear = new EventEmitter();
   intervalFetchers = {};
-
   constructor(private _parkingDataService: ParkingDataService) {}
 
   onRangeChange($event) {
@@ -35,17 +37,22 @@ export class ComparepageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._parkingDataService.getParkings("http://kortrijk.datapiloten.be/parking/").then(result => {
-      this.parkings = result;
+    this._parkingDataService.getDatasetUrls().then(result => {
+      values(result).forEach(city => {
+        this._parkingDataService.getParkings(city).then(parkings => {
+          this.parkings.push.apply(this.parkings, parkings);
+        });
+      });
     });
   }
+
 
   getData(range) {
     this.clear.emit();
     this.parkingToCompare.forEach(parking => {
       this.intervalFetchers[parking.uri] = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, data => {
         this.data[parking.uri].next(data);
-      }, "http://kortrijk.datapiloten.be/parking/");
+      }, parking.cityUrl);
       this.intervalFetchers[parking.uri].fetch();
     });
   }
@@ -54,7 +61,6 @@ export class ComparepageComponent implements OnInit {
     Object.keys(this.intervalFetchers).forEach((uri) => {
       const interval = this.intervalFetchers[uri];
       interval.cancel();
-      console.log(uri);
     });
     this.clear.emit();
     this.intervalFetchers = {};
@@ -73,5 +79,7 @@ export class ComparepageComponent implements OnInit {
     if (this.parkingToCompare.indexOf(_parking) === -1) {
       this.parkingToCompare.push(_parking);
     }
+    this.data[_parking.uri] = new Rx.Subject();
   }
+
 }

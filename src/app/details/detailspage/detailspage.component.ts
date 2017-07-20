@@ -61,7 +61,6 @@ ngOnInit() {
 }
 
 getData(range: TimestampRange, parking: Parking) {
-  console.log(range);
   this.clear.emit();
   const _this = this;
   this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {

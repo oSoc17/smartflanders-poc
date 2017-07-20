@@ -20,6 +20,7 @@ export class ScatterComponent implements OnInit {
   private chartData = [];
   private config;
   private chart;
+  private updateIncoming = false;
 
   constructor() {
   }
@@ -69,16 +70,27 @@ export class ScatterComponent implements OnInit {
     };
     this.chart = new Chart(this.context, this.config);
     this.data.subscribe(d => {
-      const index = sortedLastIndexBy(this.chartData, {x: d.timestamp, y: parseInt(d.value, 10)}, function(o) { return o.x; });
-      this.chartData.splice(index , 0, {x: d.timestamp * 1000, y: parseInt(d.value, 10)});
-      this.parkingHistory.timeframe.splice(index, 0, d);
-      this.chart.update();
-      console.log('updated');
+    const index = sortedLastIndexBy(this.chartData, {x: d.timestamp, y: parseInt(d.value, 10)}, function(o) { return o.x; });
+     this.parkingHistory.timeframe.splice(index, 0, d);
+      this.chartData.splice(index, 0, {x: d.timestamp * 1000, y: parseInt(d.value, 10)});
+      this.updatePeriodically();
     });
     this.clear.subscribe(() => {
       this.chartData.splice(0, this.chartData.length);
       this.chart.update();
       console.log('cleared');
     })
+  }
+
+  updatePeriodically() {
+    if (!this.updateIncoming) {
+      this.updateIncoming = true;
+      const t = this;
+      setTimeout(() => {
+        t.chart.update();
+        console.log('updated');
+        t.updateIncoming = false;
+      }, 1000);
+    }
   }
 }

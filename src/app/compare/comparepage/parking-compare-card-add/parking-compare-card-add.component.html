@@ -1,11 +1,11 @@
 <md-card>
   <md-card-content>
     <p>Compare parkings!</p>
-    <button data-target="parkingsModal" class="waves-effect waves-light btn">Add parkings </button>
+    <button *ngIf="parkings" (click)="openModal()" class="waves-effect waves-light btn">Add parkings </button>
   </md-card-content>
 </md-card>
 
-<div id="parkingsModal" class="modal">
+<div id="parkingsModal2" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
   <div class="modal-content">
     <h5>Add parkings to compare!</h5>
     <div class="collection">

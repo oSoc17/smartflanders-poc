@@ -9,7 +9,7 @@
         [value]="value">
     </md-progress-spinner>
 
-    <ul class="collapsible" data-collapsible="accordion">
+    <ul class="collapsible" data-collapsible="accordion" materialize="collapsible">
     <li *ngFor="let city of cities ; let i=index">
       <div class="collapsible-header"><i class="material-icons">filter_drama</i>{{citynames[i]}}</div>
       <div class="collapsible-body"><app-city-section  [cityUrl]="city"></app-city-section></div>

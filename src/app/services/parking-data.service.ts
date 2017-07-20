@@ -29,13 +29,14 @@ export class ParkingDataService {
    * @param store the N3 store of triples
    * @returns {Parking}
    */
-  public static getParking(uri, store): Parking {
+  public static getParking(uri, store, datasetUrl): Parking {
     const totalSpacesObj = store.getTriples(uri, 'datex:parkingNumberOfSpaces')[0].object;
     const totalSpaces = parseInt(n3.Util.getLiteralValue(totalSpacesObj), 10);
     const rdfslabel = n3.Util.getLiteralValue(store.getTriples(uri, 'rdfs:label')[0].object);
     const id = rdfslabel.replace(' ', '-').toLowerCase();
     return {
       uri: uri,
+      cityUrl: datasetUrl,
       name: rdfslabel,
       totalSpaces: totalSpaces,
       id: id
@@ -138,7 +139,7 @@ export class ParkingDataService {
         const parkings = [];
         parkingTriples.forEach(parking => {
           const uri = parking.subject;
-          parkings.push(ParkingDataService.getParking(uri, store));
+          parkings.push(ParkingDataService.getParking(uri, store, datasetUrl));
         });
         resolve(parkings);
       })
