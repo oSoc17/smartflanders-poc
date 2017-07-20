@@ -41,7 +41,7 @@ import { MaterializeModule } from 'angular2-materialize';
     ComparepageComponent,
     ParkingCompareCardComponent,
     ParkingCompareCardAddComponent,
-    ChartSettingsComponent
+    ChartSettingsComponent,
     CitySectionComponent
   ],
   imports: [
