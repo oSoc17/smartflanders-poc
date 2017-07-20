@@ -17,13 +17,13 @@ import {ParkingDataInterval} from '../../services/parking-data-interval';
 })
 
 export class DetailspageComponent implements OnInit {
-  private rangeData = new Rx.Subject();
-  private clear = new EventEmitter();
-  private parking: Parking;
-  private measurement: Measurement;
-  private intervalFetcher: ParkingDataInterval;
-  private parkings: Array<Parking> = [];
-  private cityUrl: string;
+  public rangeData = new Rx.Subject();
+  public clear = new EventEmitter();
+  public parking: Parking;
+  public measurement: Measurement;
+  public intervalFetcher: ParkingDataInterval;
+  public parkings: Array<Parking> = [];
+  public cityUrl: string;
 
   onRangeChange($event) {
     this.getData($event, this.parking);

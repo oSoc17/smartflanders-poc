@@ -11,9 +11,9 @@ import MaterialDateTimePicker from 'material-datetime-picker';
 })
 export class TimeFrameSelectComponent implements OnInit {
 
-  private fromTimestamp: number;
-  private toTimestamp: number;
-  private picker: MaterialDateTimePicker;
+  public fromTimestamp: number;
+  public toTimestamp: number;
+  public picker: MaterialDateTimePicker;
 
   @Output() onRangeChange = new EventEmitter <TimestampRange> ();
   @Output() onCancel = new EventEmitter();

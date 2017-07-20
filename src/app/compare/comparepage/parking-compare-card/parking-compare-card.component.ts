@@ -8,9 +8,9 @@ import Parking from '../../../models/parking';
 })
 export class ParkingCompareCardComponent implements OnInit {
 
-  @Input() private data;
-  @Input() private parking: Parking;
-  @Input() private clear;
+  @Input() public data;
+  @Input() public parking: Parking;
+  @Input() public clear;
 
   constructor() { }
 
