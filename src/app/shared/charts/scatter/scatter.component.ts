@@ -86,10 +86,12 @@ export class ScatterComponent implements OnInit {
     this.counter ++;
     console.log(this.counter);
     if ( this.counter >= 20) {
-      const index = sortedLastIndexBy(this.chartData, {x: (d.timestamp * 1000)}, function(o) { return o.x; });
-      this.parkingHistory.timeframe.splice(index, 0, d);
-      this.chartData.splice(index, 0, {x: d.timestamp * 1000, y: parseInt(d.value, 10)});
-      this.chart.update();
+      //this.parkingHistory.timeframe.splice(index, 0, d);
+      this.chart.data.datasets.forEach(element => {
+        const index = sortedLastIndexBy(element, {x: (d.timestamp * 1000)}, function(o) { return o.x; });
+        element.data.splice(index, 0, {x: d.timestamp * 1000, y: parseInt(d.value, 10)});
+      });
+      this.chart.update(0);
       this.counter = 0;
     }
   }
