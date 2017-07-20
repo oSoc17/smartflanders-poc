@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomepageComponent } from './home/homepage/homepage.component';
 import { ComparepageComponent } from './compare/comparepage/comparepage.component';
 import { DetailspageComponent } from './details/detailspage/detailspage.component';
-import {HashLocationStrategy, Location, LocationStrategy} from '@angular/common';
 
 
 const routes: Routes = [
@@ -12,6 +11,7 @@ const routes: Routes = [
   { path: 'compare', component: ComparepageComponent },
   { path: 'detail', component: DetailspageComponent },
   { path: 'parkings/:id', component: DetailspageComponent },
+  { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 
 @NgModule({
