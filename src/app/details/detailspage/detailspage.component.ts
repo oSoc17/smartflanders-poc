@@ -43,7 +43,7 @@ constructor(
 
 ngOnInit() {
   this.cityUrl = this.route.snapshot.paramMap.get('cityUrl');
-  const id = this.route.snapshot.paramMap.get('parkingid');
+  const id = this.route.snapshot.url[1].path;
   this._parkingDataService.getParkings(this.cityUrl).then(result => {
          this.parkings = result;
     }).then( () => {
@@ -54,6 +54,7 @@ ngOnInit() {
       })
   }).then(() => {
     this._parkingDataService.getNewestParkingData(this.parking.uri, this.cityUrl).then(result => {
+      this.measurement = result;
       console.log(result);
     });
   })
