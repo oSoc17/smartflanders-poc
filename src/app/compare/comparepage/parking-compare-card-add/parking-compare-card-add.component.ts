@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import Parking from '../../../models/parking';
+import {MaterializeAction} from 'angular2-materialize';
 
 @Component({
   selector: 'app-parking-compare-card-add',
@@ -11,7 +12,7 @@ export class ParkingCompareCardAddComponent implements OnInit {
    @Output() parkingRemoved = new EventEmitter();
    @Input() private parkings: Parking[];
    activeStatus: Array<boolean> = [];
-
+   modalActions = new EventEmitter<string|MaterializeAction>();
   constructor() { }
 
   ngOnInit() {
@@ -26,6 +27,10 @@ export class ParkingCompareCardAddComponent implements OnInit {
        this.parkingRemoved.emit(parkingId);
     }
   }
-
-
+  openModal() {
+    this.modalActions.emit({action:"modal",params:['open']});
+  }
+  closeModal() {
+    this.modalActions.emit({action:"modal",params:['close']});
+  }
 }

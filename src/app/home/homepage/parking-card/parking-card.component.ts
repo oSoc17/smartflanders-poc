@@ -11,6 +11,7 @@ import { ParkingDataService } from './../../../services/parking-data.service';
 })
 export class ParkingCardComponent implements OnInit {
  @Input() parking: Parking;
+ @Input() cityUrl: string;
  dataservice: ParkingDataService;
  private measurement: Measurement;
 
@@ -21,21 +22,12 @@ export class ParkingCardComponent implements OnInit {
     this.calculatePercentage();
     setInterval(() => {
       this.calculatePercentage();
-    }, 30000);
+    }, 60000);
   }
 
   private calculatePercentage() {
-    Promise.all(this.dataservice.getNewestParkingData(this.parking.uri)).then(result => {
-      result.forEach(element => {
-        if (element) {
-          this.measurement = element;
-        }
-      });
-      //this.measurement = result ;
+    this.dataservice.getNewestParkingData(this.parking.uri, this.cityUrl).then(result => {
+      this.measurement = result ;
     });
   }
-
-
- 
-
 }

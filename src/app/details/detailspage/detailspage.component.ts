@@ -23,6 +23,7 @@ export class DetailspageComponent implements OnInit {
   private measurement: Measurement;
   private intervalFetcher: ParkingDataInterval;
   private parkings: Array<Parking> = [];
+  private cityUrl: string;
 
   onRangeChange($event) {
     this.getData($event, this.parking);
@@ -41,9 +42,10 @@ constructor(
   private router: Router) {}
 
 ngOnInit() {
-  const id = this.route.snapshot.paramMap.get('id');
-  Promise.all(this._parkingDataService.getParkings()).then(result => {
-         this.parkings = result[result.length - 1]
+  this.cityUrl = this.route.snapshot.paramMap.get('cityUrl');
+  const id = this.route.snapshot.url[1].path;
+  this._parkingDataService.getParkings(this.cityUrl).then(result => {
+         this.parkings = result;
     }).then( () => {
     this.parkings.forEach(p => {
         if (p.id === id) {
@@ -51,23 +53,19 @@ ngOnInit() {
         }
       })
   }).then(() => {
-    Promise.all(this._parkingDataService.getNewestParkingData(this.parking.uri)).then(result => {
-      result.forEach(element => {
-        if (element) {
-          this.measurement = element;
-        }
-      })
+    this._parkingDataService.getNewestParkingData(this.parking.uri, this.cityUrl).then(result => {
+      this.measurement = result;
+      console.log(result);
     });
   })
 }
 
 getData(range: TimestampRange, parking: Parking) {
-  console.log(range);
   this.clear.emit();
   const _this = this;
   this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {
     _this.rangeData.next(data);
-  });
+  }, this.cityUrl);
   this.intervalFetcher.fetch();
 }
 }

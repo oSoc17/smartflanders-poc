@@ -1,4 +1,6 @@
-<a><app-parking-card  *ngFor="let parking of parkings" class="parking-card"
+<div class="container"> <a *ngIf="parkings && cityUrl" ><app-parking-card 
+*ngFor="let parking of parkings" class="parking-card"
+[cityUrl]="cityUrl"
 [parking]= "parking"
-(click)="goToDetails(parking)">
-</app-parking-card></a>
+(click)="goToDetails(parking, cityUrl)">
+</app-parking-card></a></div>

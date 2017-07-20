@@ -22,6 +22,7 @@ import { ComparepageComponent } from './compare/comparepage/comparepage.componen
 import { ParkingCompareCardComponent } from './compare/comparepage/parking-compare-card/parking-compare-card.component';
 import { ParkingCompareCardAddComponent } from './compare/comparepage/parking-compare-card-add/parking-compare-card-add.component';
 import { CitySectionComponent } from './home/homepage/city-section/city-section.component';
+import { MaterializeModule } from 'angular2-materialize';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { CitySectionComponent } from './home/homepage/city-section/city-section.
     MdProgressSpinnerModule,
     BrowserAnimationsModule,
     FormsModule,
-    MomentModule
+    MomentModule,
+    MaterializeModule
     ],
   providers: [ParkingDataService],
   bootstrap: [AppComponent]
