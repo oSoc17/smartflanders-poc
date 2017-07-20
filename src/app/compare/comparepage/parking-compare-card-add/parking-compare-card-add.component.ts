@@ -7,10 +7,11 @@ import {MaterializeAction} from 'angular2-materialize';
   templateUrl: './parking-compare-card-add.component.html',
   styleUrls: ['./parking-compare-card-add.component.css']
 })
+
 export class ParkingCompareCardAddComponent implements OnInit {
    @Output() parkingAdded = new EventEmitter();
    @Output() parkingRemoved = new EventEmitter();
-   @Input() private parkings: Parking[];
+   @Input()  public parkings: Parking[];
    activeStatus: Array<boolean> = [];
   modalActions = new EventEmitter<string|MaterializeAction>();
 

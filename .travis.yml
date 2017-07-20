@@ -1,13 +1,16 @@
 language: node_js
 node_js:
-  - "6.9"
+  - "8.2.0"
 
 branches:
   only:
     - development
+cache:
+  directories:
+    - "node_modules"
 
 before_script:
   - npm install -g @angular/cli
 
 script:
-  - ng build --prod
+  - ng build 

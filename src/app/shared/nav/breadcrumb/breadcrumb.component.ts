@@ -8,7 +8,7 @@ import Parking from './../../../models/parking'
 })
 export class BreadcrumbComponent implements OnInit {
 
-  @Input() private parking: Parking;
+  @Input() public parking: Parking;
 
   constructor() {}
 

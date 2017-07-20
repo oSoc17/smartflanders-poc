@@ -11,12 +11,12 @@ import * as Moment from 'moment';
 })
 export class ChartSettingsComponent implements OnInit {
 
-  private selectedChart: string;
-  private selectedTimeframe: string;
-  private selectedData: string;
-  private fromTimestamp: number;
-  private toTimestamp: number;
-  private picker: MaterialDateTimePicker;
+  public selectedChart: string;
+  public selectedTimeframe: string;
+  public selectedData: string;
+  public fromTimestamp: number;
+  public toTimestamp: number;
+  public picker: MaterialDateTimePicker;
 
   @Output() onRangeChange = new EventEmitter<TimestampRange>();
   @Output() onCancel = new EventEmitter();
