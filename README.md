@@ -1,5 +1,7 @@
 # Smart Flanders POC 🎓
 
+[![Build Status](https://travis-ci.org/oSoc17/smartflanders-poc.svg?branch=development)](https://travis-ci.org/oSoc17/smartflanders-poc)
+
 30% of all traffic in a city is due to people looking for a parking spot. Wouldn't it be nice to help those people in finding a parking spot on the fly. With this proof of concept we do not only try to address this issue we also want to prove to governments and industries to publish as much data as possible as linked data. By publishing their data as linked data developers could link different datasets together and use it for a variety of projects. If you are interested in the back-end please visit [Back-end](https://github.com/oSoc17/smartflanders-backend)
 
 ## Installation
