@@ -21,6 +21,7 @@ export class ScatterComponent implements OnInit {
   private config;
   private chart;
   private updateIncoming = false;
+  private counter = 0;
 
   constructor() {
   }
@@ -29,6 +30,7 @@ export class ScatterComponent implements OnInit {
     this.context = this.scatter.nativeElement;
     this.parkingHistory = new ParkingHistory(this.parking, []);
     this.config = {
+       animation: false,
       type: 'scatter',
       data: {
         datasets: [{
@@ -70,10 +72,7 @@ export class ScatterComponent implements OnInit {
     };
     this.chart = new Chart(this.context, this.config);
     this.data.subscribe(d => {
-    const index = sortedLastIndexBy(this.chartData, {x: d.timestamp, y: parseInt(d.value, 10)}, function(o) { return o.x; });
-     this.parkingHistory.timeframe.splice(index, 0, d);
-      this.chartData.splice(index, 0, {x: d.timestamp * 1000, y: parseInt(d.value, 10)});
-      this.updatePeriodically();
+      this.updatePeriodically(d);
     });
     this.clear.subscribe(() => {
       this.chartData.splice(0, this.chartData.length);
@@ -82,15 +81,16 @@ export class ScatterComponent implements OnInit {
     })
   }
 
-  updatePeriodically() {
-    if (!this.updateIncoming) {
-      this.updateIncoming = true;
-      const t = this;
-      setTimeout(() => {
-        t.chart.update();
-        console.log('updated');
-        t.updateIncoming = false;
-      }, 1000);
+
+  updatePeriodically(d) {
+    this.counter ++;
+    console.log(this.counter);
+    if ( this.counter >= 20) {
+      const index = sortedLastIndexBy(this.chartData, {x: (d.timestamp * 1000)}, function(o) { return o.x; });
+      this.parkingHistory.timeframe.splice(index, 0, d);
+      this.chartData.splice(index, 0, {x: d.timestamp * 1000, y: parseInt(d.value, 10)});
+      this.chart.update();
+      this.counter = 0;
     }
   }
 }
