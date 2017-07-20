@@ -1,10 +1,22 @@
-<div class="container" *ngIf="parkings">
-    <h2>parkings</h2>
-<a><app-parking-card  *ngFor="let parking of parkings" class="parking-card"
-[parking]= "parking"
-(click)="goToDetails(parking)">
-</app-parking-card></a>
+<div *ngIf="parkings">
+    <h2>Parkings</h2>
+    <!-- Show loader if cities are not loaded -->
+        <md-progress-spinner
+        *ngIf="!cities"
+        class="example-margin"
+        [color]="color"
+        [mode]="mode"
+        [value]="value">
+    </md-progress-spinner>
+
+    <ul class="collapsible" data-collapsible="accordion" materialize="collapsible">
+    <li *ngFor="let city of cities ; let i=index">
+      <div class="collapsible-header"><i class="material-icons">filter_drama</i>{{citynames[i]}}</div>
+      <div class="collapsible-body"><app-city-section  [cityUrl]="city"></app-city-section></div>
+    </li>
+  </ul>
+   
 <div class="message">
-    <p>more coming!</p>
+    <p>More coming!</p>
 </div>
 </div>

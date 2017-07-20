@@ -59,6 +59,7 @@ export class DoughnutComponent implements OnInit {
     };
     this.config = {
       type: 'doughnut',
+      animation: false,
       data: this.data,
       options: {
         // rotation: -1.25 * Math.PI,
@@ -87,7 +88,7 @@ export class DoughnutComponent implements OnInit {
     this.chart.data.datasets.forEach((dataset) => {
       dataset.data.push(_data);
     });
-    this.chart.update();
+    this.chart.update(0);
   }
 }
 

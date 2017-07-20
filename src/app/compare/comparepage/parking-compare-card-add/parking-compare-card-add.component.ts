@@ -28,14 +28,10 @@ export class ParkingCompareCardAddComponent implements OnInit {
        this.parkingRemoved.emit(parkingId);
     }
   }
-
-
   openModal() {
     this.modalActions.emit({action:"modal",params:['open']});
   }
   closeModal() {
     this.modalActions.emit({action:"modal",params:['close']});
   }
-
-
 }

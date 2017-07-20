@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {MdCardModule} from '@angular/material';
 import Parking from './../../../models/parking';
-import  Measurement from "./../../../models/measurement"; 
+import Measurement from './../../../models/measurement';
 import { ParkingDataService } from './../../../services/parking-data.service';
 
 @Component({
@@ -11,26 +11,23 @@ import { ParkingDataService } from './../../../services/parking-data.service';
 })
 export class ParkingCardComponent implements OnInit {
  @Input() parking: Parking;
- dataservice:ParkingDataService;
+ @Input() cityUrl: string;
+ dataservice: ParkingDataService;
  private measurement: Measurement;
 
-  constructor(private _dataservice:ParkingDataService) { 
+  constructor(private _dataservice: ParkingDataService) {
     this.dataservice = _dataservice;
   }
   ngOnInit() {
     this.calculatePercentage();
-    setInterval(()=>{
+    setInterval(() => {
       this.calculatePercentage();
-    }, 10000);
+    }, 60000);
   }
 
-  private calculatePercentage(){
-    this.dataservice.getNewestParkingData(this.parking.uri).then(result => {
-      this.measurement = result;
+  private calculatePercentage() {
+    this.dataservice.getNewestParkingData(this.parking.uri, this.cityUrl).then(result => {
+      this.measurement = result ;
     });
   }
-
-
- 
-
 }

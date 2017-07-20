@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: 'parkings', component: HomepageComponent },
   { path: 'compare', component: ComparepageComponent },
   { path: 'detail', component: DetailspageComponent },
-  { path: 'parkings/:id', component: DetailspageComponent },
+  { path: 'parkings/:parkingid /:cityUrl', component: DetailspageComponent },
 ];
 
 @NgModule({
