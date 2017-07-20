@@ -24,6 +24,7 @@ import { ParkingCompareCardAddComponent } from './compare/comparepage/parking-co
 import { ChartSettingsComponent } from './shared/charts/chart-settings/chart-settings.component';
 import { CitySectionComponent } from './home/homepage/city-section/city-section.component';
 import { MaterializeModule } from 'angular2-materialize';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -58,9 +59,15 @@ import { MaterializeModule } from 'angular2-materialize';
     FormsModule,
     MomentModule,
     MaterializeModule
-    ],
-  providers: [ParkingDataService],
+  ],
+  providers: [ParkingDataService,
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy
+    }
+  ],
   bootstrap: [AppComponent]
 })
 
-export class AppModule { }
+export class AppModule {}
+
