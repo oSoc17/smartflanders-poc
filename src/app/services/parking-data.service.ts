@@ -91,7 +91,6 @@ export class ParkingDataService {
           measurements.forEach((measurement) => {
             if (measurement.timestamp > latestTimestamp) {
               latestTimestamp = measurement.timestamp;
-              console.log(measurement);
               latest = measurement;
             }
           });

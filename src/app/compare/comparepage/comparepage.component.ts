@@ -35,10 +35,8 @@ export class ComparepageComponent implements OnInit {
   }
 
   ngOnInit() {
-    Promise.all(this._parkingDataService.getParkings()).then(result => {
-      result.forEach(element => {
-         this.parkings.push.apply(this.parkings, element);
-      });
+    this._parkingDataService.getParkings("http://kortrijk.datapiloten.be/parking/").then(result => {
+      this.parkings = result;
     });
   }
 
@@ -47,7 +45,7 @@ export class ComparepageComponent implements OnInit {
     this.parkingToCompare.forEach(parking => {
       this.intervalFetchers[parking.uri] = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, data => {
         this.data[parking.uri].next(data);
-      });
+      }, "http://kortrijk.datapiloten.be/parking/");
       this.intervalFetchers[parking.uri].fetch();
     });
   }
