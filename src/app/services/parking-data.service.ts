@@ -15,6 +15,9 @@ import * as moment from 'moment';
 export class ParkingDataService {
   private fetch;
 
+  private measurementCache; // url => Measurement[]
+  private volatileCache; // url => {Measurement[], UNIX timestamp of creation}
+
   private datasetUrls = {
     'Kortrijk': 'http://kortrijk.datapiloten.be/parking/',
     'Gent': 'http://linked.open.gent/parking/',
@@ -23,10 +26,34 @@ export class ParkingDataService {
     'Nederland': 'https://nederland.datapiloten.be/parking'
   };
 
+  // Gets a measurement array from cache if present, false if not.
+  private getFromCache(url) {
+    if (this.measurementCache[url] !== undefined) {
+      return this.measurementCache[url];
+    }
+    return false;
+  }
+
+  // Gets a measurement array from volatile cache (30 seconds).
+  // If present: checks if not outdated, removes if it is
+  // If not present: return false
+  private getFromVolatileCache(url) {
+    if (this.volatileCache[url] !== undefined) {
+      const cacheObj = this.volatileCache[url];
+      const now = moment().unix();
+      if (now - cacheObj.timestamp <= 30) {
+        return cacheObj.measurements;
+      }
+      delete this.volatileCache[url];
+    }
+    return false;
+  }
+
   /**
    * Gets all static data for a certain parking from an N3 store
    * @param uri the uri of the parking
    * @param store the N3 store of triples
+   * @param datasetUrl url of the city dataset
    * @returns {Parking}
    */
   public static getParking(uri, store, datasetUrl): Parking {
