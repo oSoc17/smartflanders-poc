@@ -15,7 +15,7 @@ import * as moment from 'moment';
 export class ParkingDataService {
   private fetch;
 
-  private _measurementCache; // url => store
+  private measurementCache; // url => store
   private _volatileCache; // url => {store, UNIX timestamp of creation}
 
   private datasetUrls = {
@@ -141,7 +141,7 @@ export class ParkingDataService {
    */
   public getParkingHistory(uri, from, to, onData, datasetUrl) {
     const entry = datasetUrl + '?time=' + moment.unix(to).format('YYYY-MM-DDTHH:mm:ss');
-    const pdi = new ParkingDataInterval(from, to, entry, uri);
+    const pdi = new ParkingDataInterval(from, to, entry, uri, this.measurementCache);
     (pdi as EventEmitter).on('data', onData);
     return pdi;
   }
@@ -168,14 +168,6 @@ export class ParkingDataService {
         resolve(parkings);
       })
     });
-  }
-
-  // Gets a measurement array from cache if present, false if not.
-  private getFromCache(url) {
-    if (this._measurementCache[url] !== undefined) {
-      return this._measurementCache[url];
-    }
-    return false;
   }
 
   // Gets a measurement array from volatile cache (30 seconds).

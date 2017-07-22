@@ -13,8 +13,9 @@ export class ParkingDataInterval extends EventEmitter {
   private entry: string;
   private parking: string;
   private canceled: boolean;
+  private cache; // TODO this must be reference, not copy!!
 
-  constructor(from, to, entry, parking) {
+  constructor(from, to, entry, parking, cache) {
     super();
     this.from = from;
     this.to = to;
@@ -22,6 +23,7 @@ export class ParkingDataInterval extends EventEmitter {
     this.entry = entry;
     this.parking = parking;
     this.fetchQueue = [entry];
+    this.cache = cache;
   }
 
   public fetch() {
