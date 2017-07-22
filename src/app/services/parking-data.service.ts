@@ -15,8 +15,8 @@ import * as moment from 'moment';
 export class ParkingDataService {
   private fetch;
 
-  private _measurementCache; // url => Measurement[]
-  private _volatileCache; // url => {Measurement[], UNIX timestamp of creation}
+  private _measurementCache; // url => store
+  private _volatileCache; // url => {store, UNIX timestamp of creation}
 
   private datasetUrls = {
     'Kortrijk': 'http://kortrijk.datapiloten.be/parking/',
@@ -86,8 +86,9 @@ export class ParkingDataService {
       let latest: Measurement;
       if (cache !== undefined) {
         // Latest measurements are in volatile cache
+        const measurements = ParkingDataService.getMeasurements(uri, cache);
         let latestTimestamp = 0;
-        cache.forEach((measurement) => {
+        measurements.forEach((measurement) => {
           if (measurement.timestamp > latestTimestamp) {
             latestTimestamp = measurement.timestamp;
             latest = measurement;
@@ -105,7 +106,7 @@ export class ParkingDataService {
           const measurements = ParkingDataService.getMeasurements(uri, store);
 
           // Write data to volatile cache
-          this.writeToVolatileCache(datasetUrl, measurements);
+          this.writeToVolatileCache(datasetUrl, store);
 
           // Get latest
           let latestTimestamp = 0;
