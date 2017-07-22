@@ -26,29 +26,6 @@ export class ParkingDataService {
     'Nederland': 'https://nederland.datapiloten.be/parking'
   };
 
-  // Gets a measurement array from cache if present, false if not.
-  private getFromCache(url) {
-    if (this.measurementCache[url] !== undefined) {
-      return this.measurementCache[url];
-    }
-    return false;
-  }
-
-  // Gets a measurement array from volatile cache (30 seconds).
-  // If present: checks if not outdated, removes if it is
-  // If not present: return false
-  private getFromVolatileCache(url) {
-    if (this.volatileCache[url] !== undefined) {
-      const cacheObj = this.volatileCache[url];
-      const now = moment().unix();
-      if (now - cacheObj.timestamp <= 30) {
-        return cacheObj.measurements;
-      }
-      delete this.volatileCache[url];
-    }
-    return false;
-  }
-
   /**
    * Gets all static data for a certain parking from an N3 store
    * @param uri the uri of the parking
@@ -105,26 +82,43 @@ export class ParkingDataService {
    */
   public getNewestParkingData(uri, datasetUrl): Promise<Measurement> {
     return new Promise((resolve) => {
+      const cache = this.getFromVolatileCache(uri);
       let latest: Measurement;
-      this.fetch.get(datasetUrl).then(response => {
-        // Put all triples in store
-        const store = new n3.Store(response.triples, {
-          prefixes: response.prefixes
-        });
-        // Get all measurements
-        const measurements = ParkingDataService.getMeasurements(uri, store);
-        // Get latest
+      if (cache !== undefined) {
+        // Latest measurements are in volatile cache
         let latestTimestamp = 0;
-        if (measurements) {
-          measurements.forEach((measurement) => {
-            if (measurement.timestamp > latestTimestamp) {
-              latestTimestamp = measurement.timestamp;
-              latest = measurement;
-            }
+        cache.forEach((measurement) => {
+          if (measurement.timestamp > latestTimestamp) {
+            latestTimestamp = measurement.timestamp;
+            latest = measurement;
+          }
+        });
+        resolve(latest);
+      } else {
+        this.fetch.get(datasetUrl).then(response => {
+          // Latest measurements are not in volatile cache, get from web
+          // Put all triples in store
+          const store = new n3.Store(response.triples, {
+            prefixes: response.prefixes
           });
-          resolve(latest);
-        }
-      });
+          // Get all measurements
+          const measurements = ParkingDataService.getMeasurements(uri, store);
+
+          // TODO write to volatile cache
+
+          // Get latest
+          let latestTimestamp = 0;
+          if (measurements) {
+            measurements.forEach((measurement) => {
+              if (measurement.timestamp > latestTimestamp) {
+                latestTimestamp = measurement.timestamp;
+                latest = measurement;
+              }
+            });
+            resolve(latest);
+          }
+        });
+      }
     });
   }
 
@@ -171,5 +165,28 @@ export class ParkingDataService {
         resolve(parkings);
       })
     });
+  }
+
+  // Gets a measurement array from cache if present, false if not.
+  private getFromCache(url) {
+    if (this.measurementCache[url] !== undefined) {
+      return this.measurementCache[url];
+    }
+    return false;
+  }
+
+  // Gets a measurement array from volatile cache (30 seconds).
+  // If present: checks if not outdated, removes if it is
+  // If not present: return false
+  private getFromVolatileCache(url) {
+    if (this.volatileCache[url] !== undefined) {
+      const cacheObj = this.volatileCache[url];
+      const now = moment().unix();
+      if (now - cacheObj.timestamp <= 30) {
+        return cacheObj.measurements;
+      }
+      delete this.volatileCache[url];
+    }
+    return false;
   }
 }
