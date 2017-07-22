@@ -15,8 +15,8 @@ import * as moment from 'moment';
 export class ParkingDataService {
   private fetch;
 
-  private measurementCache; // url => Measurement[]
-  private volatileCache; // url => {Measurement[], UNIX timestamp of creation}
+  private _measurementCache; // url => Measurement[]
+  private _volatileCache; // url => {Measurement[], UNIX timestamp of creation}
 
   private datasetUrls = {
     'Kortrijk': 'http://kortrijk.datapiloten.be/parking/',
@@ -104,7 +104,8 @@ export class ParkingDataService {
           // Get all measurements
           const measurements = ParkingDataService.getMeasurements(uri, store);
 
-          // TODO write to volatile cache
+          // Write data to volatile cache
+          this.writeToVolatileCache(datasetUrl, measurements);
 
           // Get latest
           let latestTimestamp = 0;
@@ -122,6 +123,7 @@ export class ParkingDataService {
     });
   }
 
+  // This should become a request to a registry endpoint
   public getDatasetUrls() {
     return new Promise((resolve) => resolve(this.datasetUrls));
   }
@@ -169,8 +171,8 @@ export class ParkingDataService {
 
   // Gets a measurement array from cache if present, false if not.
   private getFromCache(url) {
-    if (this.measurementCache[url] !== undefined) {
-      return this.measurementCache[url];
+    if (this._measurementCache[url] !== undefined) {
+      return this._measurementCache[url];
     }
     return false;
   }
@@ -179,14 +181,19 @@ export class ParkingDataService {
   // If present: checks if not outdated, removes if it is
   // If not present: return false
   private getFromVolatileCache(url) {
-    if (this.volatileCache[url] !== undefined) {
-      const cacheObj = this.volatileCache[url];
+    if (this._volatileCache[url] !== undefined) {
+      const cacheObj = this._volatileCache[url];
       const now = moment().unix();
       if (now - cacheObj.timestamp <= 30) {
         return cacheObj.measurements;
       }
-      delete this.volatileCache[url];
+      delete this._volatileCache[url];
     }
     return false;
+  }
+
+  private writeToVolatileCache(url, measurements) {
+    const now = moment().unix();
+    this._volatileCache[url] = {measurements: measurements, timestamp: now};
   }
 }
