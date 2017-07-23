@@ -15,13 +15,13 @@ import * as moment from 'moment';
 export class ParkingDataService {
   private fetch;
 
-  private measurementCache; // url => store
-  private _volatileCache; // url => {store, UNIX timestamp of creation}
+  private measurementCache = {}; // url => store
+  private _volatileCache = {}; // url => {store, UNIX timestamp of creation}
 
   private datasetUrls = {
-    'Kortrijk': 'http://kortrijk.datapiloten.be/parking/',
+    // 'Kortrijk': 'http://kortrijk.datapiloten.be/parking/',
     'Gent': 'http://linked.open.gent/parking/',
-    'Leuven': 'http://leuven.datapiloten.be/parking/',
+    // 'Leuven': 'http://leuven.datapiloten.be/parking/',
     'Sint-Niklaas': 'https://sint-niklaas.datapiloten.be/parking',
     'Nederland': 'https://nederland.datapiloten.be/parking'
   };
@@ -84,7 +84,7 @@ export class ParkingDataService {
     return new Promise((resolve) => {
       const cache = this.getFromVolatileCache(uri);
       let latest: Measurement;
-      if (cache !== undefined) {
+      if (cache) {
         // Latest measurements are in volatile cache
         const measurements = ParkingDataService.getMeasurements(uri, cache);
         let latestTimestamp = 0;
