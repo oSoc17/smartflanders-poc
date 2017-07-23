@@ -15,7 +15,6 @@ import * as moment from 'moment';
 export class ParkingDataService {
   private fetch;
 
-  private measurementCache = {}; // url => store
   private _volatileCache = {}; // url => {store, UNIX timestamp of creation}
 
   private datasetUrls = {
@@ -141,7 +140,7 @@ export class ParkingDataService {
    */
   public getParkingHistory(uri, from, to, onData, datasetUrl) {
     const entry = datasetUrl + '?time=' + moment.unix(to).format('YYYY-MM-DDTHH:mm:ss');
-    const pdi = new ParkingDataInterval(from, to, entry, uri, this.measurementCache);
+    const pdi = new ParkingDataInterval(from, to, entry, uri);
     (pdi as EventEmitter).on('data', onData);
     return pdi;
   }
