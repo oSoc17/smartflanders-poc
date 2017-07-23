@@ -18,9 +18,9 @@ export class ParkingDataService {
   private _volatileCache = {}; // url => {store, UNIX timestamp of creation}
 
   private datasetUrls = {
-    // 'Kortrijk': 'http://kortrijk.datapiloten.be/parking/',
+    'Kortrijk': 'http://kortrijk.datapiloten.be/parking/',
     'Gent': 'http://linked.open.gent/parking/',
-    // 'Leuven': 'http://leuven.datapiloten.be/parking/',
+    'Leuven': 'http://leuven.datapiloten.be/parking/',
     'Sint-Niklaas': 'https://sint-niklaas.datapiloten.be/parking',
     'Nederland': 'https://nederland.datapiloten.be/parking'
   };
