@@ -58,7 +58,7 @@ export class ParkingDataService {
     const measurements: Measurement[] = [];
 
     measurementTriples.forEach(triple => {
-      const generatedAtTriple = store.getTriples(triple.graph, 'http://www.w3.org/ns/prov#generatedAtTime')[0];
+      const generatedAtTriple = store.getTriplesByIRI(triple.graph, 'http://www.w3.org/ns/prov#generatedAtTime')[0];
       const genTimestamp = n3.Util.getLiteralValue(generatedAtTriple.object);
       const genTime = moment(genTimestamp).unix();
       const value = n3.Util.getLiteralValue(triple.object);
