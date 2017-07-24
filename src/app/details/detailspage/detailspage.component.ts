@@ -17,57 +17,77 @@ import {ParkingDataInterval} from '../../services/parking-data-interval';
 })
 
 export class DetailspageComponent implements OnInit {
+
   public rangeData = new Rx.Subject();
   public clear = new EventEmitter();
   public parking: Parking;
   public measurement: Measurement;
   public intervalFetcher: ParkingDataInterval;
-  public parkings: Array<Parking> = [];
+  public parkings: Array < Parking > = [];
   public cityUrl: string;
 
+  private timeFrame: TimestampRange;
+  private isVacant: boolean;
+
   onRangeChange($event) {
-    this.getData($event, this.parking);
+    this.timeFrame = $event;
+    this.getData(this.timeFrame, this.parking, this.isVacant);
+  }
+
+  onDataTypeChange($event) {
+    this.isVacant = $event;
+    if (this.timeFrame) {
+      this.getData(this.timeFrame, this.parking, this.isVacant);
+    }
   }
 
   onCancel() {
     this.intervalFetcher.cancel();
     const clear = this.clear;
-    setTimeout(function() {
+    setTimeout(function () {
       clear.emit();
     }, 1000);
   }
-constructor(
-  private _parkingDataService: ParkingDataService,
-  private route: ActivatedRoute,
-  private router: Router) {}
 
-ngOnInit() {
-  this.cityUrl = this.route.snapshot.paramMap.get('cityUrl');
-  const id = this.route.snapshot.url[1].path;
-  this._parkingDataService.getParkings(this.cityUrl).then(result => {
-         this.parkings = result;
-    }).then( () => {
-    this.parkings.forEach(p => {
+  constructor(
+    private _parkingDataService: ParkingDataService,
+    private route: ActivatedRoute,
+    private router: Router) {}
+
+  ngOnInit() {
+    this.isVacant = true;
+    this.cityUrl = this.route.snapshot.paramMap.get('cityUrl');
+    const id = this.route.snapshot.url[1].path;
+    this._parkingDataService.getParkings(this.cityUrl).then(result => {
+      this.parkings = result;
+    }).then(() => {
+      this.parkings.forEach(p => {
         if (p.id === id) {
           this.parking = p;
         }
 
       })
-  }).then(() => {
-    this._parkingDataService.getNewestParkingData(this.parking.uri, this.cityUrl).then(result => {
-      this.measurement = result;
-      console.log(result);
-    });
-  })
-}
+    }).then(() => {
+      this._parkingDataService.getNewestParkingData(this.parking.uri, this.cityUrl).then(result => {
+        this.measurement = result;
+      });
+    })
+  }
 
-getData(range: TimestampRange, parking: Parking) {
-  this.clear.emit();
-  const _this = this;
-  this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {
-    _this.rangeData.next(data);
-  }, this.cityUrl);
-  this.intervalFetcher.fetch();
-}
+  getData(range: TimestampRange, parking: Parking, dataType: boolean) {
+    this.clear.emit();
+    const _this = this;
+    if (dataType) {
+      this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {
+        _this.rangeData.next(data);
+      }, this.cityUrl);
+    } else {
+      this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {
+        data.value = parking.totalSpaces - data.value;
+        _this.rangeData.next(data);
+      }, this.cityUrl);
+    }
+    this.intervalFetcher.fetch();
+  }
 }
 

@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ParkingDataInterval extends EventEmitter {
+
   private from: number;
   private to: number;
   private fetchedUris: string[];
@@ -63,3 +64,4 @@ export class ParkingDataInterval extends EventEmitter {
     this.fetchQueue = [];
   }
 }
+
