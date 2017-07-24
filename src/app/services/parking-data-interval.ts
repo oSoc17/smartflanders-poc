@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ParkingDataInterval extends EventEmitter {
+
   private from: number;
   private to: number;
   private fetchedUris: string[];
@@ -29,7 +30,9 @@ export class ParkingDataInterval extends EventEmitter {
     if (link !== undefined && this.fetchedUris.indexOf(link) === -1) {
       this.fetchedUris.push(link);
       new ldfetch().get(link).then(response => {
-        const store = new n3.Store(response.triples, {prefixes: response.prefixes});
+        const store = new n3.Store(response.triples, {
+          prefixes: response.prefixes
+        });
         const timeframe = ParkingDataService.getMeasurements(this.parking, store);
         let hasOverlap = false;
         timeframe.forEach(measurement => {
@@ -62,3 +65,4 @@ export class ParkingDataInterval extends EventEmitter {
     this.fetchQueue = [];
   }
 }
+

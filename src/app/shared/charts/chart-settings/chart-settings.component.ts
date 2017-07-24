@@ -9,7 +9,14 @@ import * as Moment from 'moment';
   templateUrl: './chart-settings.component.html',
   styleUrls: ['./chart-settings.component.css']
 })
+
 export class ChartSettingsComponent implements OnInit {
+
+  @Output() onRangeChange = new EventEmitter <TimestampRange> ();
+  @Output() onDataTypeChange = new EventEmitter <boolean> ();
+  @Output() onCancel = new EventEmitter();
+  @Output() change = new EventEmitter();
+  @Output() isVacant: boolean;
 
   public selectedChart: string;
   public selectedTimeframe: string;
@@ -18,13 +25,7 @@ export class ChartSettingsComponent implements OnInit {
   public toTimestamp: number;
   public picker: MaterialDateTimePicker;
 
-  @Output() onRangeChange = new EventEmitter<TimestampRange>();
-  @Output() onDataTypeChange = new EventEmitter<boolean>();
-  @Output() onCancel = new EventEmitter();
-  @Output() change = new EventEmitter();
-  @Output() isVacant: boolean;
-
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.selectedChart = 'scatter';
@@ -81,5 +82,5 @@ export class ChartSettingsComponent implements OnInit {
     }
     this.onDataTypeChange.emit(this.isVacant);
   }
-
 }
+

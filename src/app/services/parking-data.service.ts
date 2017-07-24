@@ -13,8 +13,8 @@ import * as moment from 'moment';
 
 @Injectable()
 export class ParkingDataService {
-  private fetch;
 
+  private fetch;
   private datasetUrls = {
     'Kortrijk': 'http://kortrijk.datapiloten.be/parking/',
     'Gent': 'http://linked.open.gent/parking/',
@@ -76,7 +76,7 @@ export class ParkingDataService {
    * @param datasetUrl the url of the dataset where this parking can be found
    * @returns {Promise<Measurement>}
    */
-  public getNewestParkingData(uri, datasetUrl): Promise<Measurement> {
+  public getNewestParkingData(uri, datasetUrl): Promise < Measurement > {
     return new Promise((resolve) => {
       let latest: Measurement;
       this.fetch.get(datasetUrl).then(response => {
@@ -126,7 +126,7 @@ export class ParkingDataService {
    * Fetches static data for all parkings from a certain dataset
    * @returns {Promise<Parking[]>}
    */
-  public getParkings(datasetUrl): Promise<Parking[]> {
+  public getParkings(datasetUrl): Promise < Parking[] > {
     return new Promise((resolve) => {
       this.fetch.get(datasetUrl).then(response => {
         // Put all triples in a store
@@ -146,3 +146,4 @@ export class ParkingDataService {
     });
   }
 }
+
