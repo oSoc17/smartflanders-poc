@@ -28,16 +28,13 @@ export class ScatterComponent implements OnInit {
   private updateIncoming = false;
   private counter = 0;
 
-  // Multiple chart support
-
-  constructor() {
-  }
+  constructor() { }
 
   ngOnInit() {
     this.context = this.scatter.nativeElement;
     this.parkingHistory = new ParkingHistory(this.parking, []);
     this.config = {
-       animation: false,
+      animation: false,
       type: 'scatter',
       data: {
         datasets: [{
@@ -97,16 +94,23 @@ export class ScatterComponent implements OnInit {
 
 
   updatePeriodically(d) {
-    this.counter ++;
-    // console.log(this.counter);
-    if ( this.counter >= 20) {
+    this.counter++;
+    if (this.counter >= 20) {
       // this.parkingHistory.timeframe.splice(index, 0, d);
       this.chart.data.datasets.forEach(element => {
-        const index = sortedLastIndexBy(element, {x: (d.timestamp * 1000)}, function(o) { return o.x; });
-        element.data.splice(index, 0, {x: d.timestamp * 1000, y: parseInt(d.value, 10)});
+        const index = sortedLastIndexBy(element, {
+          x: (d.timestamp * 1000)
+        }, function (o) {
+          return o.x;
+        });
+        element.data.splice(index, 0, {
+          x: d.timestamp * 1000,
+          y: parseInt(d.value, 10)
+        });
       });
       this.chart.update(0);
       this.counter = 0;
     }
   }
 }
+
