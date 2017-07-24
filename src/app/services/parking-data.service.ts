@@ -14,7 +14,7 @@ import * as moment from 'moment';
 @Injectable()
 export class ParkingDataService {
 
-  private fetch;
+  private _volatileCache = {}; // url => {store, UNIX timestamp of creation}
   private datasetUrls = {
     'Kortrijk': 'http://kortrijk.datapiloten.be/parking/',
     'Gent': 'http://linked.open.gent/parking/',
@@ -27,6 +27,7 @@ export class ParkingDataService {
    * Gets all static data for a certain parking from an N3 store
    * @param uri the uri of the parking
    * @param store the N3 store of triples
+   * @param datasetUrl url of the city dataset
    * @returns {Parking}
    */
   public static getParking(uri, store, datasetUrl): Parking {
@@ -54,7 +55,7 @@ export class ParkingDataService {
     const measurements: Measurement[] = [];
 
     measurementTriples.forEach(triple => {
-      const generatedAtTriple = store.getTriples(triple.graph, 'http://www.w3.org/ns/prov#generatedAtTime')[0];
+      const generatedAtTriple = store.getTriplesByIRI(triple.graph, 'http://www.w3.org/ns/prov#generatedAtTime')[0];
       const genTimestamp = n3.Util.getLiteralValue(generatedAtTriple.object);
       const genTime = moment(genTimestamp).unix();
       const value = n3.Util.getLiteralValue(triple.object);
@@ -78,29 +79,49 @@ export class ParkingDataService {
    */
   public getNewestParkingData(uri, datasetUrl): Promise < Measurement > {
     return new Promise((resolve) => {
+      const cache = this.getFromVolatileCache(uri);
       let latest: Measurement;
-      this.fetch.get(datasetUrl).then(response => {
-        // Put all triples in store
-        const store = new n3.Store(response.triples, {
-          prefixes: response.prefixes
-        });
-        // Get all measurements
-        const measurements = ParkingDataService.getMeasurements(uri, store);
-        // Get latest
+      if (cache) {
+        // Latest measurements are in volatile cache
+        const measurements = ParkingDataService.getMeasurements(uri, cache);
         let latestTimestamp = 0;
-        if (measurements) {
-          measurements.forEach((measurement) => {
-            if (measurement.timestamp > latestTimestamp) {
-              latestTimestamp = measurement.timestamp;
-              latest = measurement;
-            }
+        measurements.forEach((measurement) => {
+          if (measurement.timestamp > latestTimestamp) {
+            latestTimestamp = measurement.timestamp;
+            latest = measurement;
+          }
+        });
+        resolve(latest);
+      } else {
+        this.fetch.get(datasetUrl).then(response => {
+          // Latest measurements are not in volatile cache, get from web
+          // Put all triples in store
+          const store = new n3.Store(response.triples, {
+            prefixes: response.prefixes
           });
-          resolve(latest);
-        }
-      });
+          // Get all measurements
+          const measurements = ParkingDataService.getMeasurements(uri, store);
+
+          // Write data to volatile cache
+          this.writeToVolatileCache(datasetUrl, store);
+
+          // Get latest
+          let latestTimestamp = 0;
+          if (measurements) {
+            measurements.forEach((measurement) => {
+              if (measurement.timestamp > latestTimestamp) {
+                latestTimestamp = measurement.timestamp;
+                latest = measurement;
+              }
+            });
+            resolve(latest);
+          }
+        });
+      }
     });
   }
 
+  // This should become a request to a registry endpoint
   public getDatasetUrls() {
     return new Promise((resolve) => resolve(this.datasetUrls));
   }
@@ -144,6 +165,26 @@ export class ParkingDataService {
         resolve(parkings);
       })
     });
+  }
+
+  // Gets a measurement array from volatile cache (30 seconds).
+  // If present: checks if not outdated, removes if it is
+  // If not present: return false
+  private getFromVolatileCache(url) {
+    if (this._volatileCache[url] !== undefined) {
+      const cacheObj = this._volatileCache[url];
+      const now = moment().unix();
+      if (now - cacheObj.timestamp <= 30) {
+        return cacheObj.measurements;
+      }
+      delete this._volatileCache[url];
+    }
+    return false;
+  }
+
+  private writeToVolatileCache(url, measurements) {
+    const now = moment().unix();
+    this._volatileCache[url] = {measurements: measurements, timestamp: now};
   }
 }
 
