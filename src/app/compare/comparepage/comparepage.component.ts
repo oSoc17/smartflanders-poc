@@ -1,33 +1,24 @@
-import {
-  Component,
-  OnInit,
-  EventEmitter
-} from '@angular/core';
-import {
-  ParkingDataService
-} from '../../services/parking-data.service';
-import * as Rx from 'rxjs/Rx';
-import {
-  find,
-  indexOf,
-  values
-} from 'lodash';
+import { Component, OnInit, EventEmitter } from '@angular/core';
+import { ParkingDataService } from '../../services/parking-data.service';
+import { find, indexOf, values } from 'lodash';
 import Parking from './../../models/parking'
-
+import * as Rx from 'rxjs/Rx';
 
 @Component({
   selector: 'app-comparepage',
   templateUrl: './comparepage.component.html',
   styleUrls: ['./comparepage.component.css']
 })
+
 export class ComparepageComponent implements OnInit {
 
-  data = {};
-  parkings: Array<Parking> = [];
-  parkingToCompare = [];
-  clear = new EventEmitter();
-  intervalFetchers = {};
-  constructor(private _parkingDataService: ParkingDataService) {}
+  public data = {};
+  public parkings: Array<Parking> = [];
+  public parkingToCompare = [];
+  public clear = new EventEmitter();
+  public intervalFetchers = {};
+
+  constructor(private _parkingDataService: ParkingDataService) { }
 
   onRangeChange($event) {
     if (Object.keys(this.intervalFetchers).length !== 0) {
@@ -45,7 +36,6 @@ export class ComparepageComponent implements OnInit {
       });
     });
   }
-
 
   getData(range) {
     this.clear.emit();
@@ -67,11 +57,12 @@ export class ComparepageComponent implements OnInit {
   }
 
   parkingRemovedHandler(parkingID) {
-    const _parking = find(this.parkings, function (o) {
+    const parkingToRemove = find(this.parkings, function (o) {
       return o.id === parkingID;
     });
-    this.parkingToCompare.splice(indexOf(this.parkingToCompare, _parking), 1);
+    this.parkingToCompare.splice(indexOf(this.parkingToCompare, parkingToRemove), 1);
   }
+
   parkinghandler(parkingID) {
     const _parking = find(this.parkings, function (o) {
       return o.id === parkingID;
@@ -81,5 +72,4 @@ export class ComparepageComponent implements OnInit {
     }
     this.data[_parking.uri] = new Rx.Subject();
   }
-
 }

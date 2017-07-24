@@ -28,13 +28,16 @@ export class ScatterComponent implements OnInit {
   private updateIncoming = false;
   private counter = 0;
 
-  constructor() {}
+  // Multiple chart support
+
+  constructor() {
+  }
 
   ngOnInit() {
     this.context = this.scatter.nativeElement;
     this.parkingHistory = new ParkingHistory(this.parking, []);
     this.config = {
-      animation: false,
+       animation: false,
       type: 'scatter',
       data: {
         datasets: [{
@@ -70,7 +73,7 @@ export class ScatterComponent implements OnInit {
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Spots'
+              labelString: 'Parking spots'
             },
             ticks: {
               beginAtZero: true,
@@ -94,32 +97,16 @@ export class ScatterComponent implements OnInit {
 
 
   updatePeriodically(d) {
-<<<<<<< HEAD
     this.counter ++;
-<<<<<<< HEAD
     // console.log(this.counter);
-=======
->>>>>>> chore(): change taken or vacant spaces to show on chart
     if ( this.counter >= 20) {
-=======
-    this.counter++;
-    if (this.counter >= 20) {
->>>>>>> refactor(): code clean up
       // this.parkingHistory.timeframe.splice(index, 0, d);
       this.chart.data.datasets.forEach(element => {
-        const index = sortedLastIndexBy(element, {
-          x: (d.timestamp * 1000)
-        }, function (o) {
-          return o.x;
-        });
-        element.data.splice(index, 0, {
-          x: d.timestamp * 1000,
-          y: parseInt(d.value, 10)
-        });
+        const index = sortedLastIndexBy(element, {x: (d.timestamp * 1000)}, function(o) { return o.x; });
+        element.data.splice(index, 0, {x: d.timestamp * 1000, y: parseInt(d.value, 10)});
       });
       this.chart.update(0);
       this.counter = 0;
     }
   }
 }
-
