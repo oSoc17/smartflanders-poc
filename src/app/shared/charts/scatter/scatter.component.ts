@@ -14,6 +14,7 @@ export class ScatterComponent implements OnInit {
   @Input() private data;
   @Input() private clear;
   @Input() private parking: Parking;
+  @Input() private isVacant;
   @ViewChild('scatter') scatter;
   private context;
   private parkingHistory: ParkingHistory;
@@ -91,7 +92,6 @@ export class ScatterComponent implements OnInit {
 
   updatePeriodically(d) {
     this.counter ++;
-    console.log(this.counter);
     if ( this.counter >= 20) {
       //this.parkingHistory.timeframe.splice(index, 0, d);
       this.chart.data.datasets.forEach(element => {

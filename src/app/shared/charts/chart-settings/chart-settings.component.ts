@@ -19,15 +19,17 @@ export class ChartSettingsComponent implements OnInit {
   public picker: MaterialDateTimePicker;
 
   @Output() onRangeChange = new EventEmitter<TimestampRange>();
+  @Output() onDataTypeChange = new EventEmitter<boolean>();
   @Output() onCancel = new EventEmitter();
   @Output() change = new EventEmitter();
+  @Output() isVacant: boolean;
 
   constructor() { }
 
   ngOnInit() {
     this.selectedChart = 'scatter';
     this.selectedData = 'vacant';
-    
+    this.isVacant = true;
   }
 
   openTimePickerFrom(diff: string) {
@@ -71,7 +73,13 @@ export class ChartSettingsComponent implements OnInit {
   }
 
   changeSelectedData(selectedData) {
-    this.changeSelectedData = selectedData.value;
+    this.selectedData = selectedData.value;
+    if (this.selectedData === 'vacant') {
+      this.isVacant = true;
+    } else {
+      this.isVacant = false;
+    }
+    this.onDataTypeChange.emit(this.isVacant);
   }
 
 }
