@@ -1,16 +1,17 @@
-import {Component, OnInit, Input, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, OnInit, OnChanges, Input, SimpleChanges, ViewChild} from '@angular/core';
 import Parking from './../../../models/parking'
 import Chart from 'chart.js';
 import $ from 'jquery';
 import Measurement from './../../../models/measurement';
-import {  } from "ser";
+import {  } from 'ser';
 
 @Component({
   selector: 'app-chart-doughnut',
   templateUrl: './doughnut.component.html',
   styleUrls: ['./doughnut.component.css']
 })
-export class DoughnutComponent implements OnInit {
+
+export class DoughnutComponent implements OnInit, OnChanges {
 
   @Input() private parking: Parking;
   @Input() private measurement: Measurement;
@@ -30,7 +31,6 @@ export class DoughnutComponent implements OnInit {
       this.vacantSpaces = changes.measurement.currentValue.value;
       this.addData([changes.measurement.currentValue.value, this.parking.totalSpaces - changes.measurement.currentValue.value]);
     }
-
   }
 
   ngOnInit() {
@@ -38,14 +38,12 @@ export class DoughnutComponent implements OnInit {
     // Replace number with amount of vacant spaces left
     this.vacantSpaces = number.toString();
 
-
     this.data = {
       labels: [
         'Free',
         'Taken'
       ],
       datasets: [{
-        // Filled spots, vacant spots
         data: [this.measurement.value, this.parking.totalSpaces - this.measurement.value],
         backgroundColor: [
           '#4fc3f7',
@@ -62,8 +60,6 @@ export class DoughnutComponent implements OnInit {
       animation: false,
       data: this.data,
       options: {
-        // rotation: -1.25 * Math.PI,
-        // circumference: 1.5 * Math.PI,
         legend: {
           display: false
         },
@@ -72,7 +68,7 @@ export class DoughnutComponent implements OnInit {
             text: this.vacantSpaces,
             color: '#4fc3f7', // Default is #000000
             fontStyle: 'Roboto', // Default is Arial
-            sidePadding: 20 // Defualt is 20 (as a percentage)
+            sidePadding: 20 // Default is 20 (as a percentage)
           }
         }
       }
@@ -82,7 +78,6 @@ export class DoughnutComponent implements OnInit {
           this.chart = new Chart(this.context, this.config);
     }, 1);
 
-
   }
     public addData( _data) {
     this.chart.data.datasets.forEach((dataset) => {
@@ -91,7 +86,6 @@ export class DoughnutComponent implements OnInit {
     this.chart.update(0);
   }
 }
-
 
 // Chartjs plugin to center a string inside the doughnut
 Chart.pluginService.register({
