@@ -70,7 +70,6 @@ export class DetailspageComponent implements OnInit {
     }).then(() => {
       this._parkingDataService.getNewestParkingData(this.parking.uri, this.cityUrl).then(result => {
         this.measurement = result;
-        console.log(result);
       });
     })
   }
@@ -80,13 +79,11 @@ export class DetailspageComponent implements OnInit {
     const _this = this;
     if (dataType) {
       this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {
-        console.log(data.value);
         _this.rangeData.next(data);
       }, this.cityUrl);
     } else {
       this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {
         data.value = parking.totalSpaces - data.value;
-        console.log(data.value);
         _this.rangeData.next(data);
       }, this.cityUrl);
     }
