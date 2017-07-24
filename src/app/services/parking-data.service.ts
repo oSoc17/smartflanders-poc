@@ -14,6 +14,7 @@ import * as moment from 'moment';
 @Injectable()
 export class ParkingDataService {
 
+  private fetch;
   private _volatileCache = {}; // url => {store, UNIX timestamp of creation}
   private datasetUrls = {
     'Kortrijk': 'http://kortrijk.datapiloten.be/parking/',
