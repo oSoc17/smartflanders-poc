@@ -52,6 +52,7 @@ export class ParkingDataService {
    * @returns {Measurement[]} (time frame, not necessarily sorted)
    */
   public static getMeasurements(uri, store): Measurement[] {
+    console.log('service: getM');
     const measurementTriples = store.getTriples(uri, 'datex:parkingNumberOfVacantSpaces');
     const measurements: Measurement[] = [];
 
@@ -62,7 +63,8 @@ export class ParkingDataService {
       const value = n3.Util.getLiteralValue(triple.object);
       measurements.push({
         timestamp: genTime,
-        value: value
+        value: value,
+        parkingUri: null
       });
     });
     return measurements;
@@ -79,6 +81,7 @@ export class ParkingDataService {
    * @returns {Promise<Measurement>}
    */
   public getNewestParkingData(uri, datasetUrl): Promise < Measurement > {
+    console.log('service: getNewest');
     return new Promise((resolve) => {
       const cache = this.getFromVolatileCache(uri);
       let latest: Measurement;
@@ -138,6 +141,7 @@ export class ParkingDataService {
    * @returns ParkingDataInterval: call fetch() on this object to start fetching, cancel() to cancel
    */
   public getParkingHistory(uri, from, to, onData, datasetUrl) {
+    console.log('service: getParkingHistory()');
     const entry = datasetUrl + '?time=' + moment.unix(to).format('YYYY-MM-DDTHH:mm:ss');
     const pdi = new ParkingDataInterval(from, to, entry, uri);
     (pdi as EventEmitter).on('data', onData);
@@ -149,6 +153,7 @@ export class ParkingDataService {
    * @returns {Promise<Parking[]>}
    */
   public getParkings(datasetUrl): Promise < Parking[] > {
+    console.log('service: getParkings()');
     return new Promise((resolve) => {
       this.fetch.get(datasetUrl).then(response => {
         // Put all triples in a store

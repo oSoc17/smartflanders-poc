@@ -37,6 +37,7 @@ export class ParkingDataInterval extends EventEmitter {
         timeframe.forEach(measurement => {
           if (this.from <= measurement.timestamp && measurement.timestamp <= this.to) {
             if (!this.canceled) {
+              measurement.parkingUri = this.parking;
               (this as EventEmitter).emit('data', measurement);
               hasOverlap = true;
             }
