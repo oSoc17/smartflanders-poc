@@ -1,14 +1,20 @@
- <md-card *ngIf="parking" class="parking-card">
-  <md-card-content>
-    <div class="title">
-      <md-card-title>{{parking.id}}</md-card-title>
+<div class="col s12">
+  <div class="card-panel">
+     <div *ngIf="!parking" class="row">
+      <div class="col S6"><p>...</p></div>
+      <div class="col S3"><p>...</p></div>
+      <div class="col S3"><p>...</p></div>
     </div>
-    <div *ngIf="measurement" class="chart">
-      <app-chart-doughnut [parking]="parking" [measurement]="measurement"></app-chart-doughnut>
+    <div *ngIf="parking" class="row">
+      <div class="col s6">
+        <p>{{parking.id}}</p>
+      </div>
+      <div class="col s3">
+        <p>{{parking.totalSpaces}}</p>
+      </div>
+      <div class="col s3">
+        <p>...</p>
+      </div>
     </div>
-    <!-- <p>
-      <span *ngIf="percentage" class="percentage">{{percentage}}%</span><br />
-      <span *ngIf="measurement" >{{measurement.value}}/{{parking.totalSpaces}}</span>
-    </p> -->
-  </md-card-content>
-</md-card>
+  </div>
+</div>
