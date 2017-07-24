@@ -10,12 +10,12 @@ import Parking from '../models/parking';
 import Measurement from '../models/measurement';
 import {ParkingDataInterval} from './parking-data-interval';
 import * as moment from 'moment';
-import { Observable } from 'rxjs/observable';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ParkingDataService {
   private fetch;
-
+  public parkings: Array<Parking> = [];
   private datasetUrls = {
     'Kortrijk': 'http://kortrijk.datapiloten.be/parking/',
     'Gent': 'http://linked.open.gent/parking/',
@@ -28,7 +28,6 @@ export class ParkingDataService {
   private fetchQueue: string[];
   private entry: string;
   private parking: string;
-  private measuremntObservable: Observable<Measurement>;
 
   /**
    * Gets all static data for a certain parking from an N3 store
@@ -122,17 +121,15 @@ export class ParkingDataService {
    */
   public getParkingHistory (uri, from, to , datasetUrl): Observable<Measurement>  {
     const entry = datasetUrl + '?time=' + moment.unix(to).format('YYYY-MM-DDTHH:mm:ss');
-    console.log("We are starting");
-    this.measuremntObservable = new Observable(observer => {
-      this.historyFetch(observer, uri, from, to, datasetUrl, entry)
+    this.fetchQueue = [entry];
+    const _observable = Observable.create(observer => {
+      this.historyFetch(observer, uri, from, to, datasetUrl, entry);
     });
-    
-    return  this.measuremntObservable;
+    return _observable;
   }
 
   private historyFetch (observer, uri, from, to, datasetUrl, entry) {
-    console.log("We are starting");
-     const link = this.fetchQueue.pop();
+    const link = this.fetchQueue.pop();
     if (link !== undefined && this.fetchedUris.indexOf(link) === -1) {
       this.fetchedUris.push(link);
       new ldfetch().get(link).then(response => {
@@ -182,6 +179,7 @@ export class ParkingDataService {
           const uri = parking.subject;
           parkings.push(ParkingDataService.getParking(uri, store, datasetUrl));
         });
+        this.parkings = parkings;
         resolve(parkings);
       })
     });

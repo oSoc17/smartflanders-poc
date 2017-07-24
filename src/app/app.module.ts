@@ -66,7 +66,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
       useClass: HashLocationStrategy
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: ([AppComponent])
 })
 
 export class AppModule {}

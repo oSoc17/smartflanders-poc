@@ -13,7 +13,7 @@
       </div>
 
     </div>
-    <div class="chart-container">
+    <div class="chart-container" *ngIf="rangeData">
       <h4>Visualize historic data</h4>
       <app-chart-settings (onRangeChange)="onRangeChange($event)" (onCancel)="onCancel()"></app-chart-settings>
       <app-chart-scatter [parking]="parking" [data]="rangeData" [clear]="clear"></app-chart-scatter>

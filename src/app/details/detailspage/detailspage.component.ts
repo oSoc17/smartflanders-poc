@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { element } from 'protractor';
 import TimestampRange from '../../models/timestamp-range';
 import * as Rx from 'rxjs/Rx';
@@ -17,7 +18,7 @@ import {ParkingDataInterval} from '../../services/parking-data-interval';
 })
 
 export class DetailspageComponent implements OnInit {
-  public rangeData = new Rx.Observable();
+  public rangeData = new Observable();
   public clear = new EventEmitter();
   public parking: Parking;
   public measurement: Measurement;
@@ -46,12 +47,11 @@ ngOnInit() {
   const id = this.route.snapshot.url[1].path;
   this._parkingDataService.getParkings(this.cityUrl).then(result => {
          this.parkings = result;
-    }).then( () => {
+    }).then(() => {
     this.parkings.forEach(p => {
         if (p.id === id) {
           this.parking = p;
         }
-
       })
   }).then(() => {
     this._parkingDataService.getNewestParkingData(this.parking.uri, this.cityUrl).then(result => {
@@ -64,6 +64,7 @@ ngOnInit() {
 getData(range: TimestampRange, parking: Parking) {
   this.clear.emit();
   this.rangeData = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, this.cityUrl);
+  console.log(this.rangeData);
 }
 }
 

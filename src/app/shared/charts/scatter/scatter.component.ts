@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import {Component, OnInit, Input, ViewChild, OnDestroy} from '@angular/core';
 import Parking from './../../../models/parking'
 import Chart from 'chart.js';
@@ -11,12 +12,11 @@ import * as moment from 'moment';
   styleUrls: ['./scatter.component.css']
 })
 export class ScatterComponent implements OnInit, OnDestroy {
-  @Input() private data;
+  @Input() private data: Observable<Measurement>;
   @Input() private clear;
   @Input() private parking: Parking;
   @ViewChild('scatter') scatter;
   private context;
-  private parkingHistory: ParkingHistory;
   private chartData = [];
   private config;
   private chart;
@@ -28,7 +28,6 @@ export class ScatterComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.context = this.scatter.nativeElement;
-    this.parkingHistory = new ParkingHistory(this.parking, []);
     this.config = {
        animation: false,
       type: 'scatter',
@@ -78,25 +77,24 @@ export class ScatterComponent implements OnInit, OnDestroy {
       }
     };
     this.chart = new Chart(this.context, this.config);
-    this.data.subscribe(d => {
+    this.data.map(d => {
+      console.log(d);
       this.updatePeriodically(d);
     });
     this.clear.subscribe(() => {
       this.chartData.splice(0, this.chartData.length);
       this.chart.update();
-      console.log('cleared');
     })
   }
    ngOnDestroy() {
-    this.data.unsubscribe();
+    //this.data.unsubscribe();
   }
 
 
   updatePeriodically(d) {
     this.counter ++;
     if ( this.counter >= 20) {
-      //this.parkingHistory.timeframe.splice(index, 0, d);
-      this.chart.data.datasets.forEach(element => {
+        this.chart.data.datasets.forEach(element => {
         const index = sortedLastIndexBy(element, {x: (d.timestamp * 1000)}, function(o) { return o.x; });
         element.data.splice(index, 0, {x: d.timestamp * 1000, y: parseInt(d.value, 10)});
       });
