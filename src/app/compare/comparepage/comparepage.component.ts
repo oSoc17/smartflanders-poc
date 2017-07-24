@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/observable';
 import {
   Component,
   OnInit,
@@ -13,6 +14,7 @@ import {
   values
 } from 'lodash';
 import Parking from './../../models/parking'
+import Measurement from './../../models/measurement';
 
 
 @Component({
@@ -26,7 +28,7 @@ export class ComparepageComponent implements OnInit {
   parkings: Array<Parking> = [];
   parkingToCompare = [];
   clear = new EventEmitter();
-  intervalFetchers = {};
+  intervalFetchers: Observable<Measurement>;
   constructor(private _parkingDataService: ParkingDataService) {}
 
   onRangeChange($event) {
@@ -50,10 +52,7 @@ export class ComparepageComponent implements OnInit {
   getData(range) {
     this.clear.emit();
     this.parkingToCompare.forEach(parking => {
-      this.intervalFetchers[parking.uri] = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, data => {
-        this.data[parking.uri].next(data);
-      }, parking.cityUrl);
-      this.intervalFetchers[parking.uri].fetch();
+      this.intervalFetchers[parking.uri] = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, parking.cityUrl);
     });
   }
 
@@ -63,7 +62,6 @@ export class ComparepageComponent implements OnInit {
       interval.cancel();
     });
     this.clear.emit();
-    this.intervalFetchers = {};
   }
 
   parkingRemovedHandler(parkingID) {

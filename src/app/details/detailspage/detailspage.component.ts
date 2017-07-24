@@ -17,7 +17,7 @@ import {ParkingDataInterval} from '../../services/parking-data-interval';
 })
 
 export class DetailspageComponent implements OnInit {
-  public rangeData = new Rx.Subject();
+  public rangeData = new Rx.Observable();
   public clear = new EventEmitter();
   public parking: Parking;
   public measurement: Measurement;
@@ -63,10 +63,7 @@ ngOnInit() {
 
 getData(range: TimestampRange, parking: Parking) {
   this.clear.emit();
-  this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {
-  this.rangeData.next(data);
-  }, this.cityUrl);
-  this.intervalFetcher.fetch();
+  this.rangeData = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, this.cityUrl);
 }
 }
 

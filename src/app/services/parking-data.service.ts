@@ -10,6 +10,7 @@ import Parking from '../models/parking';
 import Measurement from '../models/measurement';
 import {ParkingDataInterval} from './parking-data-interval';
 import * as moment from 'moment';
+import { Observable } from 'rxjs/observable';
 
 @Injectable()
 export class ParkingDataService {
@@ -22,6 +23,12 @@ export class ParkingDataService {
     'Sint-Niklaas': 'https://sint-niklaas.datapiloten.be/parking',
     'Nederland': 'https://nederland.datapiloten.be/parking'
   };
+
+  private fetchedUris: string[];
+  private fetchQueue: string[];
+  private entry: string;
+  private parking: string;
+  private measuremntObservable: Observable<Measurement>;
 
   /**
    * Gets all static data for a certain parking from an N3 store
@@ -110,15 +117,49 @@ export class ParkingDataService {
    * @param uri the uri of the parking
    * @param from UNIX timestamp depicting the beginning of the time frame
    * @param to UNIX timestamp depicting the end of the time frame
-   * @param onData the function to call when data is available
    * @param datasetUrl the url of the dataset where the parking can be found
    * @returns ParkingDataInterval: call fetch() on this object to start fetching, cancel() to cancel
    */
-  public getParkingHistory(uri, from, to, onData, datasetUrl) {
+  public getParkingHistory (uri, from, to , datasetUrl): Observable<Measurement>  {
     const entry = datasetUrl + '?time=' + moment.unix(to).format('YYYY-MM-DDTHH:mm:ss');
-    const pdi = new ParkingDataInterval(from, to, entry, uri);
-    (pdi as EventEmitter).on('data', onData);
-    return pdi;
+    console.log("We are starting");
+    this.measuremntObservable = new Observable(observer => {
+      this.historyFetch(observer, uri, from, to, datasetUrl, entry)
+    });
+    
+    return  this.measuremntObservable;
+  }
+
+  private historyFetch (observer, uri, from, to, datasetUrl, entry) {
+    console.log("We are starting");
+     const link = this.fetchQueue.pop();
+    if (link !== undefined && this.fetchedUris.indexOf(link) === -1) {
+      this.fetchedUris.push(link);
+      new ldfetch().get(link).then(response => {
+        const store = new n3.Store(response.triples, {prefixes: response.prefixes});
+        const timeframe = ParkingDataService.getMeasurements(this.parking, store);
+        let hasOverlap = false;
+        timeframe.forEach(measurement => {
+          if (from <= measurement.timestamp && measurement.timestamp <= to) {
+              observer.next(measurement);
+              hasOverlap = true;
+          }
+        });
+        if ((hasOverlap || link === this.entry)) {
+          const prevLinks = store.getTriples(null, 'hydra:previous');
+          const nextLinks = store.getTriples(null, 'hydra:next');
+          if (prevLinks.length > 0) {
+            this.fetchQueue.push(prevLinks[0].object);
+          }
+          if (nextLinks.length > 0) {
+            this.fetchQueue.push(nextLinks[0].object);
+          }
+        }
+        this.historyFetch(observer, uri, from, to, datasetUrl, entry);
+      });
+    } else if (link !== undefined) {
+      this.historyFetch(observer, uri, from, to, datasetUrl, entry);
+    }
   }
 
   /**

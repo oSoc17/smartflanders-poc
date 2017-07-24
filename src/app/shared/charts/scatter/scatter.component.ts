@@ -94,7 +94,6 @@ export class ScatterComponent implements OnInit, OnDestroy {
 
   updatePeriodically(d) {
     this.counter ++;
-    console.log(this.counter);
     if ( this.counter >= 20) {
       //this.parkingHistory.timeframe.splice(index, 0, d);
       this.chart.data.datasets.forEach(element => {
