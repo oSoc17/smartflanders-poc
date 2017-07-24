@@ -26,12 +26,9 @@ export class HomepageComponent implements OnInit {
    }
 
   ngOnInit() {
-    this._dataservice.getDatasetUrls().then(parkingURLS => {
-      console.log(parkingURLS);
+      const parkingURLS = this._dataservice.getDatasetUrls()
       this.cities = values(parkingURLS);
       this.citynames = keys(parkingURLS);
-
-    })
   }
   }
 

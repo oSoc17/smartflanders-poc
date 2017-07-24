@@ -3,7 +3,7 @@ import TimestampRange from '../../models/timestamp-range';
 import * as Rx from 'rxjs/Rx';
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { findLast } from 'lodash';
+import { findLast, values } from 'lodash';
 import { ParkingDataService } from '../../services/parking-data.service';
 import Parking from './../../models/parking'
 import Measurement from './../../models/measurement';
@@ -63,9 +63,8 @@ ngOnInit() {
 
 getData(range: TimestampRange, parking: Parking) {
   this.clear.emit();
-  const _this = this;
   this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {
-    _this.rangeData.next(data);
+  this.rangeData.next(data);
   }, this.cityUrl);
   this.intervalFetcher.fetch();
 }

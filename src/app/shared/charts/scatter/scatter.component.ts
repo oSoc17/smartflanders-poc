@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, OnInit, Input, ViewChild, OnDestroy} from '@angular/core';
 import Parking from './../../../models/parking'
 import Chart from 'chart.js';
 import Measurement from './../../../models/measurement';
@@ -10,7 +10,7 @@ import * as moment from 'moment';
   templateUrl: './scatter.component.html',
   styleUrls: ['./scatter.component.css']
 })
-export class ScatterComponent implements OnInit {
+export class ScatterComponent implements OnInit, OnDestroy {
   @Input() private data;
   @Input() private clear;
   @Input() private parking: Parking;
@@ -86,6 +86,9 @@ export class ScatterComponent implements OnInit {
       this.chart.update();
       console.log('cleared');
     })
+  }
+   ngOnDestroy() {
+    this.data.unsubscribe();
   }
 
 

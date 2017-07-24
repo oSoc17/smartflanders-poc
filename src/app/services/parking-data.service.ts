@@ -52,7 +52,6 @@ export class ParkingDataService {
   public static getMeasurements(uri, store): Measurement[] {
     const measurementTriples = store.getTriples(uri, 'datex:parkingNumberOfVacantSpaces');
     const measurements: Measurement[] = [];
-
     measurementTriples.forEach(triple => {
       const generatedAtTriple = store.getTriples(triple.graph, 'http://www.w3.org/ns/prov#generatedAtTime')[0];
       const genTimestamp = n3.Util.getLiteralValue(generatedAtTriple.object);
@@ -61,7 +60,7 @@ export class ParkingDataService {
       measurements.push({
         timestamp: genTime,
         value: value
-      });
+       });
     });
     return measurements;
   }
@@ -101,8 +100,8 @@ export class ParkingDataService {
     });
   }
 
-  public getDatasetUrls() {
-    return new Promise((resolve) => resolve(this.datasetUrls));
+  public getDatasetUrls(): any {
+    return this.datasetUrls;
   }
 
 
@@ -130,6 +129,7 @@ export class ParkingDataService {
     return new Promise((resolve) => {
       this.fetch.get(datasetUrl).then(response => {
         // Put all triples in a store
+        const parkingTriples2 = [];
         const store = new n3.Store(response.triples, {
           prefixes: response.prefixes
         });
