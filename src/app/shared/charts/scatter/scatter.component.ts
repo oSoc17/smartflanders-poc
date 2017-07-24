@@ -74,7 +74,6 @@ export class ScatterComponent implements OnInit {
     this.chart = new Chart(this.context, this.config);
     this.data.subscribe(d => {
       this.updatePeriodically(d);
-      console.log('updated');
     });
     this.clear.subscribe(() => {
       this.chart.data.datasets.forEach(element => {
@@ -92,14 +91,14 @@ export class ScatterComponent implements OnInit {
     if (this.counter >= 20) {
       // this.parkingHistory.timeframe.splice(index, 0, d);
       console.log(this.chart.data);
-      let parkingDataset = this.chart.data.datasets[measurement.parkingUri].data;
-      console.log(parkingDataset);
+      const parkingDataset = this.chart.data.datasets[measurement.parkingUri].data;
+      console.log(measurement);
       const index = sortedLastIndexBy(parkingDataset, {
         x: (measurement.timestamp * 1000)
       }, function (o) {
         return o.x;
       });
-      parkingDataset.data.splice(index, 0, {
+      parkingDataset.splice(index, 0, {
         x: measurement.timestamp * 1000,
         y: parseInt(measurement.value, 10)
       });
