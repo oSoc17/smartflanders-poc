@@ -1,9 +1,11 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { ParkingDataService } from '../../services/parking-data.service';
 import { find, indexOf, values } from 'lodash';
 import Parking from './../../models/parking';
 import ParkingChart from './../../models/parking-chart';
 import * as Rx from 'rxjs/Rx';
+import { ScatterComponent } from './../../shared/charts/scatter/scatter.component';
+
 
 @Component({
   selector: 'app-comparepage',
@@ -13,12 +15,16 @@ import * as Rx from 'rxjs/Rx';
 
 export class ComparepageComponent implements OnInit {
 
+  @ViewChild(ScatterComponent)
+  private scatter: ScatterComponent;
   public data = {};
   public parkings: Array<Parking> = [];
   public parkingsToCompare: Array<Parking> = [];
   public parkingsChart;
   public clear = new EventEmitter();
   public intervalFetchers = {};
+  public observables = [];
+  public showChart = false;
 
   constructor(private _parkingDataService: ParkingDataService) { }
 
@@ -26,7 +32,6 @@ export class ComparepageComponent implements OnInit {
     if (Object.keys(this.intervalFetchers).length !== 0) {
       this.onCancel();
     }
-    console.log($event);
     this.getData($event);
   }
 
@@ -43,10 +48,12 @@ export class ComparepageComponent implements OnInit {
 
   getData(range) {
     this.clear.emit();
-    this.parkingsToCompare.forEach(parking => {
-      this.intervalFetchers[parking.uri] = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, parking.cityUrl);
-      this.intervalFetchers[parking.uri].fetch();
-    });
+    for (let index = 0; index < this.parkingsToCompare.length; index++) {
+      this.observables.push(this._parkingDataService.getParkingHistory(this.parkingsToCompare[index].uri, range.from, range.to, this.parkingsToCompare[index].cityUrl));
+      if ( index === this.parkingsToCompare.length - 1 ) {
+        this.showChart = true;
+      }
+    }
   }
 
   onCancel() {
@@ -72,8 +79,6 @@ export class ComparepageComponent implements OnInit {
     if (this.parkingsToCompare.indexOf(_parking) === -1) {
       this.data[_parking.uri] = new Rx.Subject();
       this.parkingsToCompare.push(_parking);
-      console.log(this.data[_parking.uri]);
-      this.parkingsChart[_parking.uri] = new ParkingChart(_parking.name, this.data[_parking.uri], '#552356');
     }
     this.data[_parking.uri] = new Rx.Subject();
   }

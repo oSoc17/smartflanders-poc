@@ -5176,6 +5176,11 @@
       "integrity": "sha512-8T7Zn1AhMsQ/HI1SjcCfT/t4ii3eAqco3yOcSzS4mozsOz69lHLsoMXmF9nZgnFanYscnSlUSgs8uZyKzpE6kg==",
       "dev": true
     },
+    "randomcolor": {
+      "version": "0.5.3",
+      "resolved": "https://registry.npmjs.org/randomcolor/-/randomcolor-0.5.3.tgz",
+      "integrity": "sha1-f5Dy8qf21aUiMhYe6u6uqaw7WBU="
+    },
     "range-parser": {
       "version": "1.2.0",
       "resolved": "https://registry.npmjs.org/range-parser/-/range-parser-1.2.0.tgz",

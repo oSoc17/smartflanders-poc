@@ -4,24 +4,25 @@ import Chart from 'chart.js';
 import Measurement from './../../../models/measurement';
 import ParkingHistory from './../../../models/parking-history';
 import ParkingChart from './../../../models/parking-history';
-import { sortedLastIndexBy } from 'lodash';
+import { sortedLastIndexBy, findIndex } from 'lodash';
 import * as moment from 'moment';
-
+import randomColor from 'randomcolor';
 @Component({
-  selector: 'app-chart-scatter',
-  templateUrl: './scatter.component.html',
-  styleUrls: ['./scatter.component.css']
+  selector: 'app-chart-scatter-compare',
+  templateUrl: './scatter-compare.component.html',
+  styleUrls: ['./scatter-compare.component.css']
 })
 
-export class ScatterComponent implements OnInit, OnDestroy {
+export class ScatterCompareComponent implements OnInit, OnDestroy {
 
   @Input() private data;
+  @Input() private observables;
   @Input() private clear;
-  @Input() private parking: Parking;
+  @Input() private parkings: Array<Parking>;
   @Input() private isVacant;
   public parkingsChart = [];
   @ViewChild('scatter') scatter;
-  private dataset = [];
+  private datasets = [];
   private context;
   private chartData = [];
   private config;
@@ -38,24 +39,11 @@ export class ScatterComponent implements OnInit, OnDestroy {
       animation: false,
       type: 'scatter',
       data: {
-        datasets: [{
-          label: 'Vacant spaces',
-          showLine: true,
-          data: this.chartData,
-          pointRadius: 1,
-          pointStyle: 'line',
-          backgroundColor: [
-            '#e1f5fe',
-          ],
-          borderColor: [
-            '#4fc3f7',
-          ],
-          borderWidth: 2
-        }]
+        datasets: this.datasets
       },
       options: {
         legend: {
-          display: false
+          display: true
         },
         scales: {
           xAxes: [{
@@ -76,7 +64,7 @@ export class ScatterComponent implements OnInit, OnDestroy {
             ticks: {
               beginAtZero: true,
               suggestedMin: 50,
-              suggestedMax: this.parking.totalSpaces
+              suggestedMax: 1000
             }
           }]
         }
@@ -84,13 +72,45 @@ export class ScatterComponent implements OnInit, OnDestroy {
     };
     this.chart = new Chart(this.context, this.config);
     const _dthis = this;
-    this.disposable = this.data.subscribe(
-      (x) => { _dthis.updatePeriodically(x)},
-      (e) => { console.error(e)},
-      () => { console.log('completed')}
-    )
-    this.clear.subscribe()
+    this.parkings.forEach(parking => {
+      this.datasets.push({
+          label: parking.uri,
+          showLine: true,
+          data: [],
+          pointRadius: 1,
+          pointStyle: 'line',
+          backgroundColor: [
+            randomColor(),
+          ],
+          borderColor: [
+            randomColor(),
+          ],
+          borderWidth: 2
+        })
+
+    });
       this.chart.update();
+    this.observables.forEach(element => {
+      element.subscribe(
+        (x) => {
+          console.log(x);
+         const indexOfDataset = findIndex(this.chart.data.datasets, (o) => { return o.label === x.parkingUrl});
+        const index = sortedLastIndexBy(this.chart.data.datasets[indexOfDataset].data, {
+       x: (x.timestamp * 1000)
+    }, function (o) {
+       return o.x;
+     });
+      this.chart.data.datasets[indexOfDataset].data.splice(0, 0, {
+        x: x.timestamp * 1000,
+        y: x.value
+      });
+      console.log(this.chart.data.datasets);
+      this.chart.update();
+        },
+        (e) => {console.error(e)},
+        ()  => {}
+      )
+    });
   }
   ngOnDestroy() {
     this.disposable.unsubscribe();
