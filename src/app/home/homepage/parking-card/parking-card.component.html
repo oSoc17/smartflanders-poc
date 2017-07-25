@@ -8,7 +8,10 @@
         <p>{{parking.totalSpaces}}</p>
       </div>
       <div class="col s3">
-        <p>...</p>
+        <p><span class="dynamicsparkline">Loading..</span></p>
+        <script>
+        $('.dynamicsparkline').sparkline(this.values); 
+        </script>
       </div>
     </div>
   </div>

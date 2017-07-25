@@ -25,9 +25,7 @@ import { ChartSettingsComponent } from './shared/charts/chart-settings/chart-set
 import { CitySectionComponent } from './home/homepage/city-section/city-section.component';
 import { MaterializeModule } from 'angular2-materialize';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import {enableProdMode} from '@angular/core';
 
-enableProdMode();
 @NgModule({
   declarations: [
     AppComponent,

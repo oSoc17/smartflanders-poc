@@ -74,12 +74,11 @@ export class DetailspageComponent implements OnInit {
     )
   }
   fetchData(x) {
+    console.log('God why');
     this._parkingDataService.getNewestParkingDataForCity(this.parking.uri, this.cityUrl).subscribe(_result => {
       console.log(_result);
     });
   }
-
-
   getData(range: TimestampRange, parking: Parking, dataType: boolean) {
     this.clear.emit();
     const _this = this;
@@ -94,7 +93,8 @@ export class DetailspageComponent implements OnInit {
       }, this.cityUrl);
     }
     this.intervalFetcher.fetch();
-  }*/
-}
+  }
+  */
+ }
 }
 
