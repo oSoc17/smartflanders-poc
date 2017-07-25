@@ -1,5 +1,5 @@
 import { values } from 'lodash';
-import { Observable } from 'rxjs/observable';
+import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, Input } from '@angular/core';
 import {MdCardModule} from '@angular/material';
 import Parking from './../../../models/parking';
