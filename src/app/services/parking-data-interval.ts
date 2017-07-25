@@ -4,6 +4,7 @@ import n3 from 'n3';
 import {ParkingDataService} from './parking-data.service';
 import {EventEmitter} from 'events';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable'
 
 @Injectable()
 export class ParkingDataInterval extends EventEmitter {
@@ -16,7 +17,8 @@ export class ParkingDataInterval extends EventEmitter {
   private parking: string;
   private canceled: boolean;
   private triplesToMeasurements = new TriplesToMeasurements();
-  constructor(from, to, entry, parking) {
+  public observer;
+  constructor(from, to, entry, parking, observer) {
     super();
     this.from = from;
     this.to = to;
@@ -24,6 +26,7 @@ export class ParkingDataInterval extends EventEmitter {
     this.entry = entry;
     this.parking = parking;
     this.fetchQueue = [entry];
+    this.observer = observer;
   }
 
   public fetch() {
@@ -38,6 +41,7 @@ export class ParkingDataInterval extends EventEmitter {
           if (this.from <= measurement.timestamp && measurement.timestamp <= this.to) {
             if (!this.canceled) {
               measurement.parkingUrl = this.parking;
+              this.observer.next(measurement);
               (this as EventEmitter).emit('data', measurement);
               hasOverlap = true;
             }
@@ -47,6 +51,8 @@ export class ParkingDataInterval extends EventEmitter {
           const prevLinks = this.triplesToMeasurements.previous;
           if (prevLinks.length > 0 && prevLinks) {
             this.fetchQueue.push(prevLinks);
+          } else if (prevLinks.length === 0) {
+              this.observer.complete();
           }
         }
         this.fetch();

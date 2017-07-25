@@ -178,11 +178,12 @@ export class ParkingDataService {
    * @param datasetUrl the url of the dataset where the parking can be found
    * @returns ParkingDataInterval: call fetch() on this object to start fetching, cancel() to cancel
    */
-  public getParkingHistory(uri, from, to, onData, datasetUrl) {
+  public getParkingHistory(uri, from, to, datasetUrl) {
     const entry = datasetUrl + '?time=' + moment.unix(to).format('YYYY-MM-DDTHH:mm:ss');
-    const pdi = new ParkingDataInterval(from, to, entry, uri);
-    (pdi as EventEmitter).on('data', onData);
-    return pdi;
+    return Observable.create(observer => {
+      const pdi = new ParkingDataInterval(from, to, entry, uri, observer);
+      pdi.fetch();
+    })
   }
 
   /**

@@ -26,8 +26,10 @@
     "angular2-materialize": "^15.0.4",
     "angular2-moment": "^1.6.0",
     "chart.js": "^2.6.0",
+    "co": "^4.6.0",
     "core-js": "^2.4.1",
     "jquery": "^3.2.1",
+    "json-stable-stringify": "^1.0.1",
     "ldfetch": "0.0.3",
     "lodash": "^4.17.4",
     "material-datetime-picker": "^2.4.0",
@@ -39,7 +41,7 @@
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
-    "@angular/cli": "1.2.0",
+    "@angular/cli": "^1.2.4",
     "@angular/compiler-cli": "^4.3.1",
     "@angular/language-service": "^4.3.1",
     "@types/jasmine": "~2.5.53",
@@ -55,7 +57,9 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.1.2",
+    "reflect-metadata": "^0.1.10",
     "ts-node": "~3.0.4",
+    "tsickle": "^0.23.4",
     "tslint": "~5.3.2",
     "typescript": "~2.3.3"
   }

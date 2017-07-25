@@ -22,12 +22,12 @@ ngOnInit() {
   this.parkingdataservice.getParkings(this.cityUrl).subscribe(
       (x) =>  { this.parkings.push(x); },
       (e) => { console.log('onError: %s', e); },
-      ()  =>  { this.fetLatestData() }
+      ()  =>  { this.fetchLatestParkingData() }
   )
 }
-fetLatestData() {
+fetchLatestParkingData() {
 this.parkingdataservice.getNewestParkingDataForCity(this.parkings, this.cityUrl).subscribe(
-  (x) =>  { this.measurements = x; console.log(x) },
+  (x) =>  { this.measurements = x; },
       (e) => { console.log('onError: %s', e); },
       ()  =>  { }
   )

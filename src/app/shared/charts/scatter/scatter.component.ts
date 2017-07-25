@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, OnInit, Input, ViewChild, OnDestroy} from '@angular/core';
 import Parking from './../../../models/parking';
 import Chart from 'chart.js';
 import Measurement from './../../../models/measurement';
@@ -13,31 +13,46 @@ import * as moment from 'moment';
   styleUrls: ['./scatter.component.css']
 })
 
-export class ScatterComponent implements OnInit {
+export class ScatterComponent implements OnInit, OnDestroy {
 
   @Input() private data;
   @Input() private clear;
   @Input() private parking: Parking;
   @Input() private isVacant;
-  @Input() public parkingsChart = [];
+  public parkingsChart = [];
   @ViewChild('scatter') scatter;
-
+  private dataset = [];
   private context;
-  private parkingHistory: ParkingHistory;
   private chartData = [];
   private config;
   private chart;
   private updateIncoming = false;
+  private counter = 0;
+  private disposable;
 
   constructor() { }
 
   ngOnInit() {
+    console.log(this.data);
     this.context = this.scatter.nativeElement;
-    this.parkingHistory = new ParkingHistory(this.parking, []);
     this.config = {
+      animation: false,
       type: 'scatter',
       data: {
-        datasets: this.parkingsChart
+        datasets: [{
+          label: 'Vacant spaces',
+          showLine: true,
+          data: this.chartData,
+          pointRadius: 1,
+          pointStyle: 'line',
+          backgroundColor: [
+            '#e1f5fe',
+          ],
+          borderColor: [
+            '#4fc3f7',
+          ],
+          borderWidth: 2
+        }]
       },
       options: {
         legend: {
@@ -70,36 +85,34 @@ export class ScatterComponent implements OnInit {
     };
     this.chart = new Chart(this.context, this.config);
     const _dthis = this;
-    console.log(this.data);
-    this.data.subscribe(d => {
-      _dthis.updatePeriodically(d);
-    });
-    this.clear.subscribe(() => {
-      this.chart.data.datasets.forEach(element => {
-        element.splice(0, element.length);
-      });
+    this.disposable = this.data.subscribe(
+      (x) => { _dthis.updatePeriodically(x)},
+      (e) => { console.error(e)},
+      () => { console.log('completed')}
+    )
+    this.clear.subscribe()
       this.chart.update();
-    })
+  }
+  ngOnDestroy() {
+    this.disposable.unsubscribe();
   }
 
 
   updatePeriodically(measurement) {
-      // this.parkingHistory.timeframe.splice(index, 0, d);
-      console.log(this.chart.data);
-      
-      const parkingDataset = this.chart.data.datasets[measurement.parkingUri].data;
-      console.log(parkingDataset);
-      const index = sortedLastIndexBy(parkingDataset, {
+    this.counter ++;
+    if (this.counter >= 30 ) {
+   const index = sortedLastIndexBy(this.chartData, {
         x: (measurement.timestamp * 1000)
       }, function (o) {
         return o.x;
       });
-      parkingDataset.splice(index, 0, {
+      this.chartData.splice(index, 0, {
         x: measurement.timestamp * 1000,
-        y: parseInt(measurement.value, 10)
+        y: measurement.value
       });
+      this.counter = 0;
       this.chart.update();
-
+    }
   }
 }
 

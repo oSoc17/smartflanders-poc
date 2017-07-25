@@ -8,6 +8,7 @@ import { ParkingDataService } from '../../services/parking-data.service';
 import Parking from './../../models/parking'
 import Measurement from './../../models/measurement';
 import {ParkingDataInterval} from '../../services/parking-data-interval';
+import { Observable } from 'rxjs/Observable'
 
 @Component({
   selector: 'app-detailspage',
@@ -18,7 +19,7 @@ import {ParkingDataInterval} from '../../services/parking-data-interval';
 
 export class DetailspageComponent implements OnInit {
 
-  public rangeData = new Rx.Subject();
+  public rangeData: Observable<any>;
   public clear = new EventEmitter();
   public parking: Parking;
   public measurement: Measurement;
@@ -27,9 +28,14 @@ export class DetailspageComponent implements OnInit {
   public cityUrl: string;
 
   private timeFrame: TimestampRange;
-  private isVacant: boolean;
+  private isVacant = true;
 
-  onRangeChange($event) {
+  constructor(
+    private _parkingDataService: ParkingDataService,
+    private route: ActivatedRoute,
+    private router: Router) {}
+
+    onRangeChange($event) {
     this.timeFrame = $event;
     this.getData(this.timeFrame, this.parking, this.isVacant);
   }
@@ -48,11 +54,6 @@ export class DetailspageComponent implements OnInit {
       clear.emit();
     }, 15000);
   }
-
-  constructor(
-    private _parkingDataService: ParkingDataService,
-    private route: ActivatedRoute,
-    private router: Router) {}
 
   ngOnInit() {
     this.isVacant = true;
@@ -74,27 +75,23 @@ export class DetailspageComponent implements OnInit {
     )
   }
   fetchData(x) {
-    console.log('God why');
-    this._parkingDataService.getNewestParkingDataForCity(this.parking.uri, this.cityUrl).subscribe(_result => {
-      console.log(_result);
+    // getnewestparkingdataforcity takes an array of parking but we only want one, so create one.
+    // Could be nicer Arne do your best ;) Love Thibault
+    const parking: Array<Parking> = [];
+    parking.push(x);
+    this._parkingDataService.getNewestParkingDataForCity(parking, this.cityUrl).subscribe(_result => {
+      const result: Array <Measurement> = _result[x.uri];
+      this.measurement = result[result.length - 1];
     });
   }
+
   getData(range: TimestampRange, parking: Parking, dataType: boolean) {
-    this.clear.emit();
     const _this = this;
- /*   if (dataType) {
-      this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {
-        _this.rangeData.next(data);
-      }, this.cityUrl);
+    if (dataType) {
+      this.rangeData =  this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, this.cityUrl);
     } else {
-      this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {
-        data.value = parking.totalSpaces - data.value;
-        _this.rangeData.next(data);
-      }, this.cityUrl);
+      this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, this.cityUrl);
     }
-    this.intervalFetcher.fetch();
   }
-  */
  }
-}
 

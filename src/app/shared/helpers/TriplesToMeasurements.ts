@@ -30,7 +30,7 @@ export class TriplesToMeasurements {
         return parkingTriples[index].graph === o.subject
       });
       _measurements.push(new Measurement(moment(Util.getLiteralValue(graphTriple.object)).unix(),
-        Util.getLiteralValue(parkingTriples[index].object), parkingUri));
+        parseInt(Util.getLiteralValue(parkingTriples[index].object), 10), parkingUri));
     }
     return _measurements.sort(this.compare);
   }

@@ -44,11 +44,7 @@ export class ComparepageComponent implements OnInit {
   getData(range) {
     this.clear.emit();
     this.parkingsToCompare.forEach(parking => {
-      this.intervalFetchers[parking.uri] = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, data => {
-        console.log(data);
-        this.data[parking.uri].next(data);
-        this.parkingsChart[parking.uri].next(data);
-      }, parking.cityUrl);
+      this.intervalFetchers[parking.uri] = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, parking.cityUrl);
       this.intervalFetchers[parking.uri].fetch();
     });
   }
