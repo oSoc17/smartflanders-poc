@@ -14,17 +14,17 @@ import { keys, values } from 'lodash';
 
 export class HomepageComponent implements OnInit {
 
-  parkings: Array<Parking> = [];
+  parkings: Array < Parking > = [];
   dataservice: ParkingDataService;
-  public cities: Array<string> = [];
-  public citynames: Array<string> = [];
+  public cities: Array < string > = [];
+  public citynames: Array < string > = [];
   public selectedCountry: string;
 
   constructor(
     private _dataservice: ParkingDataService
-    ) {
+  ) {
     this.dataservice = _dataservice;
-   }
+  }
 
   ngOnInit() {
     this.selectedCountry = 'be';
@@ -34,5 +34,10 @@ export class HomepageComponent implements OnInit {
       this.citynames = keys(parkingURLS);
     })
   }
+
+  changeSelectedCountry(selectedCountry) {
+    this.selectedCountry = selectedCountry.value;
   }
+}
+
 

@@ -27,7 +27,6 @@ export class ChartSettingsComponent implements OnInit {
   ngOnInit() {
     this.selectedChart = 'scatter';
     this.selectedData = 'vacant';
-    
   }
 
   openTimePickerFrom(diff: string) {
