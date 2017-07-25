@@ -1,11 +1,10 @@
+import { TriplesToMeasurements } from './../shared/helpers/TriplesToMeasurements';
 import {Injectable} from '@angular/core';
-
 import ldfetch from 'ldfetch';
 import n3 from 'n3';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {EventEmitter} from 'events';
-
 import Parking from '../models/parking';
 import Measurement from '../models/measurement';
 import {ParkingDataInterval} from './parking-data-interval';
@@ -52,6 +51,7 @@ export class ParkingDataService {
    * @returns {Measurement[]} (time frame, not necessarily sorted)
    */
   public static getMeasurements(uri, store): Measurement[] {
+
     const measurementTriples = store.getTriples(uri, 'datex:parkingNumberOfVacantSpaces');
     const measurements: Measurement[] = [];
 

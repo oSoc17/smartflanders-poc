@@ -34,7 +34,6 @@ export class ScatterComponent implements OnInit {
     this.context = this.scatter.nativeElement;
     this.parkingHistory = new ParkingHistory(this.parking, []);
     this.config = {
-      animation: false,
       type: 'scatter',
       data: {
         datasets: [{
@@ -108,7 +107,7 @@ export class ScatterComponent implements OnInit {
           y: parseInt(d.value, 10)
         });
       });
-      this.chart.update(0);
+      this.chart.update();
       this.counter = 0;
     }
   }
