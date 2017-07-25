@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/observable';
 import { Component, OnInit, Input } from '@angular/core';
 import {MdCardModule} from '@angular/material';
 import Parking from './../../../models/parking';
@@ -12,6 +13,7 @@ import { ParkingDataService } from './../../../services/parking-data.service';
 export class ParkingCardComponent implements OnInit {
  @Input() parking: Parking;
  @Input() cityUrl: string;
+ @Input() parkingObservable: Array<Observable<Measurement>>
  dataservice: ParkingDataService;
  private measurement: Measurement;
 
@@ -19,10 +21,13 @@ export class ParkingCardComponent implements OnInit {
     this.dataservice = _dataservice;
   }
   ngOnInit() {
-    this.calculatePercentage();
-    setInterval(() => {
-      this.calculatePercentage();
-    }, 60000);
+    const _this = this;
+    setTimeout( () => {
+    _this.calculatePercentage();
+    }, 100);
+    setInterval( () => {
+      _this.calculatePercentage()
+    }, 15000);
   }
 
   private calculatePercentage() {

@@ -46,7 +46,7 @@ export class DetailspageComponent implements OnInit {
     const clear = this.clear;
     setTimeout(function () {
       clear.emit();
-    }, 1000);
+    }, 15000);
   }
 
   constructor(
@@ -58,18 +58,15 @@ export class DetailspageComponent implements OnInit {
     this.isVacant = true;
     this.cityUrl = this.route.snapshot.paramMap.get('cityUrl');
     const id = this.route.snapshot.url[1].path;
-    this._parkingDataService.getParkings(this.cityUrl).then(result => {
+    this._parkingDataService.getParkings(this.cityUrl).subscribe(result => {
       this.parkings = result;
-    }).then(() => {
-      this.parkings.forEach(p => {
+       this.parkings.forEach(p => {
         if (p.id === id) {
           this.parking = p;
         }
-
       })
-    }).then(() => {
-      this._parkingDataService.getNewestParkingData(this.parking.uri, this.cityUrl).then(result => {
-        this.measurement = result;
+      this._parkingDataService.getNewestParkingData(this.parking.uri, this.cityUrl).then(_result => {
+        this.measurement = _result;
       });
     })
   }

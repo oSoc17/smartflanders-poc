@@ -39,7 +39,7 @@ export class ComparepageComponent implements OnInit {
   ngOnInit() {
     this._parkingDataService.getDatasetUrls().then(result => {
       values(result).forEach(city => {
-        this._parkingDataService.getParkings(city).then(parkings => {
+        this._parkingDataService.getParkings(city).subscribe(parkings => {
           this.parkings.push.apply(this.parkings, parkings);
         });
       });

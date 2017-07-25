@@ -1,4 +1,4 @@
-import { Util } from 'N3';
+import { Util } from 'n3';
 import Measurement from './../../models/measurement';
 import Triple from './../../models/triple';
 import {find} from 'lodash';
@@ -30,7 +30,7 @@ export class TriplesToMeasurements {
         return parkingTriples[index].graph === o.subject
       });
       _measurements.push(new Measurement(moment(graphTriple.object.substring(1, 26)).unix(),
-        Util.getLiteralValue(parkingTriples[index].object)));
+        Util.getLiteralValue(parkingTriples[index].object), parkingUri));
     }
     return _measurements.sort(this.compare);
   }
