@@ -19,7 +19,7 @@ export class ScatterComponent implements OnInit {
   @Input() private clear;
   @Input() private parking: Parking;
   @Input() private isVacant;
-  @Input() public parkingsChart;
+  @Input() public parkingsChart = [];
   @ViewChild('scatter') scatter;
 
   private context;
@@ -28,12 +28,10 @@ export class ScatterComponent implements OnInit {
   private config;
   private chart;
   private updateIncoming = false;
-  private counter = 0;
 
   constructor() { }
 
   ngOnInit() {
-    console.log(this.parkingsChart);
     this.context = this.scatter.nativeElement;
     this.parkingHistory = new ParkingHistory(this.parking, []);
     this.config = {
@@ -71,27 +69,26 @@ export class ScatterComponent implements OnInit {
       }
     };
     this.chart = new Chart(this.context, this.config);
+    const _dthis = this;
+    console.log(this.data);
     this.data.subscribe(d => {
-      this.updatePeriodically(d);
+      _dthis.updatePeriodically(d);
     });
     this.clear.subscribe(() => {
       this.chart.data.datasets.forEach(element => {
-        console.log('scatter: clear', element);
         element.splice(0, element.length);
       });
       this.chart.update();
-      console.log('cleared');
     })
   }
 
 
   updatePeriodically(measurement) {
-    this.counter++;
-    if (this.counter >= 20) {
       // this.parkingHistory.timeframe.splice(index, 0, d);
       console.log(this.chart.data);
+      
       const parkingDataset = this.chart.data.datasets[measurement.parkingUri].data;
-      console.log(measurement);
+      console.log(parkingDataset);
       const index = sortedLastIndexBy(parkingDataset, {
         x: (measurement.timestamp * 1000)
       }, function (o) {
@@ -102,8 +99,7 @@ export class ScatterComponent implements OnInit {
         y: parseInt(measurement.value, 10)
       });
       this.chart.update();
-      this.counter = 0;
-    }
+
   }
 }
 

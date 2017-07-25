@@ -29,7 +29,7 @@ export class TriplesToMeasurements {
       const graphTriple = find(graphs, (o) => {
         return parkingTriples[index].graph === o.subject
       });
-      _measurements.push(new Measurement(moment(graphTriple.object.substring(1, 26)).unix(),
+      _measurements.push(new Measurement(moment(Util.getLiteralValue(graphTriple.object)).unix(),
         Util.getLiteralValue(parkingTriples[index].object), parkingUri));
     }
     return _measurements.sort(this.compare);

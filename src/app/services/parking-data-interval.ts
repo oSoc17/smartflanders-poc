@@ -32,13 +32,12 @@ export class ParkingDataInterval extends EventEmitter {
       this.fetchedUris.push(link);
       new ldfetch().get(link).then(response => {
         this.fetchedUris.push(response.url);
-       // const store = new n3.Store(response.triples, {prefixes: response.prefixes});
         const timeframe = this.triplesToMeasurements.getMeasurements(response.triples, this.parking);
         let hasOverlap = false;
         timeframe.forEach(measurement => {
           if (this.from <= measurement.timestamp && measurement.timestamp <= this.to) {
             if (!this.canceled) {
-              measurement.parkingUri = this.parking;
+              measurement.parkingUrl = this.parking;
               (this as EventEmitter).emit('data', measurement);
               hasOverlap = true;
             }

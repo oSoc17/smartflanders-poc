@@ -13,7 +13,7 @@ import { ParkingDataService } from './../../../services/parking-data.service';
 export class ParkingCardComponent implements OnInit {
  @Input() parking: Parking;
  @Input() cityUrl: string;
- @Input() parkingObservable: Array<Observable<Measurement>>
+ @Input() measurements: any;
  dataservice: ParkingDataService;
  private measurement: Measurement;
 
@@ -21,18 +21,9 @@ export class ParkingCardComponent implements OnInit {
     this.dataservice = _dataservice;
   }
   ngOnInit() {
-    const _this = this;
-    setTimeout( () => {
-    _this.calculatePercentage();
-    }, 100);
-    setInterval( () => {
-      _this.calculatePercentage()
-    }, 15000);
+     setTimeout( () => {console.log(this.measurements[this.parking.uri])}, 1000);
   }
 
   private calculatePercentage() {
-    this.dataservice.getNewestParkingData(this.parking.uri, this.cityUrl).then(result => {
-      this.measurement = result ;
-    });
   }
 }

@@ -23,27 +23,25 @@ export class ComparepageComponent implements OnInit {
   constructor(private _parkingDataService: ParkingDataService) { }
 
   onRangeChange($event) {
-    console.log('comparepage: onRangeChange');
     if (Object.keys(this.intervalFetchers).length !== 0) {
       this.onCancel();
     }
+    console.log($event);
     this.getData($event);
   }
 
   ngOnInit() {
-    console.log('comparepage: init');
     this.parkingsChart = new Array();
     this._parkingDataService.getDatasetUrls().then(result => {
       values(result).forEach(city => {
         this._parkingDataService.getParkings(city).subscribe(parkings => {
-          this.parkings.push.apply(this.parkings, parkings);
+          this.parkings.push(parkings);
         });
       });
     });
   }
 
   getData(range) {
-    console.log('comparepage: getData');
     this.clear.emit();
     this.parkingsToCompare.forEach(parking => {
       this.intervalFetchers[parking.uri] = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, data => {
@@ -56,7 +54,6 @@ export class ComparepageComponent implements OnInit {
   }
 
   onCancel() {
-    console.log('comparepage: onCancel');
     Object.keys(this.intervalFetchers).forEach((uri) => {
       const interval = this.intervalFetchers[uri];
       interval.cancel();
@@ -66,7 +63,6 @@ export class ComparepageComponent implements OnInit {
   }
 
   parkingRemovedHandler(parkingID) {
-    console.log('comparepage: parkingRemove');
     const parkingToRemove = find(this.parkings, function (o) {
       return o.id === parkingID;
     });
@@ -74,7 +70,6 @@ export class ComparepageComponent implements OnInit {
   }
 
   parkinghandler(parkingID) {
-    console.log('comparepage: parkingHandler');
     const _parking = find(this.parkings, function (o) {
       return o.id === parkingID;
     });

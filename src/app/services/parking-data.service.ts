@@ -85,7 +85,7 @@ export class ParkingDataService {
       const graphTriple = find(graphs, (o) => {
         return usedTriples[index].graph === o.subject
       });
-      _measurements.push(new Measurement(moment(graphTriple.object.substring(1, 26)).unix(),
+      _measurements.push(new Measurement(moment(n3.Util.getLiteralValue(graphTriple.object)).unix(),
         n3.Util.getLiteralValue(usedTriples[index].object), uri));
     }
     return _measurements.sort(this.compare);
@@ -107,71 +107,57 @@ export class ParkingDataService {
    * @param datasetUrl the url of the dataset where this parking can be found
    * @returns {Promise<Measurement>}
    */
-  public getNewestParkingData(uri, datasetUrl): Promise < Measurement > {
-    console.log('service: getNewest');
+  public getNewestParkingData(uris, datasetUrl): Promise < Array < any > > {
     return new Promise((resolve) => {
-      const cache = this.getFromVolatileCache(uri);
-      let latest: Measurement;
-      if (cache) {
-        // Latest measurements are in volatile cache
-        const measurements = ParkingDataService.getMeasurements(uri, cache);
-        let latestTimestamp = 0;
-        measurements.forEach((measurement) => {
-          if (measurement.timestamp > latestTimestamp) {
-            latestTimestamp = measurement.timestamp;
-            latest = measurement;
-          }
-        });
-        resolve(latest);
-      } else {
-        this.fetch.get(datasetUrl).then(response => {
-          // Latest measurements are not in volatile cache, get from web
-          // Put all triples in store
-          const store = new n3.Store(response.triples, {
-            prefixes: response.prefixes
-          });
-          // Get all measurements
-          const measurements = ParkingDataService.getMeasurements(uri, store);
-
-          // Write data to volatile cache
-          this.writeToVolatileCache(datasetUrl, store);
-
-          // Get latest
+      this.fetch.get(datasetUrl).then(response => {
+        // Latest measurements are not in volatile cache, get from web
+        // Put all triples in store
+        // Get all measurements
+        const result = [];
+        let latest;
+        uris.forEach(uri => {
+          result[uri] = ParkingDataService.getMeasurementsWithoutStore(uri, response.triples);
           let latestTimestamp = 0;
-          if (measurements) {
-            measurements.forEach((measurement) => {
+          if (result[uri].measurements) {
+            result[uri].measurements.forEach((measurement) => {
               if (measurement.timestamp > latestTimestamp) {
                 latestTimestamp = measurement.timestamp;
                 latest = measurement;
               }
             });
-            resolve(latest);
           }
         });
-      }
-    });
+        console.log(result);
+        resolve(result);
+
+      });
+    })
   }
+
   /**
    * Fetches the newest measurement for a certain parking
    * @param uri the uri of the parking
    * @param datasetUrl the url of the dataset where this parking can be found
    * @returns {Promise<Measurement>}
    */
-  public getNewestParkingDataForCity(parking: Parking, datasetUrl: string): Observable < Measurement > {
+  public getNewestParkingDataForCity(parkings, datasetUrl: string): Observable < Array <any > > {
     return new Observable(observer => {
         this.fetch.get(datasetUrl).then(response => {
-          let latest: Measurement;
-             const measurements = ParkingDataService.getMeasurementsWithoutStore(parking.uri, response.triples);
-             let latestTimestamp = 0;
-          if (measurements) {
-            measurements.forEach((measurement) => {
+        const result = [];
+        let latest;
+        parkings.forEach(parking => {
+          result[parking.uri] = ParkingDataService.getMeasurementsWithoutStore(parking.uri, response.triples);
+          let latestTimestamp = 0;
+          if (result[parking.uri].measurements) {
+            result[parking.uri].measurements.forEach((measurement) => {
               if (measurement.timestamp > latestTimestamp) {
                 latestTimestamp = measurement.timestamp;
                 latest = measurement;
               }
             });
-            observer.next(latest);
-          };
+          }
+        });
+     observer.next(result);
     })
   })
   }
@@ -193,7 +179,6 @@ export class ParkingDataService {
    * @returns ParkingDataInterval: call fetch() on this object to start fetching, cancel() to cancel
    */
   public getParkingHistory(uri, from, to, onData, datasetUrl) {
-    console.log('service: getParkingHistory()');
     const entry = datasetUrl + '?time=' + moment.unix(to).format('YYYY-MM-DDTHH:mm:ss');
     const pdi = new ParkingDataInterval(from, to, entry, uri);
     (pdi as EventEmitter).on('data', onData);
@@ -204,7 +189,7 @@ export class ParkingDataService {
    * Fetches static data for all parkings from a certain dataset
    * @returns {Promise<Parking[]>}
    */
-  public getParkings(datasetUrl): Observable < Array <Parking> > {
+  public getParkings(datasetUrl): Observable <Parking> {
     return Observable.create(observer => {
       this.fetch.get(datasetUrl).then(response => {
         // Get all subjects that are parkings
@@ -223,20 +208,22 @@ export class ParkingDataService {
             labels.push(response.triples[index]);
           }
         }
-        const _parkings = [];
-        for (let index = 0; index < parkingTriples.length; index++) {
-          let totalspacesresult = find(totalspacesParking, (o) => {
-            return o.subject === parkingTriples[index].subject
-          });
-          let totalspaces = parseInt(n3.Util.getLiteralValue(totalspacesresult.object), 10);
-          let labelresult = find(labels, (o) => {
-            return o.subject === parkingTriples[index].subject
-          });
-          let rdfslabel = n3.Util.getLiteralValue(labelresult.object);
-          let id = rdfslabel.replace(' ', '-').toLowerCase();
-          _parkings.push(new Parking(rdfslabel, parkingTriples[index].subject, id, totalspaces, datasetUrl));
+        if (parkingTriples.length <= 0) {
+          observer.error();
         }
-        observer.next(_parkings);
+        for (let index = 0; index < parkingTriples.length; index++) {
+          const totalspacesresult = find(totalspacesParking, (o) => {
+            return o.subject === parkingTriples[index].subject
+          });
+          const totalspaces = parseInt(n3.Util.getLiteralValue(totalspacesresult.object), 10);
+          const labelresult = find(labels, (o) => {
+            return o.subject === parkingTriples[index].subject
+          });
+          const rdfslabel = n3.Util.getLiteralValue(labelresult.object);
+          const id = rdfslabel.replace(' ', '-').toLowerCase();
+          observer.next(new Parking(rdfslabel, parkingTriples[index].subject, id, totalspaces, datasetUrl));
+        }
+        observer.complete();
       })
     })
   }

@@ -58,23 +58,32 @@ export class DetailspageComponent implements OnInit {
     this.isVacant = true;
     this.cityUrl = this.route.snapshot.paramMap.get('cityUrl');
     const id = this.route.snapshot.url[1].path;
-    this._parkingDataService.getParkings(this.cityUrl).subscribe(result => {
-      this.parkings = result;
-       this.parkings.forEach(p => {
-        if (p.id === id) {
-          this.parking = p;
+    this._parkingDataService.getParkings(this.cityUrl).subscribe(
+      (x) => {
+        if (x.id === id) {
+          this.parking = x;
+          this.fetchData(x);
         }
-      })
-      this._parkingDataService.getNewestParkingData(this.parking.uri, this.cityUrl).then(_result => {
-        this.measurement = _result;
-      });
-    })
+      },
+      (e) => {
+        console.log('onError: %s', e);
+      },
+      () => {
+        console.log('onCompleted');
+      }
+    )
   }
+  fetchData(x) {
+    this._parkingDataService.getNewestParkingDataForCity(this.parking.uri, this.cityUrl).subscribe(_result => {
+      console.log(_result);
+    });
+  }
+
 
   getData(range: TimestampRange, parking: Parking, dataType: boolean) {
     this.clear.emit();
     const _this = this;
-    if (dataType) {
+ /*   if (dataType) {
       this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {
         _this.rangeData.next(data);
       }, this.cityUrl);
@@ -85,6 +94,7 @@ export class DetailspageComponent implements OnInit {
       }, this.cityUrl);
     }
     this.intervalFetcher.fetch();
-  }
+  }*/
+}
 }
 
