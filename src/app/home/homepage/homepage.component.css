@@ -3,6 +3,41 @@
   justify-content: space-around;
   flex-flow: row wrap;
 }
+
+md-button-toggle-group {
+  flex-wrap: wrap;
+  justify-content: space-around;
+  box-shadow: none;
+}
+
+.mat-button-toggle-checked {
+  background-color: #4fc3f7;
+  color: #ffffff !important;
+}
+
+.mat-button-toggle-checked >>> label.mat-button-toggle-label {
+  color: #ffffff;
+}
+
+.selector-container {
+  margin-bottom: 2rem;
+}
+
+.collapsible-header .active {
+  background-color: #4fc3f7 !important;
+}
+
+.collapsible-body {
+  border-bottom: 0;
+  padding: 0;
+  padding-top: 1rem;
+}
+
+li {
+  margin-bottom: 0.5rem !important;
+  box-shadow: none !important;
+}
+
 .example-margin {
   margin: 0 50%;
 }

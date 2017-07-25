@@ -11,6 +11,26 @@
     font-weight: 300;
 }
 
+.card-panel {
+  padding-top: 0;
+  padding-bottom: 0;
+  box-shadow: none;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 0rem;
+}
+
+.collapsible-body {
+  padding: 0rem !important;
+}
+
+.row {
+    margin-bottom: 0rem;
+}
+
+.row .col.s12 {
+  padding: 0rem !important;
+}
+
 md-card {
     height: 19rem;;
 }
