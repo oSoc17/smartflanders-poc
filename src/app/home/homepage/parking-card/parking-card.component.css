@@ -1,8 +1,4 @@
 
-.percentage {
-    font-size: 3em;
-}
-
 .chart {
     width: 150px;
 }
@@ -13,6 +9,26 @@
 
 .mat-card-title {
     font-weight: 300;
+}
+
+.card-panel {
+  padding-top: 0;
+  padding-bottom: 0;
+  box-shadow: none;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 0rem;
+}
+
+.collapsible-body {
+  padding: 0rem !important;
+}
+
+.row {
+    margin-bottom: 0rem;
+}
+
+.row .col.s12 {
+  padding: 0rem !important;
 }
 
 md-card {
@@ -30,4 +46,61 @@ md-card-title {
 
 md-card-content {
     margin: 0 auto;
+}
+
+
+.card-panel {
+  flex: 0 0 230px;
+  flex-grow: 0;
+  flex-basis: 30%;
+  padding-bottom: 0;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+  z-index: 0;
+}
+
+.card-panel:hover {
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 5px 5px 0;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0 5px 5px 0;
+  -moz-box-shadow: rgba(0, 0, 0, 0.1) 0 5px 5px 0;
+}
+
+.animate {
+  -webkit-animation: ripple 0.65s linear;
+  -moz-animation: ripple 0.65s linear;
+  -ms-animation: ripple 0.65s linear;
+  -o-animation: ripple 0.65s linear;
+  animation: ripple 0.65s linear;
+}
+
+@-webkit-keyframes ripple {
+  100% {
+    opacity: 0;
+    -webkit-transform: scale(2.5);
+  }
+}
+
+@-moz-keyframes ripple {
+  100% {
+    opacity: 0;
+    -moz-transform: scale(2.5);
+  }
+}
+
+@-o-keyframes ripple {
+  100% {
+    opacity: 0;
+    -o-transform: scale(2.5);
+  }
+}
+
+@keyframes ripple {
+  100% {
+    opacity: 0;
+    transform: scale(2.5);
+  }
 }
