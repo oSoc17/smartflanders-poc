@@ -1,4 +1,5 @@
 export default class Parking {
+
   public name: string;
   public totalSpaces: number;
   public uri: string;
