@@ -1,3 +1,5 @@
+import { values } from 'lodash';
+import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, Input } from '@angular/core';
 import {MdCardModule} from '@angular/material';
 import Parking from './../../../models/parking';
@@ -12,6 +14,8 @@ import { ParkingDataService } from './../../../services/parking-data.service';
 export class ParkingCardComponent implements OnInit {
  @Input() parking: Parking;
  @Input() cityUrl: string;
+ @Input() measurements: any;
+ public values: Array<number>;
  dataservice: ParkingDataService;
  private measurement: Measurement;
 
@@ -19,15 +23,9 @@ export class ParkingCardComponent implements OnInit {
     this.dataservice = _dataservice;
   }
   ngOnInit() {
-    this.calculatePercentage();
-    setInterval(() => {
-      this.calculatePercentage();
-    }, 60000);
+     setTimeout( () => { this.values = this.measurements[this.parking.uri].values}, 2000);
   }
 
   private calculatePercentage() {
-    this.dataservice.getNewestParkingData(this.parking.uri, this.cityUrl).then(result => {
-      this.measurement = result ;
-    });
   }
 }

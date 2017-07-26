@@ -1,6 +1,15 @@
-<div class="container"> <a *ngIf="parkings && cityUrl" ><app-parking-card 
-*ngFor="let parking of parkings" class="parking-card"
-[cityUrl]="cityUrl"
-[parking]= "parking"
-(click)="goToDetails(parking, cityUrl)">
-</app-parking-card></a></div>
+<div class="container">
+  <a *ngIf="showCards">
+    <div class="row">
+      <div class="col s6"><h5>PARKING</h5></div>
+      <div class="col s3"><h5>VACANT</h5></div>
+      <div class="col s3"><h5>TREND</h5></div>
+      <app-parking-card *ngFor="let parking of parkings" class="parking-card" 
+      [cityUrl]="cityUrl" 
+      [parking]="parking"
+      [measurements]="measurements" 
+      (click)="goToDetails(parking, cityUrl)">
+      </app-parking-card>
+    </div>
+  </a>
+</div>

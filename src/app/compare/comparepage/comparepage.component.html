@@ -2,7 +2,7 @@
   <h2>compare parkings</h2>
   <div *ngIf="parkings">
     <app-parking-compare-card-add [parkings]="parkings" (parkingAdded)="parkinghandler($event)" (parkingRemoved)="parkingRemovedHandler($event)"></app-parking-compare-card-add>
-    <app-chart-settings *ngIf="parkingToCompare.length !== 0" (onRangeChange)="onRangeChange($event)" (onCancel)="onCancel()"></app-chart-settings>
-    <app-parking-compare-card *ngFor="let parking of parkingToCompare" [parking]="parking" [data]="data[parking.uri]" [clear]="clear"></app-parking-compare-card>
+    <app-chart-settings *ngIf="parkingsToCompare.length !== 0" (onRangeChange)="onRangeChange($event)" (onCancel)="onCancel()"></app-chart-settings>
+    <app-chart-scatter-compare *ngIf="showChart" [observables]="observables" [parkings]="parkingsToCompare"> </app-chart-scatter-compare>
   </div>
 </div>

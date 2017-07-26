@@ -1,12 +1,23 @@
+<div class="container">
+  <div *ngIf="parkings">
+    
+    <h2>parkings</h2>
 
-  <div class="container">
-      <div *ngIf="parkings">
-    <h2>Parkings</h2>
+    <div class="selector-container center-align">
+      <md-button-toggle-group name="chart" value={{selectedCountry}} (change)="changeSelectedCountry($event)">
+        <md-button-toggle value="be">belgium</md-button-toggle>
+        <md-button-toggle value="nl">netherlands</md-button-toggle>
+      </md-button-toggle-group>
+    </div>
+
     <ul class="collapsible popout" data-collapsible="accordion" materialize="collapsible">
-    <li *ngFor="let city of cities ; let i=index">
-      <div class="collapsible-header"><i class="material-icons">location_onnp</i>{{citynames[i]}}</div>
-      <div class="collapsible-body"><app-city-section  [cityUrl]="city"></app-city-section></div>
-    </li>
-  </ul>
-</div>
+      <li *ngFor="let city of cities ; let i=index">
+        <div class="collapsible-header"><i class="material-icons">location_onnp</i>{{citynames[i]}}</div>
+        <div class="collapsible-body">
+          <app-city-section [cityUrl]="city"></app-city-section>
+        </div>
+      </li>
+    </ul>
+
+  </div>
 </div>

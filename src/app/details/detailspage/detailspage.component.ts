@@ -8,6 +8,7 @@ import { ParkingDataService } from '../../services/parking-data.service';
 import Parking from './../../models/parking'
 import Measurement from './../../models/measurement';
 import {ParkingDataInterval} from '../../services/parking-data-interval';
+import { Observable } from 'rxjs/Observable'
 
 @Component({
   selector: 'app-detailspage',
@@ -18,18 +19,24 @@ import {ParkingDataInterval} from '../../services/parking-data-interval';
 
 export class DetailspageComponent implements OnInit {
 
-  public rangeData = new Rx.Subject();
+  public rangeData: Observable<any>;
   public clear = new EventEmitter();
   public parking: Parking;
   public measurement: Measurement;
   public intervalFetcher: ParkingDataInterval;
   public parkings: Array < Parking > = [];
   public cityUrl: string;
+  public showDetailsPage = false;
 
   private timeFrame: TimestampRange;
-  private isVacant: boolean;
+  private isVacant = true;
 
-  onRangeChange($event) {
+  constructor(
+    private _parkingDataService: ParkingDataService,
+    private route: ActivatedRoute,
+    private router: Router) {}
+
+    onRangeChange($event) {
     this.timeFrame = $event;
     this.getData(this.timeFrame, this.parking, this.isVacant);
   }
@@ -46,48 +53,46 @@ export class DetailspageComponent implements OnInit {
     const clear = this.clear;
     setTimeout(function () {
       clear.emit();
-    }, 1000);
+    }, 15000);
   }
-
-  constructor(
-    private _parkingDataService: ParkingDataService,
-    private route: ActivatedRoute,
-    private router: Router) {}
 
   ngOnInit() {
     this.isVacant = true;
     this.cityUrl = this.route.snapshot.paramMap.get('cityUrl');
     const id = this.route.snapshot.url[1].path;
-    this._parkingDataService.getParkings(this.cityUrl).then(result => {
-      this.parkings = result;
-    }).then(() => {
-      this.parkings.forEach(p => {
-        if (p.id === id) {
-          this.parking = p;
+    this._parkingDataService.getParkings(this.cityUrl).subscribe(
+      (x) => {
+        if (x.id === id) {
+          this.parking = x;
+          this.fetchData(x);
         }
-
-      })
-    }).then(() => {
-      this._parkingDataService.getNewestParkingData(this.parking.uri, this.cityUrl).then(result => {
-        this.measurement = result;
-      });
-    })
+      },
+      (e) => {
+        console.log('onError: %s', e);
+      },
+      () => { this.showDetailsPage = true;
+        console.log(this.showDetailsPage);
+      }
+    )
+  }
+  fetchData(_parking) {
+    const parking: Array<Parking> = [];
+    parking.push(_parking);
+    this._parkingDataService.getNewestParkingDataForCity(parking, this.cityUrl).subscribe(
+      (x) => {   const result: Array <Measurement> = x[_parking.uri];
+      this.measurement = result[result.length - 1]; },
+      (e) => {},
+      () => {  console.log(this.measurement) }
+      );
   }
 
   getData(range: TimestampRange, parking: Parking, dataType: boolean) {
-    this.clear.emit();
     const _this = this;
     if (dataType) {
-      this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {
-        _this.rangeData.next(data);
-      }, this.cityUrl);
+      this.rangeData =  this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, this.cityUrl);
     } else {
-      this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, (data) => {
-        data.value = parking.totalSpaces - data.value;
-        _this.rangeData.next(data);
-      }, this.cityUrl);
+      this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, this.cityUrl);
     }
-    this.intervalFetcher.fetch();
   }
-}
+ }
 

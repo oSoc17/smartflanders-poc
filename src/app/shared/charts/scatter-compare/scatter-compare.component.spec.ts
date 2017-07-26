@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ParkingCompareCardComponent } from './parking-compare-card.component';
+import { ScatterCompareComponent } from './scatter-compare.component';
 
-describe('ParkingCompareCardComponent', () => {
-  let component: ParkingCompareCardComponent;
-  let fixture: ComponentFixture<ParkingCompareCardComponent>;
+describe('ScatterCompareComponent', () => {
+  let component: ScatterCompareComponent;
+  let fixture: ComponentFixture<ScatterCompareComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ParkingCompareCardComponent ]
+      declarations: [ ScatterCompareComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ParkingCompareCardComponent);
+    fixture = TestBed.createComponent(ScatterCompareComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

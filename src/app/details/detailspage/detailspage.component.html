@@ -1,7 +1,7 @@
 <div class="container">
 
   <app-breadcrumb [parking]="parking"></app-breadcrumb>
-  <md-card *ngIf="measurement">
+  <md-card *ngIf="showDetailsPage && measurement && parking">
     <div class="parking-info-container">
       <app-chart-doughnut class="parking-doughnut" [parking]="parking" [measurement]="measurement"></app-chart-doughnut>
       <div class="parking-info">
@@ -13,10 +13,10 @@
       </div>
 
     </div>
-    <div class="chart-container">
+    <div class="chart-container" >
       <h4>Visualize historic data</h4>
       <app-chart-settings (onDataTypeChange)="onDataTypeChange($event)" (onRangeChange)="onRangeChange($event)" (onCancel)="onCancel()"></app-chart-settings>
-      <app-chart-scatter [parking]="parking" [data]="rangeData" [clear]="clear"></app-chart-scatter>
+      <app-chart-scatter *ngIf="rangeData" [parking]="parking" [data]="rangeData" [clear]="clear"></app-chart-scatter>
     </div>
   </md-card>
 

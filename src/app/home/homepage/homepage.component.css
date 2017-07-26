@@ -3,6 +3,98 @@
   justify-content: space-around;
   flex-flow: row wrap;
 }
+
+md-button-toggle-group {
+  flex-wrap: wrap;
+  justify-content: space-around;
+  box-shadow: none;
+}
+
+.mat-button-toggle-checked {
+  background-color: #4fc3f7;
+  color: #ffffff !important;
+}
+
+.mat-button-toggle-checked >>> label.mat-button-toggle-label {
+  color: #ffffff;
+}
+
+.selector-container {
+  margin-bottom: 2rem;
+}
+
+.collapsible-header .active {
+  background-color: #4fc3f7 !important;
+}
+
+.collapsible-body {
+  border-bottom: 0;
+  padding: 0;
+  padding-top: 1rem;
+}
+
+li {
+  margin-bottom: 0.5rem !important;
+  box-shadow: none !important;
+}
+
 .example-margin {
   margin: 0 50%;
+}
+
+
+.collapsible-header {
+  flex: 0 0 230px;
+  flex-grow: 0;
+  flex-basis: 30%;
+  padding-bottom: 0;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+  z-index: 0;
+}
+
+.collapsible-header:hover {
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 5px 5px 0;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0 5px 5px 0;
+  -moz-box-shadow: rgba(0, 0, 0, 0.1) 0 5px 5px 0;
+}
+
+.animate {
+  -webkit-animation: ripple 0.65s linear;
+  -moz-animation: ripple 0.65s linear;
+  -ms-animation: ripple 0.65s linear;
+  -o-animation: ripple 0.65s linear;
+  animation: ripple 0.65s linear;
+}
+
+@-webkit-keyframes ripple {
+  100% {
+    opacity: 0;
+    -webkit-transform: scale(2.5);
+  }
+}
+
+@-moz-keyframes ripple {
+  100% {
+    opacity: 0;
+    -moz-transform: scale(2.5);
+  }
+}
+
+@-o-keyframes ripple {
+  100% {
+    opacity: 0;
+    -o-transform: scale(2.5);
+  }
+}
+
+@keyframes ripple {
+  100% {
+    opacity: 0;
+    transform: scale(2.5);
+  }
 }
