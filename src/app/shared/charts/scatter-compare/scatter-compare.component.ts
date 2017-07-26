@@ -74,18 +74,6 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
     const _dthis = this;
     this.parkings.forEach(parking => {
       this.datasets.push({
-<<<<<<< HEAD
-          label: parking.uri,
-          showLine: true,
-          data: [],
-          pointRadius: 1,
-          pointStyle: 'line',
-          borderColor: [
-            randomColor(),
-          ],
-          borderWidth: 2
-        })
-=======
         fill: false,
         label: parking.uri,
         showLine: true,
@@ -97,26 +85,12 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
         ],
         borderWidth: 2
       })
->>>>>>> 57d9d17fce3b46bc2310fadf94b851f32e6bcb84
 
     });
     this.chart.update();
     this.observables.forEach(element => {
       element.subscribe(
         (x) => {
-<<<<<<< HEAD
-        const indexOfDataset = findIndex(this.chart.data.datasets, (o) => { return o.label === x.parkingUrl});
-        const index = sortedLastIndexBy(this.chart.data.datasets[indexOfDataset].data, {
-       x: (x.timestamp * 1000)
-    }, function (o) {
-       return o.x;
-     });
-      this.chart.data.datasets[indexOfDataset].data.splice(0, 0, {
-        x: x.timestamp * 1000,
-        y: x.value
-      });
-      this.chart.update();
-=======
           console.log(x);
           const indexOfDataset = findIndex(this.chart.data.datasets, (o) => {
             return o.label === x.parkingUrl
@@ -135,7 +109,6 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
         },
         (e) => {
           console.error(e)
->>>>>>> 57d9d17fce3b46bc2310fadf94b851f32e6bcb84
         },
         () => {}
       )
