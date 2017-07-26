@@ -74,14 +74,12 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
     const _dthis = this;
     this.parkings.forEach(parking => {
       this.datasets.push({
+        fill: false,
           label: parking.uri,
           showLine: true,
           data: [],
           pointRadius: 1,
           pointStyle: 'line',
-          backgroundColor: [
-            randomColor(),
-          ],
           borderColor: [
             randomColor(),
           ],
