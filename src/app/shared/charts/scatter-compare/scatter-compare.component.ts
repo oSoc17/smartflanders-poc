@@ -7,18 +7,18 @@ import ParkingChart from './../../../models/parking-history';
 import { sortedLastIndexBy, findIndex } from 'lodash';
 import * as moment from 'moment';
 import randomColor from 'randomcolor';
+
 @Component({
   selector: 'app-chart-scatter-compare',
   templateUrl: './scatter-compare.component.html',
   styleUrls: ['./scatter-compare.component.css']
 })
-
 export class ScatterCompareComponent implements OnInit, OnDestroy {
 
   @Input() private data;
   @Input() private observables;
   @Input() private clear;
-  @Input() private parkings: Array<Parking>;
+  @Input() private parkings: Array < Parking > ;
   @Input() private isVacant;
   public parkingsChart = [];
   @ViewChild('scatter') scatter;
@@ -31,7 +31,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
   private counter = 0;
   private disposable;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.context = this.scatter.nativeElement;
@@ -74,6 +74,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
     const _dthis = this;
     this.parkings.forEach(parking => {
       this.datasets.push({
+<<<<<<< HEAD
           label: parking.uri,
           showLine: true,
           data: [],
@@ -84,12 +85,26 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
           ],
           borderWidth: 2
         })
+=======
+        fill: false,
+        label: parking.uri,
+        showLine: true,
+        data: [],
+        pointRadius: 1,
+        pointStyle: 'line',
+        borderColor: [
+          randomColor(),
+        ],
+        borderWidth: 2
+      })
+>>>>>>> 57d9d17fce3b46bc2310fadf94b851f32e6bcb84
 
     });
-      this.chart.update();
+    this.chart.update();
     this.observables.forEach(element => {
       element.subscribe(
         (x) => {
+<<<<<<< HEAD
         const indexOfDataset = findIndex(this.chart.data.datasets, (o) => { return o.label === x.parkingUrl});
         const index = sortedLastIndexBy(this.chart.data.datasets[indexOfDataset].data, {
        x: (x.timestamp * 1000)
@@ -101,9 +116,28 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
         y: x.value
       });
       this.chart.update();
+=======
+          console.log(x);
+          const indexOfDataset = findIndex(this.chart.data.datasets, (o) => {
+            return o.label === x.parkingUrl
+          });
+          const index = sortedLastIndexBy(this.chart.data.datasets[indexOfDataset].data, {
+            x: (x.timestamp * 1000)
+          }, function (o) {
+            return o.x;
+          });
+          this.chart.data.datasets[indexOfDataset].data.splice(0, 0, {
+            x: x.timestamp * 1000,
+            y: x.value
+          });
+          console.log(this.chart.data.datasets);
+          this.chart.update();
         },
-        (e) => {console.error(e)},
-        ()  => {}
+        (e) => {
+          console.error(e)
+>>>>>>> 57d9d17fce3b46bc2310fadf94b851f32e6bcb84
+        },
+        () => {}
       )
     });
   }
@@ -113,9 +147,9 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
 
 
   updatePeriodically(measurement) {
-    this.counter ++;
-    if (this.counter >= 30 ) {
-   const index = sortedLastIndexBy(this.chartData, {
+    this.counter++;
+    if (this.counter >= 30) {
+      const index = sortedLastIndexBy(this.chartData, {
         x: (measurement.timestamp * 1000)
       }, function (o) {
         return o.x;
