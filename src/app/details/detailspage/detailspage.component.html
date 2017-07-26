@@ -1,7 +1,7 @@
 <div class="container">
 
   <app-breadcrumb [parking]="parking"></app-breadcrumb>
-  <md-card *ngIf="measurement">
+  <md-card *ngIf="showDetailsPage && measurement && parking">
     <div class="parking-info-container">
       <app-chart-doughnut class="parking-doughnut" [parking]="parking" [measurement]="measurement"></app-chart-doughnut>
       <div class="parking-info">

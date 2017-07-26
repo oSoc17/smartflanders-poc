@@ -158,6 +158,7 @@ export class ParkingDataService {
           }
         });
      observer.next(result);
+     observer.complete();
     })
   })
   }

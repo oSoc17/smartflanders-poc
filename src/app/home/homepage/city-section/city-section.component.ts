@@ -15,6 +15,7 @@ export class CitySectionComponent implements OnInit {
   public cities: Array<string> = [];
   public parkings: Array<Parking> = [];
   public measurements: Array<any> = [];
+  public showCards = false;
 
   constructor(private parkingdataservice: ParkingDataService, private router: Router) { }
 
@@ -22,14 +23,14 @@ ngOnInit() {
   this.parkingdataservice.getParkings(this.cityUrl).subscribe(
       (x) =>  { this.parkings.push(x); },
       (e) => { console.log('onError: %s', e); },
-      ()  =>  { this.fetchLatestParkingData() }
+      ()  =>  { this.fetchLatestParkingData(); }
   )
 }
 fetchLatestParkingData() {
 this.parkingdataservice.getNewestParkingDataForCity(this.parkings, this.cityUrl).subscribe(
   (x) =>  { this.measurements = x; },
       (e) => { console.log('onError: %s', e); },
-      ()  =>  { }
+      ()  =>  { console.log('getNewestParkingDataForCity'); this.showCards = true ;}
   )
 }
   goToDetails(parking: Parking, cityUrl: string) {

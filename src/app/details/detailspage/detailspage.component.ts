@@ -26,6 +26,7 @@ export class DetailspageComponent implements OnInit {
   public intervalFetcher: ParkingDataInterval;
   public parkings: Array < Parking > = [];
   public cityUrl: string;
+  public showDetailsPage = false;
 
   private timeFrame: TimestampRange;
   private isVacant = true;
@@ -69,20 +70,20 @@ export class DetailspageComponent implements OnInit {
       (e) => {
         console.log('onError: %s', e);
       },
-      () => {
-        console.log('onCompleted');
+      () => { this.showDetailsPage = true;
+        console.log(this.showDetailsPage);
       }
     )
   }
-  fetchData(x) {
-    // getnewestparkingdataforcity takes an array of parking but we only want one, so create one.
-    // Could be nicer Arne do your best ;) Love Thibault
+  fetchData(_parking) {
     const parking: Array<Parking> = [];
-    parking.push(x);
-    this._parkingDataService.getNewestParkingDataForCity(parking, this.cityUrl).subscribe(_result => {
-      const result: Array <Measurement> = _result[x.uri];
-      this.measurement = result[result.length - 1];
-    });
+    parking.push(_parking);
+    this._parkingDataService.getNewestParkingDataForCity(parking, this.cityUrl).subscribe(
+      (x) => {   const result: Array <Measurement> = x[_parking.uri];
+      this.measurement = result[result.length - 1]; },
+      (e) => {},
+      () => {  console.log(this.measurement) }
+      );
   }
 
   getData(range: TimestampRange, parking: Parking, dataType: boolean) {

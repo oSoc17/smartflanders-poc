@@ -79,9 +79,6 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
           data: [],
           pointRadius: 1,
           pointStyle: 'line',
-          backgroundColor: [
-            randomColor(),
-          ],
           borderColor: [
             randomColor(),
           ],
@@ -93,8 +90,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
     this.observables.forEach(element => {
       element.subscribe(
         (x) => {
-          console.log(x);
-         const indexOfDataset = findIndex(this.chart.data.datasets, (o) => { return o.label === x.parkingUrl});
+        const indexOfDataset = findIndex(this.chart.data.datasets, (o) => { return o.label === x.parkingUrl});
         const index = sortedLastIndexBy(this.chart.data.datasets[indexOfDataset].data, {
        x: (x.timestamp * 1000)
     }, function (o) {
@@ -104,7 +100,6 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
         x: x.timestamp * 1000,
         y: x.value
       });
-      console.log(this.chart.data.datasets);
       this.chart.update();
         },
         (e) => {console.error(e)},
