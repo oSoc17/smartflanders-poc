@@ -1,36 +1,41 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import Parking from './../../../models/parking'
+import {Component, OnInit, Input, ViewChild, OnDestroy} from '@angular/core';
+import Parking from './../../../models/parking';
 import Chart from 'chart.js';
 import Measurement from './../../../models/measurement';
-import ParkingHistory from './../../../models/parking-history'
+import ParkingHistory from './../../../models/parking-history';
+import ParkingChart from './../../../models/parking-history';
 import { sortedLastIndexBy } from 'lodash';
 import * as moment from 'moment';
+
 @Component({
   selector: 'app-chart-scatter',
   templateUrl: './scatter.component.html',
   styleUrls: ['./scatter.component.css']
 })
-export class ScatterComponent implements OnInit {
+
+export class ScatterComponent implements OnInit, OnDestroy {
+
   @Input() private data;
   @Input() private clear;
   @Input() private parking: Parking;
+  @Input() private isVacant;
+  public parkingsChart = [];
   @ViewChild('scatter') scatter;
+  private dataset = [];
   private context;
-  private parkingHistory: ParkingHistory;
   private chartData = [];
   private config;
-  private chart;
+  public chart;
   private updateIncoming = false;
   private counter = 0;
+  private disposable;
 
-  constructor() {
-  }
+  constructor() { }
 
   ngOnInit() {
     this.context = this.scatter.nativeElement;
-    this.parkingHistory = new ParkingHistory(this.parking, []);
     this.config = {
-       animation: false,
+      animation: false,
       type: 'scatter',
       data: {
         datasets: [{
@@ -66,7 +71,7 @@ export class ScatterComponent implements OnInit {
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Spots'
+              labelString: 'Parking spots'
             },
             ticks: {
               beginAtZero: true,
@@ -78,28 +83,35 @@ export class ScatterComponent implements OnInit {
       }
     };
     this.chart = new Chart(this.context, this.config);
-    this.data.subscribe(d => {
-      this.updatePeriodically(d);
-    });
-    this.clear.subscribe(() => {
-      this.chartData.splice(0, this.chartData.length);
+    const _dthis = this;
+    this.disposable = this.data.subscribe(
+      (x) => { _dthis.updatePeriodically(x)},
+      (e) => { console.error(e)},
+      () => { console.log('completed')}
+    )
+    this.clear.subscribe()
       this.chart.update();
-      console.log('cleared');
-    })
+  }
+  ngOnDestroy() {
+    this.disposable.unsubscribe();
   }
 
 
-  updatePeriodically(d) {
+  updatePeriodically(measurement) {
     this.counter ++;
-    console.log(this.counter);
-    if ( this.counter >= 20) {
-      //this.parkingHistory.timeframe.splice(index, 0, d);
-      this.chart.data.datasets.forEach(element => {
-        const index = sortedLastIndexBy(element, {x: (d.timestamp * 1000)}, function(o) { return o.x; });
-        element.data.splice(index, 0, {x: d.timestamp * 1000, y: parseInt(d.value, 10)});
+    if (this.counter >= 30 ) {
+   const index = sortedLastIndexBy(this.chartData, {
+        x: (measurement.timestamp * 1000)
+      }, function (o) {
+        return o.x;
       });
-      this.chart.update(0);
+      this.chartData.splice(index, 0, {
+        x: measurement.timestamp * 1000,
+        y: measurement.value
+      });
       this.counter = 0;
+      this.chart.update();
     }
   }
 }
+

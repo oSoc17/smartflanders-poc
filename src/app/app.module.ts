@@ -19,12 +19,12 @@ import { FooterComponent } from './shared/footer/footer/footer.component';
 import { MomentModule } from 'angular2-moment';
 import { BreadcrumbComponent } from './shared/nav/breadcrumb/breadcrumb.component';
 import { ComparepageComponent } from './compare/comparepage/comparepage.component';
-import { ParkingCompareCardComponent } from './compare/comparepage/parking-compare-card/parking-compare-card.component';
 import { ParkingCompareCardAddComponent } from './compare/comparepage/parking-compare-card-add/parking-compare-card-add.component';
 import { ChartSettingsComponent } from './shared/charts/chart-settings/chart-settings.component';
 import { CitySectionComponent } from './home/homepage/city-section/city-section.component';
 import { MaterializeModule } from 'angular2-materialize';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { ScatterCompareComponent } from './shared/charts/scatter-compare/scatter-compare.component';
 
 @NgModule({
   declarations: [
@@ -40,10 +40,10 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     FooterComponent,
     BreadcrumbComponent,
     ComparepageComponent,
-    ParkingCompareCardComponent,
     ParkingCompareCardAddComponent,
     ChartSettingsComponent,
-    CitySectionComponent
+    CitySectionComponent,
+    ScatterCompareComponent
   ],
   imports: [
     BrowserModule,

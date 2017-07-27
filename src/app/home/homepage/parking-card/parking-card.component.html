@@ -1,14 +1,17 @@
 <div class="col s12">
   <div class="card-panel">
-    <div *ngIf="parking" class="row">
+    <div *ngIf="measurements" class="row">
       <div class="col s6">
-        <p>{{parking.id}}</p>
+        <p>{{parking?.id}}</p>
       </div>
       <div class="col s3">
-        <p>{{parking.totalSpaces}}</p>
+        <p>{{parking?.totalSpaces}}</p>
       </div>
       <div class="col s3">
-        <p>...</p>
+        <p><span class="dynamicsparkline"><i *ngIf="up" class="material-icons">trending_up</i><i *ngIf="!up" class="material-icons">trending_down</i></span></p>
+        <script>
+        $('.dynamicsparkline').sparkline(this.values); 
+        </script>
       </div>
     </div>
   </div>
