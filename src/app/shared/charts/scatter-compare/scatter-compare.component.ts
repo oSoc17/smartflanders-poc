@@ -30,6 +30,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
   private updateIncoming = false;
   private counter = 0;
   private disposable;
+  private counters: Array<number> = []
 
   constructor() {}
 
@@ -88,14 +89,18 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
 
     });
     this.chart.update();
-    this.observables.forEach(element => {
-      element.subscribe(
+    for (let index = 0; index < this.observables.length; index++) {
+      this.counters[index] = 0;
+      this.observables[index].subscribe(
         (x) => {
-          console.log(x);
-          const indexOfDataset = findIndex(this.chart.data.datasets, (o) => {
+          this.counters[index] ++;
+          if (this.counters[index] >= 30 ) {
+            this.counters[index] = 0
+            console.log(this.counters[index]);
+            const indexOfDataset = findIndex(this.chart.data.datasets, (o) => {
             return o.label === x.parkingUrl
           });
-          const index = sortedLastIndexBy(this.chart.data.datasets[indexOfDataset].data, {
+          const _index = sortedLastIndexBy(this.chart.data.datasets[indexOfDataset].data, {
             x: (x.timestamp * 1000)
           }, function (o) {
             return o.x;
@@ -104,18 +109,17 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
             x: x.timestamp * 1000,
             y: x.value
           });
-          console.log(this.chart.data.datasets);
           this.chart.update();
+          }
         },
         (e) => {
-          console.error(e)
         },
         () => {}
       )
-    });
+    }
   }
   ngOnDestroy() {
-    this.disposable.unsubscribe();
+  //  this.disposable.unsubscribe();
   }
 
 

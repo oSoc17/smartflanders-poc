@@ -90,6 +90,29 @@ export class ParkingDataService {
     }
     return _measurements.sort(this.compare);
   }
+   public static getMeasurementsWithoutStoreObservable(uri, triples): Observable <Measurement> {
+    return Observable.create(observer => {
+      const usedTriples = [];
+    const graphs = []
+    const _measurements: Array < Measurement > = [];
+    for (let index = 0; index < triples.length; index++) {
+      if (triples[index].subject === uri && triples[index].predicate === 'http://vocab.datex.org/terms#parkingNumberOfVacantSpaces') {
+        usedTriples.push(triples[index])
+      }
+      if (triples[index].predicate === 'http://www.w3.org/ns/prov#generatedAtTime') {
+        graphs.push(triples[index]);
+      }
+    }
+    for (let index = 0; index < usedTriples.length; index++) {
+      const graphTriple = find(graphs, (o) => {
+        return usedTriples[index].graph === o.subject
+      });
+      observer.next(new Measurement(moment(n3.Util.getLiteralValue(graphTriple.object)).unix(),
+        n3.Util.getLiteralValue(usedTriples[index].object), uri));
+    }
+      observer.complete()
+    })
+  }
     private static compare(a, b) {
     if (a.timestamp < b.timestamp) {return 1;
     }
@@ -134,33 +157,42 @@ export class ParkingDataService {
     })
   }
 
+  public getNewestParkingDataForOne(uri, datasetUrl): Observable<Measurement> {
+    return Observable.create(observer => {
+      this.fetch.get(datasetUrl).then(response => {
+        // Latest measurements are not in volatile cache, get from web
+        // Put all triples in store
+        // Get all measurements
+             ParkingDataService.getMeasurementsWithoutStoreObservable(uri, response.triples).subscribe(
+            (x) => { observer.next(x) },
+            (e) => { console.log('error', e)},
+            () => {observer.complete()}
+          )
+      });
+    })
+  }
+
+
   /**
    * Fetches the newest measurement for a certain parking
    * @param uri the uri of the parking
    * @param datasetUrl the url of the dataset where this parking can be found
    * @returns {Promise<Measurement>}
    */
-  public getNewestParkingDataForCity(parkings, datasetUrl: string): Observable < Array <any > > {
+  public getNewestParkingDataForCity(parkings, datasetUrl: string): Observable < Measurement > {
     return new Observable(observer => {
         this.fetch.get(datasetUrl).then(response => {
-        const result = [];
-        let latest;
+       // let latest;
         parkings.forEach(parking => {
-          result[parking.uri] = ParkingDataService.getMeasurementsWithoutStore(parking.uri, response.triples);
-          let latestTimestamp = 0;
-          if (result[parking.uri].measurements) {
-            result[parking.uri].measurements.forEach((measurement) => {
-              if (measurement.timestamp > latestTimestamp) {
-                latestTimestamp = measurement.timestamp;
-                latest = measurement;
-              }
-            });
-          }
+          const result = [parking.uri];
+          ParkingDataService.getMeasurementsWithoutStoreObservable(parking.uri, response.triples).subscribe(
+            (x) => {observer.next(x);},
+            (e) => {console.log('error', e)},
+            () =>  { observer.complete(); }
+          )
+         })
         });
-     observer.next(result);
-     observer.complete();
     })
-  })
   }
 
 

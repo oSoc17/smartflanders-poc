@@ -9,8 +9,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/parkings', pathMatch: 'full' },
   { path: 'parkings', component: HomepageComponent },
   { path: 'compare', component: ComparepageComponent },
-  { path: 'detail', component: DetailspageComponent },
-  { path: 'parkings/:id /:cityUrl', component: DetailspageComponent },
+  { path: 'detail/:id /:cityUrl', component: DetailspageComponent },
 ];
 
 @NgModule({

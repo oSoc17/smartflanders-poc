@@ -13,17 +13,25 @@ import { ParkingDataService } from './../../../services/parking-data.service';
 })
 export class ParkingCardComponent implements OnInit {
  @Input() parking: Parking;
- @Input() cityUrl: string;
- @Input() measurements: any;
- public values: Array<number>;
+ @Input() measurements: Array <Measurement> = [];
+ public values: Array<number> = [];
  dataservice: ParkingDataService;
- private measurement: Measurement;
+  private up;
 
   constructor(private _dataservice: ParkingDataService) {
     this.dataservice = _dataservice;
   }
   ngOnInit() {
-     setTimeout( () => { this.values = this.measurements[this.parking.uri].values}, 2000);
+    if (this.measurements) {
+      for (let index = 0; index < this.measurements.length; index++) {
+       if (this.measurements[index].parkingUrl === this.parking.uri) {
+         this.values.push(this.measurements[index].value)
+       }
+      }
+    if (this.values[this.values.length - 1 ] >= this.values[this.values.length - 2 ]) {
+      this.up = true;
+     }
+    }
   }
 
   private calculatePercentage() {
