@@ -1,13 +1,12 @@
 <div class="container">
-  <a *ngIf="showCards">
-    <div class="row">
+  <a>
+    <div class="row" *ngIf="showCards">
       <div class="col s6"><h5>PARKING</h5></div>
       <div class="col s3"><h5>VACANT</h5></div>
       <div class="col s3"><h5>TREND</h5></div>
-      <app-parking-card *ngFor="let parking of parkings" class="parking-card" 
-      [cityUrl]="cityUrl" 
+      <app-parking-card *ngFor="let parking of parkings" class="parking-card"
       [parking]="parking"
-      [measurements]="measurements" 
+      [measurements]="measurements"
       (click)="goToDetails(parking, cityUrl)">
       </app-parking-card>
     </div>

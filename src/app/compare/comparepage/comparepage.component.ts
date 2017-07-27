@@ -39,17 +39,20 @@ export class ComparepageComponent implements OnInit {
     this.parkingsChart = new Array();
     this._parkingDataService.getDatasetUrls().then(result => {
       values(result).forEach(city => {
-        this._parkingDataService.getParkings(city).subscribe(parkings => {
-          this.parkings.push(parkings);
-        });
-      });
+        this._parkingDataService.getParkings(city).subscribe(
+          (parkings) => {this.parkings.push(parkings)},
+          (e) => {console.log('error', e)},
+          () => {}
+        );
+      })
     });
   }
 
   getData(range) {
     this.clear.emit();
     for (let index = 0; index < this.parkingsToCompare.length; index++) {
-      this.observables.push(this._parkingDataService.getParkingHistory(this.parkingsToCompare[index].uri, range.from, range.to, this.parkingsToCompare[index].cityUrl));
+      this.observables.push(this._parkingDataService.getParkingHistory(
+        this.parkingsToCompare[index].uri, range.from, range.to, this.parkingsToCompare[index].cityUrl));
       if ( index === this.parkingsToCompare.length - 1 ) {
         this.showChart = true;
       }

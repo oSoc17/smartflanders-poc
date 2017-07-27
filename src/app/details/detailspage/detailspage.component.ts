@@ -1,7 +1,7 @@
 import { element } from 'protractor';
 import TimestampRange from '../../models/timestamp-range';
 import * as Rx from 'rxjs/Rx';
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, NgZone } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { findLast } from 'lodash';
 import { ParkingDataService } from '../../services/parking-data.service';
@@ -14,7 +14,7 @@ import { Observable } from 'rxjs/Observable'
   selector: 'app-detailspage',
   templateUrl: './detailspage.component.html',
   styleUrls: ['./detailspage.component.css'],
-  providers: [ParkingDataService]
+  providers: []
 })
 
 export class DetailspageComponent implements OnInit {
@@ -34,7 +34,7 @@ export class DetailspageComponent implements OnInit {
   constructor(
     private _parkingDataService: ParkingDataService,
     private route: ActivatedRoute,
-    private router: Router) {}
+    private zone: NgZone) {}
 
     onRangeChange($event) {
     this.timeFrame = $event;
@@ -60,39 +60,25 @@ export class DetailspageComponent implements OnInit {
     this.isVacant = true;
     this.cityUrl = this.route.snapshot.paramMap.get('cityUrl');
     const id = this.route.snapshot.url[1].path;
-    this._parkingDataService.getParkings(this.cityUrl).subscribe(
-      (x) => {
-        if (x.id === id) {
-          this.parking = x;
-          this.fetchData(x);
-        }
+    const result = [];
+    this._parkingDataService.getParkings(this.cityUrl).filter((x) => { return x.id === id}).subscribe(
+      (parking) => {
+        this.zone.run(() => {this.parking = parking});
+        this._parkingDataService.getNewestParkingDataForOne(this.parking.uri, this.parking.cityUrl).subscribe(
+          (measurement) => {
+            result.push(measurement);
+            this.zone.run(() => this.measurement = measurement) },
+          (error) => {console.log('error', error)},
+          () => { this.measurement = result[result.length - 1 ]; setTimeout( () => {this.showDetailsPage = true}, 1000) ; }
+        );
       },
-      (e) => {
-        console.log('onError: %s', e);
-      },
-      () => { this.showDetailsPage = true;
-        console.log(this.showDetailsPage);
-      }
+      (e) => { console.log('onError: %s', e) },
+      () => { }
     )
   }
-  fetchData(_parking) {
-    const parking: Array<Parking> = [];
-    parking.push(_parking);
-    this._parkingDataService.getNewestParkingDataForCity(parking, this.cityUrl).subscribe(
-      (x) => {   const result: Array <Measurement> = x[_parking.uri];
-      this.measurement = result[result.length - 1]; },
-      (e) => {},
-      () => {  console.log(this.measurement) }
-      );
-  }
-
   getData(range: TimestampRange, parking: Parking, dataType: boolean) {
-    const _this = this;
     if (dataType) {
       this.rangeData =  this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, this.cityUrl);
-    } else {
-      this.intervalFetcher = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, this.cityUrl);
     }
   }
  }
-
