@@ -28,5 +28,10 @@ export class HomepageComponent implements OnInit {
       this.citynames = keys(parkingURLS);
     })
   }
+
+  changeSelectedCountry(selectedCountry) {
+    this.selectedCountry = selectedCountry.value;
   }
+}
+
 
