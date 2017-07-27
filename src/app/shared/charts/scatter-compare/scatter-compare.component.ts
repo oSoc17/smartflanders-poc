@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import {Component, OnInit, Input, ViewChild, OnDestroy} from '@angular/core';
 import Parking from './../../../models/parking';
 import Chart from 'chart.js';
@@ -120,6 +121,10 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
   //  this.disposable.unsubscribe();
+  this.observables.forEach(element => {
+    let _observable = element;
+    _observable.unsubscribe();
+  });
   }
 
 

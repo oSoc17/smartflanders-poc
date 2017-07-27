@@ -34,7 +34,7 @@ this.parkingdataservice.getNewestParkingDataForCity(this.parkings, this.cityUrl)
   )
 }
   goToDetails(parking: Parking, cityUrl: string) {
-    this.router.navigate(['/detail', parking.id, cityUrl]);
+    this.zone.run(() => this.router.navigate(['/detail', parking.id, cityUrl]) );
   }
 }
 
