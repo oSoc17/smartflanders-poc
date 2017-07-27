@@ -30,7 +30,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
   public chart;
   private updateIncoming = false;
   private counter = 0;
-  private disposable;
+  private disposable = [];
   private counters: Array<number> = []
 
   constructor() {}
@@ -92,7 +92,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
     this.chart.update();
     for (let index = 0; index < this.observables.length; index++) {
       this.counters[index] = 0;
-      this.observables[index].subscribe(
+    this.disposable[index] =  this.observables[index].subscribe(
         (x) => {
           this.counters[index] ++;
           if (this.counters[index] >= 30 ) {
@@ -120,10 +120,8 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy() {
-  //  this.disposable.unsubscribe();
-  this.observables.forEach(element => {
-    let _observable = element;
-    _observable.unsubscribe();
+  this.disposable.forEach(element => {
+    element.unsubscribe();
   });
   }
 
