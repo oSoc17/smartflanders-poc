@@ -17,7 +17,7 @@ import randomColor from 'randomcolor';
 export class ScatterCompareComponent implements OnInit, OnDestroy {
 
   @Input() private data;
-  @Input() private observables;
+  @Input() private observables; // Array of observables used to stream the parking data
   @Input() private clear;
   @Input() private parkings: Array < Parking > ;
   @Input() private isVacant;
@@ -73,11 +73,11 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
       }
     };
     this.chart = new Chart(this.context, this.config);
-    const _dthis = this;
     this.parkings.forEach(parking => {
       this.datasets.push({
         fill: false,
-        label: parking.uri,
+        label: parking.name,
+        url: parking.uri,
         showLine: true,
         data: [],
         pointRadius: 1,
@@ -92,37 +92,27 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
     this.chart.update();
     for (let index = 0; index < this.observables.length; index++) {
       this.counters[index] = 0;
-    this.disposable[index] =  this.observables[index].subscribe(
-        (x) => {
-          this.counters[index] ++;
-          if (this.counters[index] >= 30 ) {
-            this.counters[index] = 0
-            console.log(this.counters[index]);
-            const indexOfDataset = findIndex(this.chart.data.datasets, (o) => {
-            return o.label === x.parkingUrl
-          });
-          const _index = sortedLastIndexBy(this.chart.data.datasets[indexOfDataset].data, {
-            x: (x.timestamp * 1000)
-          }, function (o) {
-            return o.x;
-          });
-          this.chart.data.datasets[indexOfDataset].data.splice(0, 0, {
-            x: x.timestamp * 1000,
-            y: x.value
-          });
-          this.chart.update();
+      this.disposable[index] =  this.observables[index].subscribe(
+        (meas) => {
+          this.counters[index]++;
+          if (this.counters[index] >= 15 ) {
+            this.counters[index] = 0;
+            const indexOfDataset = findIndex(this.chart.data.datasets, (o) => o.url === meas.parkingUrl);
+            this.chart.data.datasets[indexOfDataset].data.splice(0, 0, {
+              x: meas.timestamp * 1000,
+              y: meas.value
+            });
+            this.chart.update();
           }
-        },
-        (e) => {
-        },
-        () => {}
+        }
       )
     }
   }
+
   ngOnDestroy() {
-  this.disposable.forEach(element => {
-    element.unsubscribe();
-  });
+    this.disposable.forEach(element => {
+      element.unsubscribe();
+    });
   }
 
 

@@ -36,7 +36,7 @@ export class ComparepageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.parkingsChart = new Array();
+    this.parkingsChart = [];
     this._parkingDataService.getDatasetUrls().then(result => {
       values(result).forEach(city => {
         this._parkingDataService.getParkings(city).subscribe(
@@ -51,12 +51,11 @@ export class ComparepageComponent implements OnInit {
   getData(range) {
     this.clear.emit();
     for (let index = 0; index < this.parkingsToCompare.length; index++) {
-      this.observables.push(this._parkingDataService.getParkingHistory(
-        this.parkingsToCompare[index].uri, range.from, range.to, this.parkingsToCompare[index].cityUrl));
-      if ( index === this.parkingsToCompare.length - 1 ) {
-        this.showChart = true;
-      }
+      const parking = this.parkingsToCompare[index];
+      const obs = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, parking.cityUrl);
+      this.observables.push(obs);
     }
+    this.showChart = true;
   }
 
   onCancel() {
