@@ -65,17 +65,14 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
         case 'clearGraph':
           this.clearGraph(); break;
         case 'parkingsChanged':
-          this.refreshParkings();
-          break;
+          this.refreshParkings(); break;
         case 'observablesChanged':
-          this.refreshObservables();
-          break;
+          this.refreshObservables(); break;
       }
     });
   }
 
   clearGraph() {
-    console.log('clearing graph');
     this.disposable.forEach(element => {
       element.unsubscribe();
     });
@@ -123,7 +120,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
       this.disposable[index] = this.observables[index].subscribe(
         (meas) => {
           this.counters[index]++;
-          if (this.counters[index] >= 15 ) {
+          if (this.counters[index] >= 30) {
             this.counters[index] = 0;
             const indexOfDataset = findIndex(this.chart.data.datasets, (o) => o.url === meas.parkingUrl);
             this.chart.data.datasets[indexOfDataset].data.splice(0, 0, {
