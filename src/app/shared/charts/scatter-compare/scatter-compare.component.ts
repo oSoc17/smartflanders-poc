@@ -21,17 +21,15 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
   @Input() private clear;
   @Input() private parkings: Array < Parking > ;
   @Input() private isVacant;
-  public parkingsChart = [];
   @ViewChild('scatter') scatter;
   private datasets = [];
   private context;
   private chartData = [];
   private config;
   public chart;
-  private updateIncoming = false;
   private counter = 0;
   private disposable = [];
-  private counters: Array<number> = []
+  private counters: Array<number> = [];
 
   constructor() {}
 
@@ -40,21 +38,15 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
     this.config = {
       animation: false,
       type: 'scatter',
-      data: {
-        datasets: this.datasets
-      },
+      data: { datasets: this.datasets },
       options: {
-        legend: {
-          display: true
-        },
+        legend: { display: true },
         scales: {
           xAxes: [{
             type: 'time',
             time: {
               unit: 'hour',
-              displayFormats: {
-                hour: 'MMM D, HH:mm'
-              },
+              displayFormats: { hour: 'MMM D, HH:mm' },
               parse: (value) => moment.unix(value).toISOString(),
             }
           }],
@@ -73,7 +65,11 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
       }
     };
     this.chart = new Chart(this.context, this.config);
+    const hues = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink'];
+    let iHue = 0;
     this.parkings.forEach(parking => {
+      const hue = hues[iHue];
+      iHue = iHue === hues.length - 1 ? 0 : iHue + 1;
       this.datasets.push({
         fill: false,
         label: parking.name,
@@ -83,7 +79,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
         pointRadius: 1,
         pointStyle: 'line',
         borderColor: [
-          randomColor(),
+          randomColor({hue: hue}),
         ],
         borderWidth: 2
       })
@@ -113,24 +109,6 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
     this.disposable.forEach(element => {
       element.unsubscribe();
     });
-  }
-
-
-  updatePeriodically(measurement) {
-    this.counter++;
-    if (this.counter >= 30) {
-      const index = sortedLastIndexBy(this.chartData, {
-        x: (measurement.timestamp * 1000)
-      }, function (o) {
-        return o.x;
-      });
-      this.chartData.splice(index, 0, {
-        x: measurement.timestamp * 1000,
-        y: measurement.value
-      });
-      this.counter = 0;
-      this.chart.update();
-    }
   }
 }
 
