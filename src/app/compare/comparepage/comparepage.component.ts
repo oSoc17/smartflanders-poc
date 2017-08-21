@@ -20,7 +20,7 @@ export class ComparepageComponent implements OnInit {
   public parkings: Array<Parking> = [];
   public parkingsToCompare: Array<Parking> = [];
   public parkingsChart;
-  public clear = new EventEmitter();
+  public emitter = new EventEmitter<string>();
   public intervalFetchers = {};
   public observables = [];
   public showChart = false;
@@ -48,7 +48,7 @@ export class ComparepageComponent implements OnInit {
   }
 
   getData(range) {
-    this.clear.emit();
+    this.emitter.emit('clearGraph');
     for (let index = 0; index < this.parkingsToCompare.length; index++) {
       const parking = this.parkingsToCompare[index];
       const obs = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, parking.cityUrl);
@@ -62,7 +62,7 @@ export class ComparepageComponent implements OnInit {
       const interval = this.intervalFetchers[uri];
       interval.cancel();
     });
-    this.clear.emit();
+    this.emitter.emit('clearGraph');
     this.intervalFetchers = {};
   }
 

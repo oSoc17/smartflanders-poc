@@ -18,7 +18,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
 
   @Input() private data;
   @Input() private observables; // Array of observables used to stream the parking data
-  @Input() private clear: EventEmitter<any>;
+  @Input() private emitter: EventEmitter<string>;
   @Input() private parkings: Array < Parking > ;
   @Input() private isVacant;
   @ViewChild('scatter') scatter;
@@ -63,6 +63,27 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
       }
     };
     this.chart = new Chart(this.context, this.config);
+    this.refreshParkings();
+    this.chart.update();
+    this.refreshObservables();
+    this.emitter.subscribe(e => {
+      switch (e) {
+        case 'clearGraph':
+          this.clearGraph(); break;
+        case 'refreshParkings':
+          this.refreshParkings(); break;
+        case 'refreshObservables':
+          this.refreshObservables(); break;
+      }
+    });
+  }
+
+  clearGraph() {
+    console.log('clearing graph');
+  }
+
+  refreshParkings() {
+    this.datasets = [];
     const hues = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink'];
     let iHue = 0;
     this.parkings.forEach(parking => {
@@ -80,13 +101,16 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
           randomColor({hue: hue}),
         ],
         borderWidth: 2
-      })
-
+      });
     });
-    this.chart.update();
+  }
+
+  refreshObservables() {
+    this.counters = [];
+    this.disposable = [];
     for (let index = 0; index < this.observables.length; index++) {
       this.counters[index] = 0;
-      this.disposable[index] =  this.observables[index].subscribe(
+      this.disposable[index] = this.observables[index].subscribe(
         (meas) => {
           this.counters[index]++;
           if (this.counters[index] >= 15 ) {
@@ -101,13 +125,6 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
         }
       )
     }
-    this.clear.subscribe(() => this.clearGraph());
-  }
-
-  clearGraph() {
-    console.log('clearing graph');
-    this.datasets = [];
-    this.chart.reset();
   }
 
   ngOnDestroy() {

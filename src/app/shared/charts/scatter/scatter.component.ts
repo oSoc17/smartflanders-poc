@@ -16,7 +16,7 @@ import * as moment from 'moment';
 export class ScatterComponent implements OnInit, OnDestroy {
 
   @Input() private data;
-  @Input() private clear;
+  @Input() private emitter;
   @Input() private parking: Parking;
   @Input() private isVacant;
   public parkingsChart = [];
@@ -89,7 +89,7 @@ export class ScatterComponent implements OnInit, OnDestroy {
       (e) => { console.error(e)},
       () => { console.log('completed')}
     )
-    this.clear.subscribe()
+    this.emitter.subscribe()
       this.chart.update();
   }
   ngOnDestroy() {

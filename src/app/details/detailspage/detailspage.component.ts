@@ -20,7 +20,7 @@ import { Observable } from 'rxjs/Observable'
 export class DetailspageComponent implements OnInit {
 
   public rangeData: Observable<any>;
-  public clear = new EventEmitter();
+  public emitter = new EventEmitter();
   public parking: Parking;
   public measurement: Measurement;
   public intervalFetcher: ParkingDataInterval;
@@ -50,9 +50,9 @@ export class DetailspageComponent implements OnInit {
 
   onCancel() {
     this.intervalFetcher.cancel();
-    const clear = this.clear;
+    const emitter = this.emitter;
     setTimeout(function () {
-      clear.emit();
+      emitter.emit('clearGraph');
     }, 15000);
   }
 
