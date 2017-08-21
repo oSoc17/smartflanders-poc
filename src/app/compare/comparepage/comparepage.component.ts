@@ -2,9 +2,8 @@ import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { ParkingDataService } from '../../services/parking-data.service';
 import { find, indexOf, values } from 'lodash';
 import Parking from './../../models/parking';
-import ParkingChart from './../../models/parking-chart';
 import * as Rx from 'rxjs/Rx';
-import { ScatterComponent } from './../../shared/charts/scatter/scatter.component';
+import { ScatterComponent } from '../../shared/charts/scatter/scatter.component';
 
 
 @Component({
@@ -74,14 +73,9 @@ export class ComparepageComponent implements OnInit {
     this.parkingsToCompare.splice(indexOf(this.parkingsToCompare, parkingToRemove), 1);
   }
 
-  parkinghandler(parkingID) {
-    const _parking = find(this.parkings, function (o) {
-      return o.id === parkingID;
-    });
-    if (this.parkingsToCompare.indexOf(_parking) === -1) {
-      this.data[_parking.uri] = new Rx.Subject();
-      this.parkingsToCompare.push(_parking);
-    }
+  parkingAddedHandler(parkingID) {
+    const _parking = find(this.parkings, o => o.id === parkingID);
+    this.parkingsToCompare.push(_parking);
     this.data[_parking.uri] = new Rx.Subject();
   }
 }

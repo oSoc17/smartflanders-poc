@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable';
-import {Component, OnInit, Input, ViewChild, OnDestroy} from '@angular/core';
+import {Component, OnInit, Input, ViewChild, OnDestroy, EventEmitter} from '@angular/core';
 import Parking from './../../../models/parking';
 import Chart from 'chart.js';
 import Measurement from './../../../models/measurement';
@@ -18,16 +18,14 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
 
   @Input() private data;
   @Input() private observables; // Array of observables used to stream the parking data
-  @Input() private clear;
+  @Input() private clear: EventEmitter<any>;
   @Input() private parkings: Array < Parking > ;
   @Input() private isVacant;
   @ViewChild('scatter') scatter;
   private datasets = [];
   private context;
-  private chartData = [];
   private config;
   public chart;
-  private counter = 0;
   private disposable = [];
   private counters: Array<number> = [];
 
@@ -103,6 +101,13 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
         }
       )
     }
+    this.clear.subscribe(() => this.clearGraph());
+  }
+
+  clearGraph() {
+    console.log('clearing graph');
+    this.datasets = [];
+    this.chart.reset();
   }
 
   ngOnDestroy() {

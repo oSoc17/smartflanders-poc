@@ -1,8 +1,8 @@
 <div class="container">
   <h2>compare parkings</h2>
   <div *ngIf="parkings">
-    <app-parking-compare-card-add [parkings]="parkings" (parkingAdded)="parkinghandler($event)" (parkingRemoved)="parkingRemovedHandler($event)"></app-parking-compare-card-add>
+    <app-parking-compare-card-add [parkings]="parkings" (parkingAdded)="parkingAddedHandler($event)" (parkingRemoved)="parkingRemovedHandler($event)"></app-parking-compare-card-add>
     <app-chart-settings *ngIf="parkingsToCompare.length !== 0" (onRangeChange)="onRangeChange($event)" (onCancel)="onCancel()"></app-chart-settings>
-    <app-chart-scatter-compare *ngIf="showChart" [observables]="observables" [parkings]="parkingsToCompare"> </app-chart-scatter-compare>
+    <app-chart-scatter-compare *ngIf="showChart" [observables]="observables" [parkings]="parkingsToCompare" [clear]="clear"> </app-chart-scatter-compare>
   </div>
 </div>
