@@ -1,10 +1,6 @@
-import { Observable } from 'rxjs/Observable';
 import {Component, OnInit, Input, ViewChild, OnDestroy, EventEmitter} from '@angular/core';
 import Parking from './../../../models/parking';
 import Chart from 'chart.js';
-import Measurement from './../../../models/measurement';
-import ParkingHistory from './../../../models/parking-history';
-import ParkingChart from './../../../models/parking-history';
 import { sortedLastIndexBy, findIndex } from 'lodash';
 import * as moment from 'moment';
 import randomColor from 'randomcolor';
@@ -92,11 +88,16 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
   refreshParkings() {
     this.datasets.splice(0, this.datasets.length);
     console.log('Refreshing parkings');
-    const hues = ['red', 'orange', 'green', 'blue', 'purple', 'pink'];
+    const hues = ['red', 'orange', 'blue', 'purple'];
+    // const pointStyles = ['cross', 'crossRot', 'rect',
+    //                      'rectRounded', 'rectRot', 'star', 'triangle'];
     let iHue = 0;
+    // let iStyle = 0;
     this.parkings.forEach(parking => {
       const hue = hues[iHue];
+      // const style = pointStyles[iStyle];
       iHue = iHue === hues.length - 1 ? 0 : iHue + 1;
+      // iStyle = iStyle === pointStyles.length - 1 ? 0 : iStyle + 1;
       this.datasets.push({
         fill: false,
         label: parking.name,
@@ -105,6 +106,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
         data: [],
         pointRadius: 1,
         pointStyle: 'line',
+        // pointStyle: style,
         borderColor: [
           randomColor({hue: hue}),
         ],
