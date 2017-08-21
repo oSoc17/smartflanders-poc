@@ -23,8 +23,6 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
   @Input() private isVacant;
   @ViewChild('scatter') scatter;
   private datasets = [];
-  private context;
-  private config;
   public chart;
   private disposable = [];
   private counters: Array<number> = [];
@@ -32,8 +30,8 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
   constructor() {}
 
   ngOnInit() {
-    this.context = this.scatter.nativeElement;
-    this.config = {
+    const context = this.scatter.nativeElement;
+    const config = {
       animation: false,
       type: 'scatter',
       data: { datasets: this.datasets },
@@ -62,7 +60,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
         }
       }
     };
-    this.chart = new Chart(this.context, this.config);
+    this.chart = new Chart(context, config);
     this.refreshParkings();
     this.chart.update();
     this.refreshObservables();
@@ -70,20 +68,30 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
       switch (e) {
         case 'clearGraph':
           this.clearGraph(); break;
-        case 'refreshParkings':
+        case 'parkingsChanged':
           this.refreshParkings(); break;
-        case 'refreshObservables':
-          this.refreshObservables(); break;
+        case 'observablesChanged':
+          this.clearGraph();
+          this.refreshObservables();
+          break;
       }
     });
   }
 
   clearGraph() {
     console.log('clearing graph');
+    this.disposable.forEach(element => {
+      element.unsubscribe();
+    });
+    this.chart.data.datasets.forEach(ds => {
+      ds.data.splice(0, ds.data.length);
+    });
+    this.chart.update();
   }
 
   refreshParkings() {
-    this.datasets = [];
+    this.datasets.splice(0, this.datasets.length);
+    console.log('Refreshing parkings');
     const hues = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink'];
     let iHue = 0;
     this.parkings.forEach(parking => {
@@ -106,8 +114,8 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
   }
 
   refreshObservables() {
-    this.counters = [];
-    this.disposable = [];
+    this.counters.splice(0, this.counters.length);
+    this.disposable.splice(0, this.disposable.length);
     for (let index = 0; index < this.observables.length; index++) {
       this.counters[index] = 0;
       this.disposable[index] = this.observables[index].subscribe(

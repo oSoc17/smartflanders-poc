@@ -49,12 +49,14 @@ export class ComparepageComponent implements OnInit {
 
   getData(range) {
     this.emitter.emit('clearGraph');
+    this.observables.splice(0, this.observables.length);
     for (let index = 0; index < this.parkingsToCompare.length; index++) {
       const parking = this.parkingsToCompare[index];
       const obs = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, parking.cityUrl);
       this.observables.push(obs);
     }
     this.showChart = true;
+    this.emitter.emit('observablesChanged');
   }
 
   onCancel() {
