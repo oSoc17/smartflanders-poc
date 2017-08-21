@@ -69,9 +69,9 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
         case 'clearGraph':
           this.clearGraph(); break;
         case 'parkingsChanged':
-          this.refreshParkings(); break;
+          this.refreshParkings();
+          break;
         case 'observablesChanged':
-          this.clearGraph();
           this.refreshObservables();
           break;
       }
@@ -92,7 +92,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
   refreshParkings() {
     this.datasets.splice(0, this.datasets.length);
     console.log('Refreshing parkings');
-    const hues = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink'];
+    const hues = ['red', 'orange', 'green', 'blue', 'purple', 'pink'];
     let iHue = 0;
     this.parkings.forEach(parking => {
       const hue = hues[iHue];
