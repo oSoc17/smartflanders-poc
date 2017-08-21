@@ -16,17 +16,14 @@ import * as moment from 'moment';
 export class ScatterComponent implements OnInit, OnDestroy {
 
   @Input() private data;
-  @Input() private clear;
+  @Input() private emitter;
   @Input() private parking: Parking;
   @Input() private isVacant;
-  public parkingsChart = [];
   @ViewChild('scatter') scatter;
-  private dataset = [];
   private context;
   private chartData = [];
   private config;
   public chart;
-  private updateIncoming = false;
   private counter = 0;
   private disposable;
 
@@ -83,35 +80,51 @@ export class ScatterComponent implements OnInit, OnDestroy {
       }
     };
     this.chart = new Chart(this.context, this.config);
-    const _dthis = this;
-    this.disposable = this.data.subscribe(
-      (x) => { _dthis.updatePeriodically(x)},
-      (e) => { console.error(e)},
-      () => { console.log('completed')}
-    )
-    this.clear.subscribe()
-      this.chart.update();
+    this.refreshObservable(this.data);
+    this.emitter.subscribe(e => {
+      switch (e.event) {
+        case 'clearGraph':
+          this.clearGraph(); break;
+        case 'observableChanged':
+          this.refreshObservable(e.data); break;
+      }
+    });
+    this.chart.update();
   }
+
+  clearGraph() {
+    console.log('clearing graph');
+    this.disposable.unsubscribe();
+    this.chart.data.datasets.forEach(ds => {
+      ds.data.splice(0, ds.data.length);
+    });
+    this.chart.update();
+  }
+
+  refreshObservable(data) {
+    console.log('refreshing observable');
+    if (this.disposable !== undefined) {
+      this.disposable.unsubscribe();
+    }
+    this.data = data;
+    this.disposable = this.data.subscribe(
+      (measurement) => {
+        this.counter++;
+        if (this.counter >= 30) {
+          this.chartData.splice(0, 0, {
+            x: measurement.timestamp * 1000,
+            y: measurement.value
+          });
+          this.counter = 0;
+          this.chart.update();
+        }},
+      (e) => {console.error(e)},
+      () => {console.log('completed')}
+    );
+  }
+
   ngOnDestroy() {
     this.disposable.unsubscribe();
-  }
-
-
-  updatePeriodically(measurement) {
-    this.counter ++;
-    if (this.counter >= 30 ) {
-   const index = sortedLastIndexBy(this.chartData, {
-        x: (measurement.timestamp * 1000)
-      }, function (o) {
-        return o.x;
-      });
-      this.chartData.splice(index, 0, {
-        x: measurement.timestamp * 1000,
-        y: measurement.value
-      });
-      this.counter = 0;
-      this.chart.update();
-    }
   }
 }
 

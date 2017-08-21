@@ -2,9 +2,8 @@ import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { ParkingDataService } from '../../services/parking-data.service';
 import { find, indexOf, values } from 'lodash';
 import Parking from './../../models/parking';
-import ParkingChart from './../../models/parking-chart';
 import * as Rx from 'rxjs/Rx';
-import { ScatterComponent } from './../../shared/charts/scatter/scatter.component';
+import { ScatterComponent } from '../../shared/charts/scatter/scatter.component';
 
 
 @Component({
@@ -21,10 +20,11 @@ export class ComparepageComponent implements OnInit {
   public parkings: Array<Parking> = [];
   public parkingsToCompare: Array<Parking> = [];
   public parkingsChart;
-  public clear = new EventEmitter();
+  public emitter = new EventEmitter<string>();
   public intervalFetchers = {};
   public observables = [];
   public showChart = false;
+  private range;
 
   constructor(private _parkingDataService: ParkingDataService) { }
 
@@ -33,10 +33,11 @@ export class ComparepageComponent implements OnInit {
       this.onCancel();
     }
     this.getData($event);
+    this.range = $event;
   }
 
   ngOnInit() {
-    this.parkingsChart = new Array();
+    this.parkingsChart = [];
     this._parkingDataService.getDatasetUrls().then(result => {
       values(result).forEach(city => {
         this._parkingDataService.getParkings(city).subscribe(
@@ -49,14 +50,15 @@ export class ComparepageComponent implements OnInit {
   }
 
   getData(range) {
-    this.clear.emit();
+    this.emitter.emit('clearGraph');
+    this.observables.splice(0, this.observables.length);
     for (let index = 0; index < this.parkingsToCompare.length; index++) {
-      this.observables.push(this._parkingDataService.getParkingHistory(
-        this.parkingsToCompare[index].uri, range.from, range.to, this.parkingsToCompare[index].cityUrl));
-      if ( index === this.parkingsToCompare.length - 1 ) {
-        this.showChart = true;
-      }
+      const parking = this.parkingsToCompare[index];
+      const obs = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, parking.cityUrl);
+      this.observables.push(obs);
     }
+    this.showChart = true;
+    this.emitter.emit('observablesChanged');
   }
 
   onCancel() {
@@ -64,7 +66,7 @@ export class ComparepageComponent implements OnInit {
       const interval = this.intervalFetchers[uri];
       interval.cancel();
     });
-    this.clear.emit();
+    this.emitter.emit('clearGraph');
     this.intervalFetchers = {};
   }
 
@@ -73,16 +75,20 @@ export class ComparepageComponent implements OnInit {
       return o.id === parkingID;
     });
     this.parkingsToCompare.splice(indexOf(this.parkingsToCompare, parkingToRemove), 1);
+    if (this.range !== undefined) {
+      this.emitter.emit('parkingsChanged');
+      this.getData(this.range);
+    }
   }
 
-  parkinghandler(parkingID) {
-    const _parking = find(this.parkings, function (o) {
-      return o.id === parkingID;
-    });
-    if (this.parkingsToCompare.indexOf(_parking) === -1) {
-      this.data[_parking.uri] = new Rx.Subject();
-      this.parkingsToCompare.push(_parking);
-    }
+  parkingAddedHandler(parkingID) {
+    const _parking = find(this.parkings, o => o.id === parkingID);
+    this.parkingsToCompare.push(_parking);
+    console.log(this.parkingsToCompare);
     this.data[_parking.uri] = new Rx.Subject();
+    if (this.range !== undefined) {
+      this.emitter.emit('parkingsChanged');
+      this.getData(this.range);
+    }
   }
 }

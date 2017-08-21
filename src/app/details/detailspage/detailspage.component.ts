@@ -1,8 +1,6 @@
-import { element } from 'protractor';
 import TimestampRange from '../../models/timestamp-range';
-import * as Rx from 'rxjs/Rx';
 import { Component, EventEmitter, OnInit, NgZone } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { findLast } from 'lodash';
 import { ParkingDataService } from '../../services/parking-data.service';
 import Parking from './../../models/parking'
@@ -20,7 +18,7 @@ import { Observable } from 'rxjs/Observable'
 export class DetailspageComponent implements OnInit {
 
   public rangeData: Observable<any>;
-  public clear = new EventEmitter();
+  public emitter = new EventEmitter();
   public parking: Parking;
   public measurement: Measurement;
   public intervalFetcher: ParkingDataInterval;
@@ -36,9 +34,10 @@ export class DetailspageComponent implements OnInit {
     private route: ActivatedRoute,
     private zone: NgZone) {}
 
-    onRangeChange($event) {
+  onRangeChange($event) {
     this.timeFrame = $event;
     this.getData(this.timeFrame, this.parking, this.isVacant);
+
   }
 
   onDataTypeChange($event) {
@@ -50,9 +49,9 @@ export class DetailspageComponent implements OnInit {
 
   onCancel() {
     this.intervalFetcher.cancel();
-    const clear = this.clear;
+    const emitter = this.emitter;
     setTimeout(function () {
-      clear.emit();
+      emitter.emit({event: 'clearGraph'});
     }, 15000);
   }
 
@@ -61,7 +60,7 @@ export class DetailspageComponent implements OnInit {
     this.cityUrl = this.route.snapshot.paramMap.get('cityUrl');
     const id = this.route.snapshot.url[1].path;
     const result = [];
-    this._parkingDataService.getParkings(this.cityUrl).filter((x) => { return x.id === id}).subscribe(
+    this._parkingDataService.getParkings(this.cityUrl).filter(x => x.id === id).subscribe(
       (parking) => {
         this.zone.run(() => {this.parking = parking});
         this._parkingDataService.getNewestParkingDataForOne(this.parking.uri, this.parking.cityUrl).subscribe(
@@ -78,7 +77,9 @@ export class DetailspageComponent implements OnInit {
   }
   getData(range: TimestampRange, parking: Parking, dataType: boolean) {
     if (dataType) {
-      this.rangeData =  this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, this.cityUrl);
+      this.emitter.emit({event: 'clearGraph'});
+      this.rangeData = this._parkingDataService.getParkingHistory(parking.uri, range.from, range.to, this.cityUrl);
+      this.emitter.emit({event: 'observableChanged', data: this.rangeData});
     }
   }
  }

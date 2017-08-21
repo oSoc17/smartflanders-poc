@@ -1,7 +1,5 @@
-import { element } from 'protractor';
 import { Component, OnInit } from '@angular/core';
-import { MdCardModule, MdProgressSpinnerModule} from '@angular/material';
-import { ParkingDataService } from './../../services/parking-data.service';
+import { ParkingDataService } from '../../services/parking-data.service';
 import Parking from './../../models/parking';
 import { keys, values } from 'lodash';
 
@@ -19,7 +17,7 @@ export class HomepageComponent implements OnInit {
   public citynames: Array<string> = [];
   public selectedCountry: string;
 
-  constructor (private _dataservice: ParkingDataService){}
+  constructor (private _dataservice: ParkingDataService) {}
 
   ngOnInit() {
     this.selectedCountry = 'be';
