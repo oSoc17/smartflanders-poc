@@ -49,7 +49,6 @@ export class DetailspageComponent implements OnInit {
   }
 
   onPrecisionChange($event) {
-    console.log($event);
     this.datapointGap = $event;
   }
 
