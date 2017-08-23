@@ -21,6 +21,8 @@ export class ChartSettingsComponent implements OnInit {
   public selectedChart: string;
   public selectedTimeframe: string;
   public selectedData: string;
+  public selectedPrecision: number;
+  public datapointGap: number;
   public fromTimestamp: number;
   public toTimestamp: number;
   public picker: MaterialDateTimePicker;
@@ -71,6 +73,12 @@ export class ChartSettingsComponent implements OnInit {
       this.fromTimestamp = Moment().subtract(1, selectedTimeframe.value).unix();
       this.updateRange();
     }
+  }
+
+  changeSelectedPrecision(selectedPrecision) {
+    this.selectedPrecision = selectedPrecision.value;
+    this.datapointGap = 30 + this.selectedPrecision * 10;
+    console.log('Changed precision: ', this.datapointGap);
   }
 
   changeSelectedData(selectedData) {

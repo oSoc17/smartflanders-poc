@@ -24,12 +24,18 @@
     </div>
 
     <!-- TYPE SELECTOR  -->
-    <div class="selector-container">
+    <!--<div class="selector-container">
       <h5>DATA</h5>
       <md-button-toggle-group name="data" value={{selectedData}} (change)="changeSelectedData($event)">
         <md-button-toggle value="vacant">vacant</md-button-toggle>
         <md-button-toggle value="taken">taken</md-button-toggle>
       </md-button-toggle-group>
+    </div>-->
+
+    <!-- PRECISION SLIDER -->
+    <div class="selector-container">
+      <h5>PRECISION</h5>
+      <md-slider name="precision" value={{selectedPrecision}} (change)="changeSelectedPrecision($event)"></md-slider>
     </div>
 
     <!-- DATEPICKER -->
