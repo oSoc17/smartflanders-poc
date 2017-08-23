@@ -19,6 +19,7 @@ export class ScatterComponent implements OnInit, OnDestroy {
   @Input() private emitter;
   @Input() private parking: Parking;
   @Input() private isVacant;
+  @Input() private datapointGap;
   @ViewChild('scatter') scatter;
   private context;
   private chartData = [];
@@ -110,7 +111,7 @@ export class ScatterComponent implements OnInit, OnDestroy {
     this.disposable = this.data.subscribe(
       (measurement) => {
         this.counter++;
-        if (this.counter >= 30) {
+        if (this.counter >= this.datapointGap) {
           this.chartData.splice(0, 0, {
             x: measurement.timestamp * 1000,
             y: measurement.value

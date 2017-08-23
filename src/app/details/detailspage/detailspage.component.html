@@ -14,8 +14,8 @@
     </div>
     <div class="chart-container" >
       <h4>Visualize historic data</h4>
-      <app-chart-settings (onDataTypeChange)="onDataTypeChange($event)" (onRangeChange)="onRangeChange($event)" (onCancel)="onCancel()"></app-chart-settings>
-      <app-chart-scatter  *ngIf="parking && rangeData" [parking]="parking" [data]="rangeData" [emitter]="emitter"></app-chart-scatter>
+      <app-chart-settings (onPrecisionChange)="onPrecisionChange($event)" (onDataTypeChange)="onDataTypeChange($event)" (onRangeChange)="onRangeChange($event)" (onCancel)="onCancel()"></app-chart-settings>
+      <app-chart-scatter  *ngIf="parking && rangeData" [parking]="parking" [data]="rangeData" [emitter]="emitter" [datapointGap]="datapointGap"></app-chart-scatter>
     </div>
   </md-card>
 </div>

@@ -16,6 +16,7 @@ export class ChartSettingsComponent implements OnInit {
   @Output() onDataTypeChange = new EventEmitter <boolean> ();
   @Output() onCancel = new EventEmitter();
   @Output() change = new EventEmitter();
+  @Output() onPrecisionChange = new EventEmitter();
   @Output() isVacant: boolean;
 
   public selectedChart: string;
@@ -33,11 +34,13 @@ export class ChartSettingsComponent implements OnInit {
     this.selectedChart = 'scatter';
     this.selectedData = 'vacant';
     this.isVacant = true;
+    this.selectedPrecision = 100;
+    this.datapointGap = 30;
   }
 
   openTimePickerFrom(diff: string) {
     this.picker = new MaterialDateTimePicker();
-    this.picker.open()
+    this.picker.open();
     this.picker.on('submit', (val) => {
       this.fromTimestamp = val.unix();
     })
@@ -45,7 +48,7 @@ export class ChartSettingsComponent implements OnInit {
 
   openTimePickerTo(diff: string) {
     this.picker = new MaterialDateTimePicker();
-    this.picker.open()
+    this.picker.open();
     this.picker.on('submit', (val) => {
       this.toTimestamp = val.unix();
     })
@@ -77,8 +80,8 @@ export class ChartSettingsComponent implements OnInit {
 
   changeSelectedPrecision(selectedPrecision) {
     this.selectedPrecision = selectedPrecision.value;
-    this.datapointGap = 30 + this.selectedPrecision * 10;
-    console.log('Changed precision: ', this.datapointGap);
+    this.datapointGap = 1030 - this.selectedPrecision * 10;
+    this.onPrecisionChange.emit(this.datapointGap);
   }
 
   changeSelectedData(selectedData) {
