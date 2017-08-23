@@ -24,6 +24,7 @@ export class ComparepageComponent implements OnInit {
   public intervalFetchers = {};
   public observables = [];
   public showChart = false;
+  public datapointGap = 30;
   private range;
 
   constructor(private _parkingDataService: ParkingDataService) { }
@@ -34,6 +35,10 @@ export class ComparepageComponent implements OnInit {
     }
     this.getData($event);
     this.range = $event;
+  }
+
+  onPrecisionChange($event) {
+    this.datapointGap = $event;
   }
 
   ngOnInit() {
