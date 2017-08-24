@@ -98,7 +98,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
       // iStyle = iStyle === pointStyles.length - 1 ? 0 : iStyle + 1;
       this.datasets.push({
         fill: false,
-        label: parking.name,
+        label: parking.name + ' (' + parking.datasetName + ')',
         url: parking.uri,
         showLine: true,
         data: [],

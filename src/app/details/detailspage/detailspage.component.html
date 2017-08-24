@@ -4,7 +4,7 @@
     <div class="parking-info-container">
       <app-chart-doughnut *ngIf="measurement" class="parking-doughnut" [parking]="parking" [measurement]="measurement"></app-chart-doughnut>
       <div class="parking-info" *ngIf="parking">
-        <h3>{{parking?.name}}</h3>
+        <h3>{{parking?.name + ' (' + parking?.datasetName + ')'}}</h3>
         <h5>TOTAL SPOTS</h5>
         <p>{{parking?.totalSpaces}}</p>
         <h5>TREND</h5>
