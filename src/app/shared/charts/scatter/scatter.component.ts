@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild, OnDestroy} from '@angular/core';
+import {Component, OnInit, Input, ViewChild, OnDestroy, EventEmitter} from '@angular/core';
 import Parking from './../../../models/parking';
 import Chart from 'chart.js';
 import Measurement from './../../../models/measurement';
@@ -18,8 +18,8 @@ export class ScatterComponent implements OnInit, OnDestroy {
   @Input() private data;
   @Input() private emitter;
   @Input() private parking: Parking;
-  @Input() private isVacant;
-  @Input() private datapointGap;
+  @Input() private eIsAbsolute: EventEmitter<boolean>;
+  @Input() private isAbsolute: boolean;
   @ViewChild('scatter') scatter;
   private context;
   private chartData = [];
@@ -52,6 +52,24 @@ export class ScatterComponent implements OnInit, OnDestroy {
         }]
       },
       options: {
+        elements: {
+          line: {
+            tension: 0
+          }
+        },
+        tooltips: {
+          enabled: true,
+          callbacks: {
+            label: (item) => {
+              const ts = moment(item.xLabel).format('YYYY-MM-DDTHH:mm:ss');
+              if (this.isAbsolute) {
+                return ts + ': ' + Math.round(parseInt(item.yLabel, 10)).toString() + ' spaces';
+              } else {
+                return ts + ': ' + Math.round(parseInt(item.yLabel, 10)).toString() + '%';
+              }
+            }
+          }
+        },
         legend: {
           display: false
         },
@@ -73,8 +91,6 @@ export class ScatterComponent implements OnInit, OnDestroy {
             },
             ticks: {
               beginAtZero: true,
-              suggestedMin: 50,
-              suggestedMax: this.parking.totalSpaces
             }
           }]
         }
@@ -89,6 +105,22 @@ export class ScatterComponent implements OnInit, OnDestroy {
         case 'observableChanged':
           this.refreshObservable(e.data); break;
       }
+    });
+    this.eIsAbsolute.subscribe(e => {
+      this.isAbsolute = e;
+      this.chartData.forEach((dataPoint) => {
+        if (e) {
+          dataPoint.y = dataPoint.y * this.parking.totalSpaces / 100;
+        } else {
+          dataPoint.y = dataPoint.y / this.parking.totalSpaces * 100;
+        }
+      });
+      if (e) {
+        this.chart.config.options.scales.yAxes[0].scaleLabel.labelString = 'Parking spots';
+      } else {
+        this.chart.config.options.scales.yAxes[0].scaleLabel.labelString = 'Percentage';
+      }
+      this.chart.update();
     });
     this.chart.update();
   }
@@ -111,11 +143,21 @@ export class ScatterComponent implements OnInit, OnDestroy {
     this.disposable = this.data.subscribe(
       (measurement) => {
         this.counter++;
-        if (this.counter >= this.datapointGap) {
-          this.chartData.splice(0, 0, {
-            x: measurement.timestamp * 1000,
-            y: measurement.value
-          });
+        if (this.counter >= 50) {
+          let dataPoint = {};
+          if (this.isAbsolute) {
+            dataPoint = {
+              x: measurement.timestamp * 1000,
+              y: measurement.value
+            }
+          } else {
+            const total = this.parking.totalSpaces;
+            dataPoint = {
+              x: measurement.timestamp * 1000,
+              y: measurement.value / total * 100
+            }
+          }
+          this.chartData.splice(0, 0, dataPoint);
           this.counter = 0;
           this.chart.update();
         }},

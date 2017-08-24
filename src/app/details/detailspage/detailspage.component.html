@@ -4,7 +4,7 @@
     <div class="parking-info-container">
       <app-chart-doughnut *ngIf="measurement" class="parking-doughnut" [parking]="parking" [measurement]="measurement"></app-chart-doughnut>
       <div class="parking-info" *ngIf="parking">
-        <h3>{{parking?.name}}</h3>
+        <h3>{{parking?.name + ' (' + parking?.datasetName + ')'}}</h3>
         <h5>TOTAL SPOTS</h5>
         <p>{{parking?.totalSpaces}}</p>
         <h5>TREND</h5>
@@ -14,8 +14,8 @@
     </div>
     <div class="chart-container" >
       <h4>Visualize historic data</h4>
-      <app-chart-settings (onPrecisionChange)="onPrecisionChange($event)" (onDataTypeChange)="onDataTypeChange($event)" (onRangeChange)="onRangeChange($event)" (onCancel)="onCancel()"></app-chart-settings>
-      <app-chart-scatter  *ngIf="parking && rangeData" [parking]="parking" [data]="rangeData" [emitter]="emitter" [datapointGap]="datapointGap"></app-chart-scatter>
+      <app-chart-settings (onDataTypeChange)="onDataTypeChange($event)" (onRangeChange)="onRangeChange($event)" (onCancel)="onCancel()"></app-chart-settings>
+      <app-chart-scatter  *ngIf="parking && rangeData" [parking]="parking" [data]="rangeData" [emitter]="emitter" [eIsAbsolute]="eIsAbsolute" [isAbsolute]="isAbsolute"></app-chart-scatter>
     </div>
   </md-card>
 </div>

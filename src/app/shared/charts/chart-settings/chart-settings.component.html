@@ -3,10 +3,10 @@
 
     <!-- TYPE SELECTOR  -->
     <div class="selector-container">
-      <h5>CHART</h5>
-      <md-button-toggle-group name="chart" value={{selectedChart}} (change)="changeSelectedChart($event)">
-        <md-button-toggle value="scatter">scatter</md-button-toggle>
-        <md-button-toggle value="block">block</md-button-toggle>
+      <h5>TYPE</h5>
+      <md-button-toggle-group name="absolute" value={{isAbsolute}} (change)="changeIsAbsolute($event)">
+        <md-button-toggle value={{true}}>Absolute</md-button-toggle>
+        <md-button-toggle value={{false}}>Relative</md-button-toggle>
       </md-button-toggle-group>
     </div>
 
@@ -23,21 +23,6 @@
       </md-button-toggle-group>
     </div>
 
-    <!-- TYPE SELECTOR  -->
-    <!--<div class="selector-container">
-      <h5>DATA</h5>
-      <md-button-toggle-group name="data" value={{selectedData}} (change)="changeSelectedData($event)">
-        <md-button-toggle value="vacant">vacant</md-button-toggle>
-        <md-button-toggle value="taken">taken</md-button-toggle>
-      </md-button-toggle-group>
-    </div>-->
-
-    <!-- PRECISION SLIDER -->
-    <div class="selector-container">
-      <h5>PRECISION</h5>
-      <md-slider name="precision" value={{selectedPrecision}} (change)="changeSelectedPrecision($event)"></md-slider>
-    </div>
-
     <!-- DATEPICKER -->
     <div *ngIf="selectedTimeframe=='custom'" class="setting-container valign-wrapper">
       <md-input-container>
@@ -49,15 +34,4 @@
       <a class="waves-effect waves-light btn" (click)="this.updateRange()">Apply</a>
     </div>
   </div>
-
-  <!-- Interval setting  -->
-  <!-- <div class="setting-container">
-      <h5>INTERVAL</h5>
-      <md-slider thumbLabel min="1" max="25" step="1" value="1"></md-slider>
-    </div> -->
-
-  <!-- <div class="actions-container">
-    <button (click)="this.cancel()" md-raised-button>Cancel</button>
-    <button (click)="this.updateRange()" md-raised-button>Apply</button>
-  </div> -->
 </div>

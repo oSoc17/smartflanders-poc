@@ -15,9 +15,9 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
   @Input() private data;
   @Input() private observables; // Array of observables used to stream the parking data
   @Input() private emitter: EventEmitter<string>;
-  @Input() private parkings: Array < Parking > ;
-  @Input() private isVacant;
-  @Input() private datapointGap;
+  @Input() private parkings: Array <Parking>;
+  @Input() private eIsAbsolute: EventEmitter<boolean>;
+  @Input() private isAbsolute: boolean;
   @ViewChild('scatter') scatter;
   private datasets = [];
   public chart;
@@ -33,6 +33,24 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
       type: 'scatter',
       data: { datasets: this.datasets },
       options: {
+        elements: {
+          line: {
+            tension: 0
+          }
+        },
+        tooltips: {
+          enabled: true,
+          callbacks: {
+            label: (item) => {
+              const ts = moment(item.xLabel).format('YYYY-MM-DDTHH:mm:ss');
+              if (this.isAbsolute) {
+                return ts + ': ' + Math.round(parseInt(item.yLabel, 10)).toString() + ' spaces';
+              } else {
+                return ts + ': ' + Math.round(parseInt(item.yLabel, 10)).toString() + '%';
+              }
+            }
+          }
+        },
         legend: { display: true },
         scales: {
           xAxes: [{
@@ -40,7 +58,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
             time: {
               unit: 'hour',
               displayFormats: { hour: 'MMM D, HH:mm' },
-              parse: (value) => moment.unix(value).toISOString(),
+              parse: (value) => moment(value).toISOString(),
             }
           }],
           yAxes: [{
@@ -50,10 +68,8 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
             },
             ticks: {
               beginAtZero: true,
-              suggestedMin: 50,
-              suggestedMax: 1000
             }
-          }]
+          }],
         }
       }
     };
@@ -70,6 +86,24 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
         case 'observablesChanged':
           this.refreshObservables(); break;
       }
+    });
+    this.eIsAbsolute.subscribe(e => {
+      this.isAbsolute = e;
+      this.datasets.forEach(dataset => {
+        dataset.data.forEach((dataPoint) => {
+          if (e) {
+            dataPoint.y = dataPoint.y * dataset.parking.totalSpaces / 100;
+          } else {
+            dataPoint.y = dataPoint.y / dataset.parking.totalSpaces * 100;
+          }
+        });
+        if (e) {
+          this.chart.config.options.scales.yAxes[0].scaleLabel.labelString = 'Parking spots';
+        } else {
+          this.chart.config.options.scales.yAxes[0].scaleLabel.labelString = 'Percentage';
+        }
+      });
+      this.chart.update();
     });
   }
 
@@ -98,8 +132,9 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
       // iStyle = iStyle === pointStyles.length - 1 ? 0 : iStyle + 1;
       this.datasets.push({
         fill: false,
-        label: parking.name,
+        label: parking.name + ' (' + parking.datasetName + ')',
         url: parking.uri,
+        parking: parking,
         showLine: true,
         data: [],
         pointRadius: 1,
@@ -119,20 +154,41 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
     for (let index = 0; index < this.observables.length; index++) {
       this.counters[index] = 0;
       this.disposable[index] = this.observables[index].subscribe(
-        (meas) => {
+        (measurement) => {
           this.counters[index]++;
-          if (this.counters[index] >= this.datapointGap) {
-            this.counters[index] = 0;
-            const indexOfDataset = findIndex(this.chart.data.datasets, (o) => o.url === meas.parkingUrl);
-            this.chart.data.datasets[indexOfDataset].data.splice(0, 0, {
-              x: meas.timestamp * 1000,
-              y: meas.value
-            });
+          if (this.counters[index] >= 50) {
+            let dataPoint = {};
+            if (this.isAbsolute) {
+              dataPoint = {
+                x: measurement.timestamp * 1000,
+                y: measurement.value
+              }
+            } else {
+              const parking = this.getParkingByUrl(measurement.parkingUrl);
+              const total = parking.totalSpaces;
+              dataPoint = {
+                x: measurement.timestamp * 1000,
+                y: measurement.value / total * 100
+              }
+            }
+            const indexOfDataset = findIndex(this.chart.data.datasets, (o) => o.url === measurement.parkingUrl);
+            this.chart.data.datasets[indexOfDataset].data.splice(0, 0, dataPoint);
             this.chart.update();
+            this.counters[index] = 0;
           }
         }
       )
     }
+  }
+
+  getParkingByUrl(url) {
+    let result = null;
+    this.parkings.forEach(p => {
+      if (p.uri === url) {
+        result = p;
+      }
+    });
+    return result;
   }
 
   ngOnDestroy() {
