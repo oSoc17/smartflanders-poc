@@ -59,8 +59,6 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
             },
             ticks: {
               beginAtZero: true,
-              suggestedMin: 50,
-              suggestedMax: 1000
             }
           }],
         }
