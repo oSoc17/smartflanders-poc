@@ -26,6 +26,7 @@ export class ComparepageComponent implements OnInit {
   public showChart = false;
   public datapointGap = 30;
   private range;
+  private datasets;
 
   constructor(private _parkingDataService: ParkingDataService) { }
 
@@ -44,6 +45,7 @@ export class ComparepageComponent implements OnInit {
   ngOnInit() {
     this.parkingsChart = [];
     this._parkingDataService.getDatasetUrls().then(result => {
+      this.datasets = result;
       values(result).forEach(city => {
         this._parkingDataService.getParkings(city).subscribe(
           (parkings) => {this.parkings.push(parkings)},
@@ -88,8 +90,8 @@ export class ComparepageComponent implements OnInit {
 
   parkingAddedHandler(parkingID) {
     const _parking = find(this.parkings, o => o.id === parkingID);
+    console.log(_parking);
     this.parkingsToCompare.push(_parking);
-    console.log(this.parkingsToCompare);
     this.data[_parking.uri] = new Rx.Subject();
     if (this.range !== undefined) {
       this.emitter.emit('parkingsChanged');

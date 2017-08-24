@@ -24,27 +24,6 @@ export class ParkingDataService {
     'Sint-Niklaas': 'https://sint-niklaas.datapiloten.be/parking',
     'Nederland': 'https://nederland.datapiloten.be/parking'
   };
-/**
-   * Gets all static data for a certain parking from an N3 store
-   * @param uri the uri of the parking
-   * @param store the N3 store of triples
-   * @param datasetUrl url of the city dataset
-   * @returns {Parking}
-   */
-  public static getParking(uri, store, datasetUrl): Parking {
-    const totalSpacesObj = store.getTriples(uri, 'datex:parkingNumberOfSpaces')[0].object;
-    const totalSpaces = parseInt(n3.Util.getLiteralValue(totalSpacesObj), 10);
-    const rdfslabel = n3.Util.getLiteralValue(store.getTriples(uri, 'rdfs:label')[0].object);
-    const id = rdfslabel.replace(' ', '-').toLowerCase();
-    return {
-      uri: uri,
-      cityUrl: datasetUrl,
-      name: rdfslabel,
-      totalSpaces: totalSpaces,
-      id: id
-    }
-  }
-
 
   /**
    * Gets all measurements for a certain parking from an N3 store
@@ -69,6 +48,7 @@ export class ParkingDataService {
     });
     return measurements;
   }
+
   public static getMeasurementsWithoutStore(uri, triples): Measurement[] {
     const usedTriples = [];
     const graphs = []
@@ -186,7 +166,7 @@ export class ParkingDataService {
         parkings.forEach(parking => {
           const result = [parking.uri];
           ParkingDataService.getMeasurementsWithoutStoreObservable(parking.uri, response.triples).subscribe(
-            (x) => {observer.next(x);},
+            (x) => {observer.next(x); },
             (e) => {console.log('error', e)},
             () =>  { observer.complete(); }
           )
@@ -199,6 +179,29 @@ export class ParkingDataService {
   // This should become a request to a registry endpoint
   public getDatasetUrls() {
     return new Promise((resolve) => resolve(this.datasetUrls));
+  }
+
+  /**
+   * Gets all static data for a certain parking from an N3 store
+   * @param uri the uri of the parking
+   * @param store the N3 store of triples
+   * @param datasetUrl url of the city dataset
+   * @returns {Parking}
+   */
+  public getParking(uri, store, datasetUrl): Parking {
+    const totalSpacesObj = store.getTriples(uri, 'datex:parkingNumberOfSpaces')[0].object;
+    const totalSpaces = parseInt(n3.Util.getLiteralValue(totalSpacesObj), 10);
+    const rdfslabel = n3.Util.getLiteralValue(store.getTriples(uri, 'rdfs:label')[0].object);
+    const id = rdfslabel.replace(' ', '-').toLowerCase();
+    const datasetName = this.getDatasetName(datasetUrl, this.datasetUrls);
+    return {
+      uri: uri,
+      cityUrl: datasetUrl,
+      name: rdfslabel,
+      totalSpaces: totalSpaces,
+      id: id,
+      datasetName: datasetName
+    }
   }
 
 
@@ -255,11 +258,22 @@ export class ParkingDataService {
           });
           const rdfslabel = n3.Util.getLiteralValue(labelresult.object);
           const id = rdfslabel.replace(' ', '-').toLowerCase();
-          observer.next(new Parking(rdfslabel, parkingTriples[index].subject, id, totalspaces, datasetUrl));
+          const datasetName = this.getDatasetName(datasetUrl, this.datasetUrls);
+          observer.next(new Parking(rdfslabel, parkingTriples[index].subject, id, totalspaces, datasetUrl, datasetName));
         }
         observer.complete();
       })
     })
+  }
+
+  private getDatasetName(url, datasets): any {
+    let result = null;
+    Object.keys(datasets).forEach(key => {
+      if (url === datasets[key]) {
+        result = key;
+      }
+    });
+    return result;
   }
 
 
