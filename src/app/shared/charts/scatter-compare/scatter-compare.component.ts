@@ -16,7 +16,8 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
   @Input() private observables; // Array of observables used to stream the parking data
   @Input() private emitter: EventEmitter<string>;
   @Input() private parkings: Array < Parking > ;
-  @Input() private isVacant;
+  @Input() private eIsAbsolute: EventEmitter<boolean>;
+  @Input() private isAbsolute: boolean;
   @ViewChild('scatter') scatter;
   private datasets = [];
   public chart;
@@ -79,6 +80,11 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
           this.refreshObservables(); break;
       }
     });
+    this.eIsAbsolute.subscribe(e => {
+      this.isAbsolute = e;
+      console.log(this.isAbsolute);
+    });
+    console.log(this.isAbsolute);
   }
 
   clearGraph() {

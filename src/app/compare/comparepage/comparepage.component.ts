@@ -24,7 +24,8 @@ export class ComparepageComponent implements OnInit {
   public intervalFetchers = {};
   public observables = [];
   public showChart = false;
-  public datapointGap = 30;
+  public eIsAbsolute = new EventEmitter<boolean>();
+  public isAbsolute = true;
   private range;
   private datasets;
 
@@ -36,10 +37,6 @@ export class ComparepageComponent implements OnInit {
     }
     this.getData($event);
     this.range = $event;
-  }
-
-  onPrecisionChange($event) {
-    this.datapointGap = $event;
   }
 
   ngOnInit() {
@@ -75,6 +72,11 @@ export class ComparepageComponent implements OnInit {
     });
     this.emitter.emit('clearGraph');
     this.intervalFetchers = {};
+  }
+
+  onDataTypeChange(value) {
+    this.eIsAbsolute.emit(value);
+    this.isAbsolute = value;
   }
 
   parkingRemovedHandler(parkingID) {

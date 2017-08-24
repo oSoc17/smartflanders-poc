@@ -62,6 +62,7 @@ export class ChartSettingsComponent implements OnInit {
 
   changeIsAbsolute($event) {
     this.isAbsolute = $event.value;
+    this.onDataTypeChange.emit($event.value);
   }
 
   changeSelectedTimeframe(selectedTimeframe) {
@@ -71,16 +72,6 @@ export class ChartSettingsComponent implements OnInit {
       this.fromTimestamp = Moment().subtract(1, selectedTimeframe.value).unix();
       this.updateRange();
     }
-  }
-
-  changeSelectedData(selectedData) {
-    this.selectedData = selectedData.value;
-    if (this.selectedData === 'vacant') {
-      this.isVacant = true;
-    } else {
-      this.isVacant = false;
-    }
-    this.onDataTypeChange.emit(this.isVacant);
   }
 }
 
