@@ -33,6 +33,15 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
       type: 'scatter',
       data: { datasets: this.datasets },
       options: {
+        tooltips: {
+          enabled: true,
+          callbacks: {
+            label: (item) => {
+              const ts = moment(item.xLabel).format('YYYY-MM-DDTHH:mm:ss');
+              return ts + ': ' + item.yLabel + 'spaces';
+            }
+          }
+        },
         legend: { display: true },
         scales: {
           xAxes: [{
@@ -40,7 +49,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
             time: {
               unit: 'hour',
               displayFormats: { hour: 'MMM D, HH:mm' },
-              parse: (value) => moment.unix(value).toISOString(),
+              parse: (value) => moment(value).toISOString(),
             }
           }],
           yAxes: [{
@@ -53,7 +62,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
               suggestedMin: 50,
               suggestedMax: 1000
             }
-          }]
+          }],
         }
       }
     };
