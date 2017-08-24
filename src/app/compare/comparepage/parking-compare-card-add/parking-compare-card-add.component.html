@@ -9,7 +9,7 @@
   <div class="modal-content">
     <h4>Add parkings to compare!</h4>
     <div class="collection">
-      <a class="collection-item" (click)="activeStatus[i]=!activeStatus[i]" [class.active]="activeStatus[i]" class="collection-item" *ngFor="let parking of parkings, let i = index" (click)="addParking(parking.id, activeStatus[i])" >{{parking.name}}</a>
+      <a class="collection-item" (click)="activeStatus[i]=!activeStatus[i]" [class.active]="activeStatus[i]" class="collection-item" *ngFor="let parking of parkings, let i = index" (click)="addParking(parking.id, activeStatus[i])" >{{parking.name + ' (' + parking.datasetName + ')'}}</a>
     </div>
   </div>
   <div class="modal-footer">
