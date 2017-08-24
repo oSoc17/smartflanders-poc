@@ -52,6 +52,15 @@ export class ScatterComponent implements OnInit, OnDestroy {
         }]
       },
       options: {
+        tooltips: {
+          enabled: true,
+          callbacks: {
+            label: (item) => {
+              const ts = moment(item.xLabel).format('YYYY-MM-DDTHH:mm:ss');
+              return ts + ': ' + item.yLabel + ' spaces';
+            }
+          }
+        },
         legend: {
           display: false
         },

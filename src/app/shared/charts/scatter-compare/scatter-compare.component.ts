@@ -38,7 +38,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
           callbacks: {
             label: (item) => {
               const ts = moment(item.xLabel).format('YYYY-MM-DDTHH:mm:ss');
-              return ts + ': ' + item.yLabel + 'spaces';
+              return ts + ': ' + item.yLabel + ' spaces';
             }
           }
         },
