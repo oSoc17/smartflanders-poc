@@ -63,7 +63,7 @@ export class ScatterComponent implements OnInit, OnDestroy {
             label: (item) => {
               const ts = moment(item.xLabel).format('YYYY-MM-DDTHH:mm:ss');
               if (this.isAbsolute) {
-                return ts + ': ' + item.yLabel + ' spaces';
+                return ts + ': ' + Math.round(parseInt(item.yLabel, 10)).toString() + ' spaces';
               } else {
                 return ts + ': ' + Math.round(parseInt(item.yLabel, 10)).toString() + '%';
               }
@@ -143,20 +143,20 @@ export class ScatterComponent implements OnInit, OnDestroy {
     this.disposable = this.data.subscribe(
       (measurement) => {
         this.counter++;
-        let dataPoint = {};
-        if (this.isAbsolute) {
-          dataPoint = {
-            x: measurement.timestamp * 1000,
-            y: measurement.value
-          }
-        } else {
-          const total = this.parking.totalSpaces;
-          dataPoint = {
-            x: measurement.timestamp * 1000,
-            y: measurement.value / total * 100
-          }
-        }
         if (this.counter >= 50) {
+          let dataPoint = {};
+          if (this.isAbsolute) {
+            dataPoint = {
+              x: measurement.timestamp * 1000,
+              y: measurement.value
+            }
+          } else {
+            const total = this.parking.totalSpaces;
+            dataPoint = {
+              x: measurement.timestamp * 1000,
+              y: measurement.value / total * 100
+            }
+          }
           this.chartData.splice(0, 0, dataPoint);
           this.counter = 0;
           this.chart.update();
