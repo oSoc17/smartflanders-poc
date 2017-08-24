@@ -82,9 +82,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
     });
     this.eIsAbsolute.subscribe(e => {
       this.isAbsolute = e;
-      console.log(this.isAbsolute);
     });
-    console.log(this.isAbsolute);
   }
 
   clearGraph() {

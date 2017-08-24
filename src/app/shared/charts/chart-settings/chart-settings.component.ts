@@ -61,8 +61,8 @@ export class ChartSettingsComponent implements OnInit {
   }
 
   changeIsAbsolute($event) {
-    this.isAbsolute = $event.value;
-    this.onDataTypeChange.emit($event.value);
+    this.isAbsolute = $event.value === 'true';
+    this.onDataTypeChange.emit($event.value === 'true');
   }
 
   changeSelectedTimeframe(selectedTimeframe) {

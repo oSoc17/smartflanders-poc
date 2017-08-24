@@ -52,12 +52,21 @@ export class ScatterComponent implements OnInit, OnDestroy {
         }]
       },
       options: {
+        elements: {
+          line: {
+            tension: 0
+          }
+        },
         tooltips: {
           enabled: true,
           callbacks: {
             label: (item) => {
               const ts = moment(item.xLabel).format('YYYY-MM-DDTHH:mm:ss');
-              return ts + ': ' + item.yLabel + ' spaces';
+              if (this.isAbsolute) {
+                return ts + ': ' + item.yLabel + ' spaces';
+              } else {
+                return ts + ': ' + Math.round(parseInt(item.yLabel, 10)).toString() + '%';
+              }
             }
           }
         },
@@ -82,8 +91,6 @@ export class ScatterComponent implements OnInit, OnDestroy {
             },
             ticks: {
               beginAtZero: true,
-              suggestedMin: 50,
-              suggestedMax: this.parking.totalSpaces
             }
           }]
         }
@@ -101,9 +108,20 @@ export class ScatterComponent implements OnInit, OnDestroy {
     });
     this.eIsAbsolute.subscribe(e => {
       this.isAbsolute = e;
-      console.log(this.isAbsolute);
+      this.chartData.forEach((dataPoint) => {
+        if (e) {
+          dataPoint.y = dataPoint.y * this.parking.totalSpaces / 100;
+        } else {
+          dataPoint.y = dataPoint.y / this.parking.totalSpaces * 100;
+        }
+      });
+      if (e) {
+        this.chart.config.options.scales.yAxes[0].scaleLabel.labelString = 'Parking spots';
+      } else {
+        this.chart.config.options.scales.yAxes[0].scaleLabel.labelString = 'Percentage';
+      }
+      this.chart.update();
     });
-    console.log(this.isAbsolute);
     this.chart.update();
   }
 
@@ -125,11 +143,21 @@ export class ScatterComponent implements OnInit, OnDestroy {
     this.disposable = this.data.subscribe(
       (measurement) => {
         this.counter++;
-        if (this.counter >= 50) {
-          this.chartData.splice(0, 0, {
+        let dataPoint = {};
+        if (this.isAbsolute) {
+          dataPoint = {
             x: measurement.timestamp * 1000,
             y: measurement.value
-          });
+          }
+        } else {
+          const total = this.parking.totalSpaces;
+          dataPoint = {
+            x: measurement.timestamp * 1000,
+            y: measurement.value / total * 100
+          }
+        }
+        if (this.counter >= 50) {
+          this.chartData.splice(0, 0, dataPoint);
           this.counter = 0;
           this.chart.update();
         }},

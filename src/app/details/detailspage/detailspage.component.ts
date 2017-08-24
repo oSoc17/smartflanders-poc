@@ -43,6 +43,7 @@ export class DetailspageComponent implements OnInit {
   }
 
   onDataTypeChange(value) {
+    console.log(value);
     this.eIsAbsolute.emit(value);
     this.isAbsolute = value;
   }
