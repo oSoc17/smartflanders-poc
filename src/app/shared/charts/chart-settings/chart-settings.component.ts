@@ -16,14 +16,11 @@ export class ChartSettingsComponent implements OnInit {
   @Output() onDataTypeChange = new EventEmitter <boolean> ();
   @Output() onCancel = new EventEmitter();
   @Output() change = new EventEmitter();
-  @Output() onPrecisionChange = new EventEmitter();
   @Output() isVacant: boolean;
 
-  public selectedChart: string;
+  public isAbsolute: boolean;
   public selectedTimeframe: string;
   public selectedData: string;
-  public selectedPrecision: number;
-  public datapointGap: number;
   public fromTimestamp: number;
   public toTimestamp: number;
   public picker: MaterialDateTimePicker;
@@ -31,11 +28,9 @@ export class ChartSettingsComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.selectedChart = 'scatter';
+    this.isAbsolute = true;
     this.selectedData = 'vacant';
     this.isVacant = true;
-    this.selectedPrecision = 100;
-    this.datapointGap = 30;
   }
 
   openTimePickerFrom(diff: string) {
@@ -65,8 +60,8 @@ export class ChartSettingsComponent implements OnInit {
     this.onCancel.emit();
   }
 
-  changeSelectedChart(selectedChart) {
-    this.selectedChart = selectedChart.value;
+  changeIsAbsolute($event) {
+    this.isAbsolute = $event.value;
   }
 
   changeSelectedTimeframe(selectedTimeframe) {
@@ -76,12 +71,6 @@ export class ChartSettingsComponent implements OnInit {
       this.fromTimestamp = Moment().subtract(1, selectedTimeframe.value).unix();
       this.updateRange();
     }
-  }
-
-  changeSelectedPrecision(selectedPrecision) {
-    this.selectedPrecision = selectedPrecision.value;
-    this.datapointGap = 1030 - this.selectedPrecision * 10;
-    this.onPrecisionChange.emit(this.datapointGap);
   }
 
   changeSelectedData(selectedData) {

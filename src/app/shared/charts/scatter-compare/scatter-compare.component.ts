@@ -17,7 +17,6 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
   @Input() private emitter: EventEmitter<string>;
   @Input() private parkings: Array < Parking > ;
   @Input() private isVacant;
-  @Input() private datapointGap;
   @ViewChild('scatter') scatter;
   private datasets = [];
   public chart;
@@ -130,7 +129,7 @@ export class ScatterCompareComponent implements OnInit, OnDestroy {
       this.disposable[index] = this.observables[index].subscribe(
         (meas) => {
           this.counters[index]++;
-          if (this.counters[index] >= this.datapointGap) {
+          if (this.counters[index] >= 50) {
             this.counters[index] = 0;
             const indexOfDataset = findIndex(this.chart.data.datasets, (o) => o.url === meas.parkingUrl);
             this.chart.data.datasets[indexOfDataset].data.splice(0, 0, {
