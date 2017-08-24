@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild, OnDestroy} from '@angular/core';
+import {Component, OnInit, Input, ViewChild, OnDestroy, EventEmitter} from '@angular/core';
 import Parking from './../../../models/parking';
 import Chart from 'chart.js';
 import Measurement from './../../../models/measurement';
@@ -18,7 +18,8 @@ export class ScatterComponent implements OnInit, OnDestroy {
   @Input() private data;
   @Input() private emitter;
   @Input() private parking: Parking;
-  @Input() private isVacant;
+  @Input() private eIsAbsolute: EventEmitter<boolean>;
+  @Input() private isAbsolute: boolean;
   @ViewChild('scatter') scatter;
   private context;
   private chartData = [];
@@ -98,6 +99,11 @@ export class ScatterComponent implements OnInit, OnDestroy {
           this.refreshObservable(e.data); break;
       }
     });
+    this.eIsAbsolute.subscribe(e => {
+      this.isAbsolute = e;
+      console.log(this.isAbsolute);
+    });
+    console.log(this.isAbsolute);
     this.chart.update();
   }
 

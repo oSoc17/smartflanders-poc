@@ -25,7 +25,8 @@ export class DetailspageComponent implements OnInit {
   public parkings: Array < Parking > = [];
   public cityUrl: string;
   public showDetailsPage = false;
-  public datapointGap = 30;
+  public eIsAbsolute = new EventEmitter<boolean>();
+  public isAbsolute = true;
 
   private timeFrame: TimestampRange;
   private isVacant = true;
@@ -41,15 +42,9 @@ export class DetailspageComponent implements OnInit {
 
   }
 
-  onDataTypeChange($event) {
-    this.isVacant = $event;
-    if (this.timeFrame) {
-      this.getData(this.timeFrame, this.parking, this.isVacant);
-    }
-  }
-
-  onPrecisionChange($event) {
-    this.datapointGap = $event;
+  onDataTypeChange(value) {
+    this.eIsAbsolute.emit(value);
+    this.isAbsolute = value;
   }
 
   onCancel() {
