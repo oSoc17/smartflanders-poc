@@ -28,6 +28,7 @@
     "angular2-materialize": "^15.0.4",
     "angular2-moment": "^1.6.0",
     "chart.js": "^2.6.0",
+    "classlist.js": "^1.1.20150312",
     "co": "^4.6.0",
     "color-convert": "^1.9.0",
     "common-tags": "^1.4.0",
@@ -42,6 +43,7 @@
     "heimdalljs-logger": "^0.1.9",
     "html-webpack-plugin": "^2.29.0",
     "inflection": "^1.12.0",
+    "intl": "^1.2.5",
     "jquery": "^3.2.1",
     "json-stable-stringify": "^1.0.1",
     "jsonfile": "^3.0.1",
@@ -63,6 +65,7 @@
     "temp": "^0.8.3",
     "vlq": "^0.2.2",
     "walk-sync": "^0.3.2",
+    "web-animations-js": "^2.3.1",
     "webpack": "^3.4.0",
     "webpack-merge": "^4.1.0",
     "zone.js": "^0.8.14"
