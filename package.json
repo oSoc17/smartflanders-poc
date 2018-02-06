@@ -38,6 +38,8 @@
     "denodeify": "^1.2.1",
     "ember-cli-normalize-entity-name": "^1.0.0",
     "ember-cli-string-utils": "^1.1.0",
+    "es5-shim": "^4.5.10",
+    "es6-shim": "^0.35.3",
     "extract-text-webpack-plugin": "^3.0.0",
     "get-caller-file": "^1.0.2",
     "heimdalljs-logger": "^0.1.9",
